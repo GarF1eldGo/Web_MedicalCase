@@ -1,0 +1,7 @@
+Flask
+flask-sqlalchemy==2.5.1
+
+# 运行一次, 用于创建数据库
+# (env) $ flask shell
+# >>> from app import db
+# >>> db.create_all()
