@@ -1,0 +1,58 @@
+.navigator{
+    background-color: transparent;
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+    text-align: right;
+
+    position: relative;
+    top: -40vh;
+    left: 3vw;
+    width: 90vw;
+    height: 20vh;
+    z-index: 2;
+}
+
+.navigator li{
+    display: inline-block;
+    padding: 30px;
+   
+    background-color: transparent;
+    border-color: transparent;
+    font-size: 24px;
+    font-weight: regular;
+    font-family: 'Inter', 'sans-serif';
+    color: #210060;
+}
+
+.navigator a{
+    text-decoration: none;
+}
+
+.navigator a:visited{
+    color: #210060;
+}
+
+.navigator button{
+    margin: 30px;
+    width: 150px;
+    height: 40px;
+    text-align: center;
+    background-color: transparent;
+    font-size:24px;
+    font-weight: bold;
+    font-family: 'Inter', 'sans-serif';
+    color: #210060;
+
+    border-radius: 25px;
+    border-color: #210060;
+}
+
+.background_image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}

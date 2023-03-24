@@ -22,6 +22,6 @@ class User(db.Model):
     name = db.Column(db.String(20))  # 名字
 
 
-@app.route('/hello/<name>')
-def hello_page(name):
+@app.route('/')
+def hello_page():
     return '<h1>Hello Totoro!</h1><img src="http://helloflask.com/totoro.gif">' 
