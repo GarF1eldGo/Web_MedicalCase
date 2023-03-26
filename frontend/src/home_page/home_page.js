@@ -11,7 +11,7 @@ export default function Home() {
         <button>Home</button>
         <li><a href='/Tutorial'>Tutorial</a></li>
         <li><a href="/About">About</a></li>
-        <li><a href="/login">Log In</a></li>
+        <li><a href="/Login">Log In</a></li>
       </ul>
 
       <div className='background_image'>

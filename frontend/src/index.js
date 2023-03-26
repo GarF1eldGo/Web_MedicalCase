@@ -1,14 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
+
 import App from './App';
-import {Router} from 'react-router';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import Dashboard from './dash_board/dash_board.tsx';
+import {DemoCirclePacking} from './dash_board/circle.js'
+import add_file from './dash_board/upload_file/upload_file';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Switch> 
+        {/* <Route path="*" component=  {<Home/>} /> */}
+        <Route exact path="/" component={App} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/About" component={DemoCirclePacking} />
+        <Route path="/Tutorial" component={Dashboard} />
+        <Route path="/upload" component={add_file} />
+      </Switch>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
