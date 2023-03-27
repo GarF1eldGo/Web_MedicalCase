@@ -1,33 +1,42 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
     UploadOutlined,
   } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
-
 import { FileAddOutlined, DotChartOutlined } from '@ant-design/icons';
-import './dash_board.css';
-import add_file from './upload_file/upload_file'
 import Link from 'antd/es/typography/Link';
+
+import './dash_board.css';
+import AddFile from './upload_file/upload_file'
+import Classification from './classification/classification'
+import {DemoCirclePacking} from './circle.js'
+
 
 
 const { Header, Sider, Content } = Layout;
-const page_key = 1;
 
-
-function file_classification(){
-    console.log("file classification");
+// 使用函数组件定义页面
+function SelectContent(props: any){
+    if(props.selectKey === 1){
+        return <AddFile />
+    }else if(props.selectKey === 2){
+        return <DemoCirclePacking />
+    }else{
+        return <AddFile />
+    }
 }
 
 export default function Dashboard(){
     const [collapsed, setCollapsed] = useState(false);
+    const [page_key, setPageKey] = useState(1);
     const {
       token: { colorBgContainer },
     } = theme.useToken();
 
     const windowHeight = window.innerHeight;
-  
+
     return (
         <div className='Dashboard'>
 
@@ -39,11 +48,16 @@ export default function Dashboard(){
                     mode="inline"
                     defaultSelectedKeys={['1']}
                 >
-                    <Menu.Item key="1" icon={<FileAddOutlined />} onClick={add_file}>
-                        <Link href="/upload">添加文档</Link>
+                    <Menu.Item key="1" icon={<FileAddOutlined />} onClick={
+                        () => setPageKey(1)
+                    }>
+                        <p>添加文档</p>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<DotChartOutlined />} onClick={file_classification}>
-                        <Link href="/classification">文档分类</Link>
+                    <Menu.Item key="2" icon={<DotChartOutlined />} onClick={
+                        () => setPageKey(2)
+                    }>
+                        <p>文档分类</p>
+                        {/* <Link href="/classification">文档分类</Link> */}
                     </Menu.Item>
                 </Menu>
             </Sider>
@@ -64,7 +78,7 @@ export default function Dashboard(){
                     }}
                     className="main_page"
                 >
-                    {add_file()}
+                    <SelectContent selectKey={page_key}/>;
                 </Content>
             </Layout>
         </Layout>

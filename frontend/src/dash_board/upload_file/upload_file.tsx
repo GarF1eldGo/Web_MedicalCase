@@ -25,7 +25,7 @@ const props: UploadProps = {
 };
 
 
-export default function add_file(){
+export default function AddFile(){
     let test = document.getElementsByClassName("main_page");
     if(test){
       //加载上传页面
@@ -43,5 +43,7 @@ export default function add_file(){
           </Dragger>
          </div>
       );
+    }else{
+      return <div></div>;
     }
 }
