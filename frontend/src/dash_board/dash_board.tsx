@@ -5,7 +5,7 @@ import {
     UploadOutlined,
   } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
-import { FileAddOutlined, DotChartOutlined } from '@ant-design/icons';
+import { FileAddOutlined, DotChartOutlined, FileSearchOutlined } from '@ant-design/icons';
 import Link from 'antd/es/typography/Link';
 
 import './dash_board.css';
@@ -17,7 +17,7 @@ import {DemoCirclePacking} from './circle.js'
 
 const { Header, Sider, Content } = Layout;
 
-// 使用函数组件定义页面
+// 条件渲染
 function SelectContent(props: any){
     if(props.selectKey === 1){
         return <AddFile />
@@ -48,16 +48,21 @@ export default function Dashboard(){
                     mode="inline"
                     defaultSelectedKeys={['1']}
                 >
-                    <Menu.Item key="1" icon={<FileAddOutlined />} onClick={
+                    <Menu.Item key="1" icon={<FileSearchOutlined />} onClick={
                         () => setPageKey(1)
                     }>
-                        <p>添加文档</p>
+                        <p>搜索文档</p>
                     </Menu.Item>
                     <Menu.Item key="2" icon={<DotChartOutlined />} onClick={
                         () => setPageKey(2)
                     }>
                         <p>文档分类</p>
                         {/* <Link href="/classification">文档分类</Link> */}
+                    </Menu.Item>
+                    <Menu.Item key="3" icon={<FileAddOutlined />} onClick={
+                        () => setPageKey(3)
+                    }>
+                        <p>导入文档</p>
                     </Menu.Item>
                 </Menu>
             </Sider>

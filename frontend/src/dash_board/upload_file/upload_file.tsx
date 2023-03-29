@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { InboxOutlined, } from '@ant-design/icons';
 import { message, Upload, UploadProps} from 'antd';
 import './upload_file.css';
@@ -6,8 +6,8 @@ import './upload_file.css';
 const { Dragger } = Upload;
 const props: UploadProps = {
     name: 'file',
-    multiple: true,
-    action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    multiple: true, // 支持批量上传
+    action: '', // 上传地址
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {// 上传中
@@ -21,6 +21,17 @@ const props: UploadProps = {
     },
     onDrop(e) {// 拖拽上传
       console.log('Dropped files', e.dataTransfer.files);
+    },
+    beforeUpload(file, FileList) {// 上传前检查文本类型
+      const isTxt = file.type === 'text/plain';
+      if (!isTxt) {
+        message.error('You can only upload TXT file!');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        message.error('Image must smaller than 2MB!');
+      }
+      return isTxt && isLt2M;
     },
 };
 
