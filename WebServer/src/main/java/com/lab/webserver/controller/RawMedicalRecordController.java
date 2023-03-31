@@ -1,12 +1,19 @@
 package com.lab.webserver.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.service.RawMedicalRecordService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/rawMedicalRecord")
 public class RawMedicalRecordController {
     private final RawMedicalRecordService service;
@@ -22,11 +29,14 @@ public class RawMedicalRecordController {
         return "Hello World!";
     }
 
-    @PostMapping
+    @PostMapping("/upload_record")
     public void add(@RequestBody final RawMedicalRecord record){
-        System.out.println("in");
-        System.out.println(record.getAuthor());
         service.save(record);
+    }
+
+    @PostMapping("/upload")
+    public String handlerFiledUpload(@RequestParam("upload_file") MultipartFile file){
+        return service.uploadFile(file);
     }
 
     // 根据id查询医案
@@ -36,17 +46,19 @@ public class RawMedicalRecordController {
     }
 
     @GetMapping("/title/{title}")
-    public RawMedicalRecord findByTitle(@PathVariable final String title){
+    public List<RawMedicalRecord> findByTitle(@PathVariable("title") String title){
+        System.out.println(title);
         return service.findByTitle(title);
     }
 
     @GetMapping("/author/{author}")
-    public RawMedicalRecord findByAuthor(@PathVariable final String author){
+    public List<RawMedicalRecord> findByAuthor(@PathVariable("author") final String author){
+        System.out.println("author:"+author);
         return service.findByAuthor(author);
     }
 
     @GetMapping("/content/{content}")
-    public RawMedicalRecord findByContent(@PathVariable final String content){
+    public List<RawMedicalRecord> findByContent(@PathVariable final String content){
         return service.findByContent(content);
     }
 
