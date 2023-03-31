@@ -73,11 +73,28 @@ gantt
 
 ##### 原始中医医案（RawMedicalRecord)
 
-| 属性名  | 属性含义 |    属性类型    | 主键 | 最大长度 |
-| :-----: | :------: | :------------: | :--: | :------: |
-|   id    |  医案ID  | FieldType.Text | yes  |          |
-|  title  |  医案名  | FieldType.Text |      |    50    |
-| author  |   作者   | FieldType.Text |      |    20    |
-| content | 医案信息 | FieldType.Text |      |   5000   |
+|  属性名  | 属性含义 |     属性类型      | 主键 | 最大长度 |
+| :------: | :------: | :---------------: | :--: | :------: |
+|    id    |  医案ID  |  FieldType.Text   | yes  |          |
+|  title   |  医案名  |  FieldType.Text   |      |    50    |
+|  author  |   作者   |  FieldType.Text   |      |    20    |
+| content  | 医案信息 |  FieldType.Text   |      |   5000   |
+| favorite | 是否收藏 | FieldType.boolean |      |          |
 
-​	
+支持的操作	
+
+- 医案导入
+- 根据id查询医案
+- 根据id删除医案
+- 根据title查询医案
+- 根据author查询医案
+
+
+
+
+
+##### 文档导入规则
+
+1.文件名称为‘作者名-医案标题’
+
+2.文章内容为‘医案内容’

@@ -3,11 +3,13 @@ import { InboxOutlined, } from '@ant-design/icons';
 import { message, Upload, UploadProps} from 'antd';
 import './upload_file.css';
 
+const uploadURL = 'http://127.0.0.1:8080/api/rawMedicalRecord/upload';
 const { Dragger } = Upload;
 const props: UploadProps = {
-    name: 'file',
+    name: 'upload_file',
     multiple: true, // 支持批量上传
-    action: '', // 上传地址
+    action: uploadURL, // 上传地址
+    accept: '.txt', // 限制上传文件类型
     onChange(info) {
       const { status } = info.file;
       if (status !== 'uploading') {// 上传中
@@ -22,14 +24,15 @@ const props: UploadProps = {
     onDrop(e) {// 拖拽上传
       console.log('Dropped files', e.dataTransfer.files);
     },
+
     beforeUpload(file, FileList) {// 上传前检查文本类型
       const isTxt = file.type === 'text/plain';
       if (!isTxt) {
-        message.error('You can only upload TXT file!');
+        message.error('请上传txt文件!');
       }
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
+        message.error('请保证文件小于2M!');
       }
       return isTxt && isLt2M;
     },
