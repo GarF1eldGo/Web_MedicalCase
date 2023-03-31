@@ -9,7 +9,7 @@ import { FileAddOutlined, DotChartOutlined, FileSearchOutlined } from '@ant-desi
 
 const { Header, Sider, Content } = Layout;
 
-export default function sideNav ({displayContent, changePageKey} : any){
+export default function SideNav ({displayContent, changePageKey} : any){
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },

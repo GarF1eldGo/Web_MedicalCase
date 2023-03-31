@@ -1,0 +1,9 @@
+
+
+/* 设置搜索框尺寸与距离*/
+
+.search-input{
+    width: 500px;
+    height: 50px;
+    margin-bottom: 50px;
+}
