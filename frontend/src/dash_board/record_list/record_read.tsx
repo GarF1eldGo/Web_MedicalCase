@@ -18,17 +18,12 @@ export default function RecordRead(props: any) {
     const [page_key, setPageKey] = useState(1);
     const [data, setData] = useState<DataType>();
     const { Title, Paragraph, Text } = Typography;
-    const history = useHistory();
 
     // 监听record变化
     useEffect(() => {
         const record = localStorage.getItem('record');
         if (record) {
             setData(JSON.parse(record));
-
-            console.log('pathname:', window.location.pathname)
-            const pathname = window.location.pathname;
-            history.push({pathname: pathname + '/record_detail'})
         }
     }, []);
 
@@ -91,22 +86,8 @@ export default function RecordRead(props: any) {
         };
     }, []);
 
-        // 条件渲染
-    function SelectContent(props: any){
-        if(props.selectKey === 1){
-            return <>{displayContent()}</>
-        }else if(props.selectKey === 2){
-            return <DemoCirclePacking />
-        }else if(props.selectKey === 3){
-            return <AddFile />
-        }else{
-            return <div>404</div>
-        }
-    }
-
     // 展示医案详细内容
     return (
-        <SideNav displayContent={<SelectContent selectKey={page_key}/>} changePageKey={setPageKey} currentPath={props.currentPath}/>
-        // <>{displayContent()}</>
+        <>{displayContent()}</>
     );
 }

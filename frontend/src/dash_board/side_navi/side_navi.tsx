@@ -7,26 +7,49 @@ import {
   } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
 import { FileAddOutlined, DotChartOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
+
+import AddFile from '../upload_file/upload_file'
+import {DemoCirclePacking} from '../circle'
+import RecordList from '../record_list/record_list';
+
 
 const { Header, Sider, Content } = Layout;
 
-export default function SideNav ({displayContent, changePageKey, currentPath} : any){
+export default function SideNav ({displayContent} : any){
     const [goBack, setGoBack] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     const windowHeight = window.innerHeight;
+    const match = useRouteMatch();
+    const history = useHistory();
 
     useEffect(() => {
-        console.log('side-nav', window.location.pathname)
-        console.log('currentPath', currentPath)
-        if (window.location.pathname !== '/Dashboard/record_list') {
-          setGoBack(true);
-        } else {
-          setGoBack(false);
+        // 获取当前时间
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const second = now.getSeconds();
+        const now_time = hour + ':' + minute + ':' + second;
+        console.log(now_time + ' ' + window.location.pathname);
+        if(window.location.pathname.indexOf('RecordDetail') != -1){
+            setGoBack(true);
+        }else{
+            setGoBack(false);
         }
-      }, [window.location.pathname]);
+    }, [window.location.pathname])
+
+    function changePageKey(key: number) {
+        if(key === 1){
+            history.push('/Dashboard/RecordList')
+        }else if(key === 2){
+            history.push('/Dashboard/DemoCirclePacking')
+        }else if(key === 3){
+            history.push('/Dashboard/AddFile')
+        }
+    }
 
     return(
         <Layout>
@@ -64,7 +87,6 @@ export default function SideNav ({displayContent, changePageKey, currentPath} : 
                     ]}
                     style={{marginTop: '30px'}}
                 />
-        
             </Sider>
     
             <Layout className="site-layout">
@@ -82,7 +104,17 @@ export default function SideNav ({displayContent, changePageKey, currentPath} : 
                     }}
                     className="main_page"
                 >
-                    {displayContent}
+                <Switch>
+                    <Route path={`${match.path}/RecordList`}>
+                        <RecordList />
+                    </Route>
+                    <Route path={`${match.path}/DemoCirclePacking`}>
+                        <DemoCirclePacking />
+                    </Route>
+                    <Route path={`${match.path}/AddFile`}>
+                        <AddFile />
+                    </Route>
+                </Switch>
                 </Content>
             </Layout>
         </Layout>
