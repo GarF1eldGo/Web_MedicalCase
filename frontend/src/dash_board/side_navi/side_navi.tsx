@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
+    LeftOutlined,
     UploadOutlined,
   } from '@ant-design/icons';
 import { Layout, Menu, theme } from 'antd';
@@ -9,17 +10,34 @@ import { FileAddOutlined, DotChartOutlined, FileSearchOutlined } from '@ant-desi
 
 const { Header, Sider, Content } = Layout;
 
-export default function SideNav ({displayContent, changePageKey} : any){
+export default function SideNav ({displayContent, changePageKey, currentPath} : any){
+    const [goBack, setGoBack] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
     const windowHeight = window.innerHeight;
 
+    useEffect(() => {
+        console.log('side-nav', window.location.pathname)
+        console.log('currentPath', currentPath)
+        if (window.location.pathname !== '/Dashboard/record_list') {
+          setGoBack(true);
+        } else {
+          setGoBack(false);
+        }
+      }, [window.location.pathname]);
+
     return(
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
-                <div className="logo"></div>
+                <div className="sider-icon">
+                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            className: 'trigger',
+                            onClick: () => setCollapsed(!collapsed),
+                            style: { color: 'white' },
+                    })}
+                </div>
                 <Menu
                     theme="dark"
                     mode="inline"
@@ -44,16 +62,16 @@ export default function SideNav ({displayContent, changePageKey} : any){
                             label: '导入文档',
                         },
                     ]}
+                    style={{marginTop: '30px'}}
                 />
         
             </Sider>
     
             <Layout className="site-layout">
                 <Header style={{ padding: 0, background: colorBgContainer }}>
-                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        className: 'trigger',
-                        onClick: () => setCollapsed(!collapsed),
-                    })}
+                    {/* 此处添加返回按钮 */}
+                    {goBack && 
+                        <LeftOutlined onClick={() => window.history.back()} style={{color: 'black', fontSize: '20px', marginLeft: '20px'}}/>}
                 </Header>
                 <Content
                     style={{
@@ -67,7 +85,7 @@ export default function SideNav ({displayContent, changePageKey} : any){
                     {displayContent}
                 </Content>
             </Layout>
-    </Layout>
+        </Layout>
     )
 
 }

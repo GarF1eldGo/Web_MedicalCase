@@ -16,11 +16,10 @@ root.render(
     <BrowserRouter>
       <Switch> 
         <Route exact path="/" component={App} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/Dashboard" component={Dashboard} />
         <Route path="/About" component={DemoCirclePacking} />
-        <Route path="/Tutorial" component={Dashboard} />
         <Route path="/upload" component={AddFile} />
-        {/* <Route path="/record_detail" component={RecordRead} /> */}
+        <Route path="/record_detail" component={RecordRead} />
       </Switch>
     </BrowserRouter>
   // </React.StrictMode>

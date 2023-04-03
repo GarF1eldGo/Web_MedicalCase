@@ -9,7 +9,7 @@ export default function Home() {
     <div className="Home">
       <ul className='navigator'>
         <button>Home</button>
-        <li><a href='/Tutorial'>Tutorial</a></li>
+        <li><a href='/Dashboard'>Tutorial</a></li>
         <li><a href="/About">About</a></li>
         <li><a href="/Login">Log In</a></li>
       </ul>

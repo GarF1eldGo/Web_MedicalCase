@@ -1,0 +1,22 @@
+.sider-icon {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 0px;
+  }
+  
+  .trigger {
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  .go-back {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .go-back.anticon {
+    margin-right: 0px;
+    cursor: pointer;
+  }

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.security.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -52,8 +55,14 @@ public class RawMedicalRecordController {
     }
 
     @GetMapping("/author/{author}")
-    public List<RawMedicalRecord> findByAuthor(@PathVariable("author") final String author){
-        System.out.println("author:"+author);
+    public List<RawMedicalRecord> findByAuthor(@PathVariable("author") String author){
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now();
+        // 格式化时间字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDateTime = now.format(formatter);
+
+        System.out.println(formattedDateTime + " author:" + author);
         return service.findByAuthor(author);
     }
 
