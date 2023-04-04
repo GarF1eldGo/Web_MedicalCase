@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.respository.RawMedicalRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.client.erhlc.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -51,6 +52,21 @@ public class RawMedicalRecordService {
     // 根据content查询医案
     public List<RawMedicalRecord> findByContent(String content){
         return rawMedicalRecordRepository.findAllByContentIn(content);
+    }
+
+    // 全局搜索
+    public List<RawMedicalRecord> findBySearchAll(String content){
+        // 搜索作者
+        List<RawMedicalRecord> authorList = rawMedicalRecordRepository.findAllByAuthor(content);
+        // 搜索标题
+        List<RawMedicalRecord> titleList = rawMedicalRecordRepository.findAllByTitle(content);
+        // 搜索内容
+        List<RawMedicalRecord> contentList = rawMedicalRecordRepository.findAllByContentIn(content);
+        // 聚合结果
+        List<RawMedicalRecord> result = authorList.stream().collect(Collectors.toList());
+        result.addAll(titleList);
+        result.addAll(contentList);
+        return result;
     }
 
     public String uploadFile(MultipartFile file){

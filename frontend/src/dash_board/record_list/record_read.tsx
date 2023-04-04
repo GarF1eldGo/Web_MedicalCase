@@ -1,10 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { Typography, Divider, Tag } from 'antd';
-import {useHistory} from 'react-router-dom';
-
-import SideNav from '../side_navi/side_navi';
-import {DemoCirclePacking} from '../circle.js'
-import AddFile from '../upload_file/upload_file';
 
 interface DataType {
     key: React.Key;

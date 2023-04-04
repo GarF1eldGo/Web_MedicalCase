@@ -21,6 +21,14 @@ import java.util.List;
 public class RawMedicalRecordController {
     private final RawMedicalRecordService service;
 
+    private String getCurrentTime(){
+        // 获取当前时间
+        LocalDateTime now = LocalDateTime.now();
+        // 格式化时间字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return now.format(formatter);
+    }
+
     @Autowired
     public RawMedicalRecordController(RawMedicalRecordService service){
         this.service = service;
@@ -50,25 +58,26 @@ public class RawMedicalRecordController {
 
     @GetMapping("/title/{title}")
     public List<RawMedicalRecord> findByTitle(@PathVariable("title") String title){
-        System.out.println(title);
+        System.out.println(getCurrentTime() + "title:" + title);
         return service.findByTitle(title);
     }
 
     @GetMapping("/author/{author}")
     public List<RawMedicalRecord> findByAuthor(@PathVariable("author") String author){
-        // 获取当前时间
-        LocalDateTime now = LocalDateTime.now();
-        // 格式化时间字符串
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDateTime = now.format(formatter);
-
-        System.out.println(formattedDateTime + " author:" + author);
+        System.out.println(getCurrentTime() + " author:" + author);
         return service.findByAuthor(author);
     }
 
     @GetMapping("/content/{content}")
     public List<RawMedicalRecord> findByContent(@PathVariable final String content){
+        System.out.println(getCurrentTime() + "content:" + content);
         return service.findByContent(content);
+    }
+
+    @GetMapping("/searchAll/{searchAll}")
+    public List<RawMedicalRecord> findBySearchAll(@PathVariable("searchAll") String searchAll){
+        System.out.println(getCurrentTime() + "searchAll:" + searchAll);
+        return service.findBySearchAll(searchAll);
     }
 
     @DeleteMapping("/{id}")

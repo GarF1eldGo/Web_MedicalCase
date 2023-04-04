@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from "react";
-import {Table, Input, Space} from 'antd';
+import {Table, Input, Space, Select} from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import axios from 'axios';
-import {Switch, Route, useHistory, useLocation, useRouteMatch} from 'react-router-dom';
+import {Switch, Route, useHistory, useRouteMatch} from 'react-router-dom';
 import RecordRead from "./record_read";
 import './record_list.css'
 import { useMatch } from "react-router";
+
+const {Option} = Select;
 
 interface DataType {
     key: React.Key;
@@ -19,15 +21,23 @@ const {Search} = Input;
 export default function RecordList(){
     const [data, setData] = useState<DataType[]>([]);
     const [clickRow, setClickRow] = useState<boolean>();
-    const location = useLocation();
     const match = useRouteMatch();
     const history = useHistory();
-    
-    function handleClickRow(record: DataType) {
-        setClickRow(true);
-        localStorage.setItem('record', JSON.stringify(record));
-        history.push(`${match.path}/RecordDetail/${record.title}`);
-    }
+    const [selectedValue, setSelectedValue] = useState(null);
+
+    const handleSelectChange = (value:any) => {
+        console.log(`selected ${value}`);
+        setSelectedValue(value);
+    };
+
+    const selectBefore = (
+        <Select defaultValue="全局搜索" onChange={handleSelectChange}>
+          <Option value="searchAll">全局搜索</Option>
+          <Option value="author">作者</Option>
+          <Option value="tag">标签</Option>
+          <Option value="content">医案内容</Option>
+        </Select>
+    );
 
     // 列表信息
     const columns: ColumnsType<DataType> = [
@@ -69,10 +79,36 @@ export default function RecordList(){
 
     }, []);
 
+    function handleClickRow(record: DataType) {
+        setClickRow(true);
+        localStorage.setItem('record', JSON.stringify(record));
+        history.push(`${match.path}/RecordDetail/${record.title}`);
+    }
 
     function handleSearch(value: string) {
-        const encodedAuthor = encodeURIComponent(value);
-        axios.get('http://127.0.0.1:8080/api/rawMedicalRecord/author/' + encodedAuthor)
+        // 根据搜索类型定义URL
+        let url = 'http://127.0.0.1:8080/api/rawMedicalRecord';
+        let newPathname = '';
+        const encodedValue = encodeURIComponent(value);
+        // console.log('selected value:', selectedValue);
+        if(selectedValue === 'searchAll'){
+            url += '/searchAll/' + encodedValue;
+            newPathname = `${match.path}/searchAll=${value}`;
+        }else if (selectedValue === 'author'){
+            url += '/author/' + encodedValue;
+            newPathname = `${match.path}/author=${value}`;
+        }else if (selectedValue === 'tag'){
+            url += '/tag/' + encodedValue;
+            newPathname = `${match.path}/tag=${value}`;
+        }else if (selectedValue === 'content'){
+            url += '/content/' + encodedValue;
+            newPathname = `${match.path}/content=${value}`;
+        }else{
+            url += '/searchAll/' + encodedValue;
+            newPathname = `${match.path}/searchAll=${value}`;
+        }
+
+        axios.get(url)
         .then((response) =>  {
             // 清空data
             setData([]);
@@ -89,7 +125,7 @@ export default function RecordList(){
                 
             }
             setData(tempData);
-            history.push(`${match.path}/author=${value}`);
+            history.push(newPathname);
         }).catch((error) => {
             console.log(error);
         })
@@ -100,13 +136,12 @@ export default function RecordList(){
         return (
             <>
                 <Space style={{width:'100%', justifyContent:'center'}}>
-                    <Search className="search-input" addonBefore="作者" placeholder="请输入" onSearch ={handleSearch} allowClear />
+                    <Search className="search-input" addonBefore={selectBefore} placeholder="请输入" onSearch ={handleSearch} allowClear />
                 </Space>
                     <Table  columns={columns} dataSource={data} />;
             </>
         )
     }
-
 
     return (
         <div>
