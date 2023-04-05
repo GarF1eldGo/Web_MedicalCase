@@ -5,6 +5,9 @@
     --img_size : 20px;
     --margin_right_options : calc(var(--margin_right) + var(--img_size)/2);
     --margin_top_options : calc(var(--header_height)/2 + var(--img_size)/2);
+    --suffix_width : 16px;
+    --suffix_height : 20px;
+    --suffix_margin_left : calc(-1*var(--suffix_width) - 4px)
 }
 
 .header{
@@ -71,8 +74,19 @@
     box-shadow: lightgray;
 }
 
-.ant-input-suffix{
+/* .ant-input-suffix{
     margin-right: -5px;
+} */
+
+.suffix-img{
+    width: var(--suffix_width);
+    height: var(--suffix_height);
+}
+
+.suffix-container{
+    display: flex;
+    align-items: center;
+    margin-left: var(--suffix_margin_left);
 }
 
 /* 导航区设置 */

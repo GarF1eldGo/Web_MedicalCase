@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { GithubOutlined, AndroidOutlined } from '@ant-design/icons';
 import { Space, Input, Avatar, Divider} from 'antd';
 import { Link } from 'react-router-dom';
@@ -11,11 +11,13 @@ export default function TestDashboard(){
     const [showOptions, setShowOptions] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
     const [showIcon, setShowIcon] = React.useState(true);
+    const [preWidth, setPreWidth] = React.useState(0);
 
-    const suffix = (
-        //加载图片
-        <img src={slash} alt="slash" style={{width:16, height:20}}/>
-    )
+    useEffect(() => {
+        // 初始化输入框宽度
+        setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
+        console.log('preWidth: ', preWidth);
+    }, []);
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         setInputValue(event.target.value);
@@ -29,9 +31,17 @@ export default function TestDashboard(){
         setShowOptions(!showOptions);
     }
 
+    function handleOnFocus(){
+        // 更改输入框宽度
+        setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
+        const newWidth = preWidth + 80;
+        document.getElementsByClassName('search-input')[0].setAttribute('style', 'width: ' + newWidth + 'px');
+    }
+
     function handleOnBlur(event: React.FocusEvent<HTMLInputElement>){
         if(event.target.value === ''){
             setShowIcon(true);
+            document.getElementsByClassName('search-input')[0].setAttribute('style', 'width: ' + preWidth + 'px');
         }
     }
 
@@ -41,13 +51,17 @@ export default function TestDashboard(){
                 <Space className='space-container' style={{width:'100%', height:'100%'}}>
                     <GithubOutlined className="logo" style={{color:'white', fontSize:24, height:'100%'}}/>
                     <div className='search-container'>
-                        <Input style={{width:'100%'}} className="search-input" 
+                        <Input  className="search-input" 
                             addonBefore={null} placeholder="Please input"
                             value={inputValue} onChange={handleInputChange}  
                             onPressEnter={handlePressUser}
                             onClick={() => setShowIcon(false)}
                             onBlur={handleOnBlur}
-                            suffix={showIcon && suffix} />
+                            onFocus={handleOnFocus}
+                        />
+                        <div className='suffix-container'>
+                            {showIcon && <img className='suffix-img' src={slash} alt="slash" />}
+                        </div>
                     </div>
                     
                     <div className='nav' >
