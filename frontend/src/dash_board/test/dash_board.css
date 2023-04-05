@@ -1,7 +1,10 @@
 :root{
     --header_height : 60px;
-    /* 线段长度为屏幕高度减去起始高度 */
     --line_height : calc(100vh - var(--header_height));
+    --margin_right : 20px;
+    --img_size : 20px;
+    --margin_right_options : calc(var(--margin_right) + var(--img_size)/2);
+    --margin_top_options : calc(var(--header_height)/2 + var(--img_size)/2);
 }
 
 .header{
@@ -15,10 +18,10 @@
     display: flex;
     flex-direction: row;
     justify-content: left;
-    margin-left: 20px;
+    margin: 0px;
 }
 
-/* space内部元素间距40px */
+/* space内部元素间距20px */
 .space-container > * {
     margin : 10px;
 }
@@ -29,6 +32,7 @@
     align-items: center;
     height : var(--header_height);
     margin: 0px;
+    margin-left: 20px;
 }
 
 /* 针对Input.Search，用于纵轴居中 */
@@ -53,6 +57,7 @@
     margin: 0;
     border-color: lightgray;
     background-color: transparent;
+    color : white;
 }
 
 /* 输入框背景与字体颜色 */
@@ -61,8 +66,13 @@
     color : white;
 }
 
+/* 修改选中后的颜色，但是貌似没有效果 */
 .ant-input-affix-warpper-focused{
     box-shadow: lightgray;
+}
+
+.ant-input-suffix{
+    margin-right: -5px;
 }
 
 /* 导航区设置 */
@@ -78,29 +88,53 @@
     align-items: center;
 }
 
-.content-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    position: relative;
-}
-
+/* 头像设置 */
 .avatar-container{
     color: white;
     position: absolute;
     height: var(--header_height);
-    right: 20px;
+    right: var(--margin_right);
     top: 0;
     display: flex;
     align-items: center;
 }
 .user-avatar{
     border-color: white;
-    width: 20px;
-    height: 20px;
+    width: var(--img_size);
+    height: var(--img_size);
 }
+
+/* 用户选项设置 */
+.user-options{
+    position: absolute;
+    top: var(--margin_top_options);
+    right: var(--margin_right_options);
+    color: black;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 999;
+}
+
+.user-options > * {
+    margin : 5px;
+    line-height: 1em;
+}
+
 /* ----------------header content分割线---------------- */
+
+/* 文字导航设置 */
+.content-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    background-color : #f6f8fa;
+}
 
 .divider-left{
     content: "";
@@ -128,8 +162,6 @@
     flex:1;
     text-align: center;
 }
-
-
 .center{
     flex:2;
     text-align: center;
