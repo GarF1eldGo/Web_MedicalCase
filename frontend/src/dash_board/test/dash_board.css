@@ -1,0 +1,44 @@
+
+.space-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+}
+
+.space-container > * {
+    margin : 20px;
+}
+
+/* 针对Input.Search，用于纵轴居中 */
+.ant-input-search {
+    margin: 0;
+}
+
+/* 输入框外边框设置 */
+.search-input{
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height : 30px;
+    flex-direction: row;
+    margin: 0;
+    border-color: lightgray;
+    background-color: transparent;
+}
+
+/* 输入框背景与字体颜色 */
+.search-input input{
+    background-color: transparent;
+    color : white;
+}
+
+.ant-input-affix-warpper-focused{
+    box-shadow: lightgray;
+}
+
+/* 导航区设置 */
+.nav > * {
+    margin : 10px;
+    color:white;
+    font-weight: bold;
+}
