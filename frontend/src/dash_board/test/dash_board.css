@@ -1,12 +1,34 @@
+:root{
+    --header_height : 60px;
+    /* 线段长度为屏幕高度减去起始高度 */
+    --line_height : calc(100vh - var(--header_height));
+}
+
+.header{
+    color: #002766;
+    height: var(--header_height);
+    width: 100%;
+    padding : 10px;
+}
 
 .space-container{
     display: flex;
     flex-direction: row;
     justify-content: left;
+    margin-left: 20px;
 }
 
+/* space内部元素间距40px */
 .space-container > * {
-    margin : 20px;
+    margin : 10px;
+}
+
+/* 图标纵轴居中 */
+.logo{
+    display: flex;
+    align-items: center;
+    height : var(--header_height);
+    margin: 0px;
 }
 
 /* 针对Input.Search，用于纵轴居中 */
@@ -14,12 +36,19 @@
     margin: 0;
 }
 
+.search-container{
+    display: flex;
+    align-items: center;
+    height : var(--header_height);
+    margin: 0px;
+}
+
 /* 输入框外边框设置 */
 .search-input{
     display: flex;
     align-items: center;
     width: fit-content;
-    height : 30px;
+    height : 50%;
     flex-direction: row;
     margin: 0;
     border-color: lightgray;
@@ -41,4 +70,71 @@
     margin : 10px;
     color:white;
     font-weight: bold;
+}
+
+.nav{
+    height : var(--header_height);
+    display: flex;
+    align-items: center;
+}
+
+.content-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.avatar-container{
+    color: white;
+    position: absolute;
+    height: var(--header_height);
+    right: 20px;
+    top: 0;
+    display: flex;
+    align-items: center;
+}
+.user-avatar{
+    border-color: white;
+    width: 20px;
+    height: 20px;
+}
+/* ----------------header content分割线---------------- */
+
+.divider-left{
+    content: "";
+    display: block;
+    width: 1px;
+    height: var(--line_height);
+    background-color: gray;
+    position: absolute;
+    left: 25%;
+    top:0
+}
+
+.divider-right{
+    content: "";
+    display: block;
+    width: 0.5px;
+    height: var(--line_height);
+    background-color: gray;
+    position: absolute;
+    left: 75%;
+    top:0
+}
+
+.left{
+    flex:1;
+    text-align: center;
+}
+
+
+.center{
+    flex:2;
+    text-align: center;
+}
+.right{
+    flex:1;
+    text-align: center;
 }
