@@ -1,11 +1,10 @@
 import React, {useState, useEffect} from "react";
-import {Table, Input, Space, Select} from 'antd';
+import {Table, Input, Space, Select, Breadcrumb} from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
 import axios from 'axios';
 import {Switch, Route, useHistory, useRouteMatch} from 'react-router-dom';
 import RecordRead from "./record_read";
 import './record_list.css'
-import { useMatch } from "react-router";
 
 const {Option} = Select;
 
@@ -64,6 +63,7 @@ export default function RecordList(){
         },
     ];
 
+    // TODO：有待完善
     // 页面加载时获取数据
     useEffect(() => {
         const params = localStorage.getItem('params');
@@ -134,12 +134,21 @@ export default function RecordList(){
 
     function SearchRecord() {
         return (
-            <>
-                <Space style={{width:'100%', justifyContent:'center'}}>
-                    <Search className="search-input" addonBefore={selectBefore} placeholder="请输入" onSearch ={handleSearch} allowClear />
-                </Space>
-                    <Table  columns={columns} dataSource={data} />;
-            </>
+            <div className="record-list-container">
+                <div className="bread-container">
+                        <Breadcrumb className="bread-crumb" items={[
+                            {title:<a href='/Home'>Home</a>},
+                            {title:'Search Record'}
+                            ]} />
+                </div>
+                <div className="search-record-container">
+                    <Space style={{width:'100%', justifyContent:'center'}}>
+                        <Search className="search-input" addonBefore={selectBefore} placeholder="请输入" onSearch ={handleSearch} allowClear />
+                    </Space>
+                    <Table className="record-table" columns={columns} dataSource={data} />
+                </div>
+            </div>
+            
         )
     }
 
@@ -149,9 +158,9 @@ export default function RecordList(){
                 <Route path={`${match.path}/RecordDetail`}>
                     <RecordRead />
                 </Route>
-                <Route path={`${match.path}/author`}>
+                {/* <Route path={`${match.path}/author`}>
                     <SearchRecord />
-                </Route>
+                </Route> */}
                 <Route path={`${match.path}`}>
                     <SearchRecord />
                 </Route>

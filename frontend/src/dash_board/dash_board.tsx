@@ -16,7 +16,7 @@ import './dash_board.css';
 import AddFile from './upload_file/upload_file'
 import {DemoCirclePacking} from './circle'
 import RecordList from './record_list/record_list';
-import User from './user_page/user_page';
+import UserPage from '../user_page/user_page';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const { Header, Sider, Content } = Layout;
@@ -127,7 +127,7 @@ export default function Dashboard ({displayContent} : any){
                             <AddFile />
                         </Route>
                         <Route path={`${match.path}/User`} >
-                            <User />
+                            <UserPage />
                         </Route>
                         <Route path={`${match.path}`}>
                             <Redirect to="/Dashboard/RecordList" />

@@ -1,0 +1,31 @@
+
+.user-navi-header{
+    width: 100%;
+    margin-top : 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    padding-bottom: 0px;
+    background-color: #f6f8fa;
+}
+
+.user-navi-header .ant-btn{
+    margin : 3px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    border:0px;
+    background-color: #f6f8fa;
+    box-shadow: black;
+}
+
+.user-navi-header .ant-btn:hover{
+    color:black;
+    background-color: gray;
+}
+
+.user-page-container .user-navi-divider{
+    margin:0px;
+    width: 100vw;
+}

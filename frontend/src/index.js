@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 
 import App from './App';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Dashboard from './dash_board/dash_board.tsx';
 import RecordList from './dash_board/record_list/record_list';
 import TestDashboard from './dash_board/test/dash_board';
@@ -17,6 +17,7 @@ root.render(
         <Route exact path="/" component={App} />
         <Route path="/Dashboard" component={Dashboard} />
         <Route path="/test" component={TestDashboard} />
+        <Redirect from='/Home' to='/' />
       </Switch>
     </BrowserRouter>
 );

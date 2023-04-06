@@ -1,22 +1,29 @@
 import React, { useEffect } from 'react'
 import { GithubOutlined, AndroidOutlined } from '@ant-design/icons';
 import { Space, Input, Avatar, Divider} from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
 import { Header, Content } from 'antd/es/layout/layout';
 
 import './dash_board.css'
 import slash from '../../attachment/img/slash.png'
+import RecordList from '../record_list/record_list';
+import AddFile from '../upload_file/upload_file';
+import { DemoCirclePacking } from '../circle';
+import UserPage from '../../user_page/user_page';
 
 export default function TestDashboard(){
     const [showOptions, setShowOptions] = React.useState(false);
     const [inputValue, setInputValue] = React.useState('');
     const [showIcon, setShowIcon] = React.useState(true);
     const [preWidth, setPreWidth] = React.useState(0);
+    const match = useRouteMatch();
+    const history = useHistory();
 
     useEffect(() => {
         // 初始化输入框宽度
         setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
         console.log('preWidth: ', preWidth);
+        console.log('match path : ', match.path);
     }, []);
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -31,8 +38,8 @@ export default function TestDashboard(){
         setShowOptions(!showOptions);
     }
 
+    // 更改输入框宽度
     function handleOnFocus(){
-        // 更改输入框宽度
         setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
         const newWidth = preWidth + 80;
         document.getElementsByClassName('search-input')[0].setAttribute('style', 'width: ' + newWidth + 'px');
@@ -65,9 +72,9 @@ export default function TestDashboard(){
                     </div>
                     
                     <div className='nav' >
-                        <Link to='/hhh'>Document Search</Link>
-                        <Link to='/aaa'>Classification</Link>
-                        <Link to='/bbb'>Import Documents</Link>
+                        <Link to={match.path + '/RecordList'}>Document Search</Link>
+                        <Link to={match.path + '/Classification'}>Classification</Link>
+                        <Link to={match.path + '/AddFile'}>Import Documents</Link>
                     </div>
                 </Space>
 
@@ -77,8 +84,8 @@ export default function TestDashboard(){
 
                 {showOptions && 
                     <div className='user-options'>
-                        <p>Signed in as </p>
-                        <p style={{fontWeight:'bold'}}>GarField</p>
+                        <p onClick={() => {history.push(match.path + '/UserPage')}}>Signed in as </p>
+                        <p onClick={() => {history.push(match.path + '/UserPage')}} style={{fontWeight:'bold'}}>GarField</p>
                         <Divider />
                         <p>Profile</p>
                         <p>Settings</p>
@@ -93,7 +100,20 @@ export default function TestDashboard(){
                 </div>
                 <div className='divider-left'></div>
                 <div className='center'>
-                    <p>Article Content</p>
+                    <Switch>
+                        <Route path={`${match.path}/RecordList`}>
+                            <RecordList />
+                        </Route>
+                        <Route path={`${match.path}/Classification`}>
+                            <DemoCirclePacking />
+                        </Route>
+                        <Route path={`${match.path}/AddFile`}>
+                            <AddFile />
+                        </Route>
+                        <Route path={`${match.path}/UserPage`}>
+                            <UserPage />
+                        </Route>
+                    </Switch>
                 </div>
                 <div className='divider-right'></div>
                 <div className='right'>

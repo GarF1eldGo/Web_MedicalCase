@@ -1,0 +1,9 @@
+
+.record-read-container .bread-container{
+    width : 100%;
+    margin-top : 2-px;
+}
+
+.record-read-container .bread-container .bread-crumb{
+    margin-left : 10px;
+}

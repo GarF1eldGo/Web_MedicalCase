@@ -1,9 +1,33 @@
 
 
 /* 设置搜索框尺寸与距离*/
+.search-record-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-direction: column;
+}
 
-.search-input{
-    width: 500px;
-    height: 50px;
-    margin-bottom: 50px;
+.search-record-container > * {
+    margin : 10px;
+}
+
+.search-record-container .bread-container{
+    width: 100%;
+}
+
+.search-record-container .ant-input{
+    color : black;
+}
+
+.search-record-container .record-table{
+    width: 80%;
+    line-height: 1em;
+}
+
+.bread-container .bread-crumb{
+    margin-left : 10px;
+    margin-top : 15px;
 }

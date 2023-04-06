@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import { Typography, Divider, Tag } from 'antd';
+import { Typography, Breadcrumb, Tag } from 'antd';
 
 interface DataType {
     key: React.Key;
@@ -29,7 +29,14 @@ export default function RecordRead(props: any) {
 
     function displayContent(){
         return (
-            <div>
+            <div className='record-read-container'>
+                <div className="bread-container">
+                    <Breadcrumb className="bread-crumb" items={[
+                        {title:<a href='/Home'>Home</a>},
+                        {title:<a href={'/test/RecordList'}>Search Record</a>},
+                        {title:'Read Record'}
+                        ]} />
+                </div>
                 {data && (
                 // 居中显示
                 <Typography style={{ textAlign: 'center' }}>

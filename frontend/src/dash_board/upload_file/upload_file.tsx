@@ -44,18 +44,21 @@ export default function AddFile(){
     if(test){
       //加载上传页面
       return (
-        <div className='upload_box'>
-          <Dragger {...props} >
+        <div className='upload-box-container'>
+          <div className='upload-box'>
+          <Dragger className='dragger' {...props} >
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>
             <p className="ant-upload-text">Click or drag file to this area to upload</p>
             <p className="ant-upload-hint">
-              Support for a single or bulk upload. Strictly prohibited from uploading company data or other
+              Support for a single or bulk upload.<br></br> Strictly prohibited from uploading company data or other
               banned files.
             </p>
           </Dragger>
          </div>
+        </div>
+        
       );
     }else{
       return <div></div>;
