@@ -7,6 +7,7 @@ import {
 import { Button, Divider } from 'antd';
 
 import './user_page.css';
+import FrameWork from '../dash_board/test/framework';
 
 export default function UserPage(){
 
@@ -19,10 +20,16 @@ export default function UserPage(){
         </Header>
     )
 
-    return (
+    const userContent = (
         <div className='user-page-container'>
             {userNaviHeader}
             <Divider className='user-navi-divider'/>
+        </div>
+    )
+
+    return (
+        <div>
+            <FrameWork displayContent={userContent}/>
         </div>
     )
 }

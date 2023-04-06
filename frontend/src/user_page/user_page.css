@@ -1,23 +1,30 @@
+:root{
+    --header-height : 60px;
+    --header-button-height : 28px;
+}
+
 
 .user-navi-header{
     width: 100%;
-    margin-top : 20px;
+    margin: 0px;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     flex-direction: row;
     padding-bottom: 0px;
     background-color: #f6f8fa;
+    height: var(--header-height);
 }
 
 .user-navi-header .ant-btn{
-    margin : 3px;
-    font-size: 16px;
+    margin: 0px 3px;
+    height: var(--header-button-height);
     display: flex;
     align-items: center;
     border:0px;
     border-radius: 10px;
     background-color: #f6f8fa;
+    font-size: 18px;
     box-shadow: black;
 }
 
@@ -29,14 +36,35 @@
 .user-navi-header .ant-btn:focus::after{
     content: '';
     position: absolute;
-    bottom: -3px;
+    bottom: -2px;
     left: 0;
     width: 100%;
-    height: 2px;
+    height: 3px;
     background-color: orange;
+    z-index: 999;
 }
 
 .user-page-container .user-navi-divider{
     margin:0px;
     width: 100vw;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    border-top-color: gray;
 }
+
+/* .content-container .left{
+    display: none;
+}
+
+.content-container .right{
+    display: none;
+}
+
+.content-container .divider-left{
+    display: none;
+}
+
+.content-container .divider-right{
+    display: none;
+} */
