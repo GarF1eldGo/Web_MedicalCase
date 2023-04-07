@@ -20,6 +20,8 @@ public class RawMedicalRecord {
     @Field(type = FieldType.Text)
     private String content;
 
+    @Field(type = FieldType.Text)
+    private  String tags;
 
     public void setId(String id) {this.id = id;}
     public String getId() {return id;}
@@ -32,4 +34,7 @@ public class RawMedicalRecord {
 
     public void setContent(String content) {this.content = content;}
     public String getContent() {return content;}
+
+    public void setTags(String tags) {this.tags = tags;}
+    public String getTags() {return tags;}
 }

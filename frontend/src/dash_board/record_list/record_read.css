@@ -7,3 +7,8 @@
 .record-read-container .bread-container .bread-crumb{
     margin-left : 10px;
 }
+
+.record-read-container .record-content-container{
+    margin: 10px 20px;
+    padding: 10px 20px;
+}

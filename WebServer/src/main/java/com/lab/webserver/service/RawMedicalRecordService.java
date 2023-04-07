@@ -85,10 +85,17 @@ public class RawMedicalRecordService {
             File dest = new File(path + "/" + filename);
             file.transferTo(dest);
             String content = Files.readString(dest.toPath()); // 读取文件内容
-            record.setId(String.valueOf(rawMedicalRecordRepository.count()+1)); // 设置自增id
+            // 文件开头#start到#end部分为tag信息
+            String tagList = content.substring(content.indexOf("#start")+6, content.indexOf("#end"));
+            // 逐行读取tag信息
+            String[] tags = tagList.split("\n");
+            for(int i = 0; i< tags.length; i++){
+                record.setTags(tags[i].replace("\r",""));
+            }
+//            record.setId(String.valueOf(rawMedicalRecordRepository.count()+1)); // 设置自增id
             record.setAuthor(author);
             record.setTitle(title);
-            record.setContent(content);
+            record.setContent(content.substring(content.indexOf("#end")+4)); // 从#end后开始为医案内容
             rawMedicalRecordRepository.save(record); // 保存到数据库
             str = mapper.writeValueAsString(record);
         } catch (Exception e){

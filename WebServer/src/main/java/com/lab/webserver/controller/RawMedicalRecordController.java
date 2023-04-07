@@ -70,7 +70,7 @@ public class RawMedicalRecordController {
 
     @GetMapping("/content/{content}")
     public List<RawMedicalRecord> findByContent(@PathVariable final String content){
-        System.out.println(getCurrentTime() + "content:" + content);
+        System.out.println(getCurrentTime() + " content:" + content);
         return service.findByContent(content);
     }
 

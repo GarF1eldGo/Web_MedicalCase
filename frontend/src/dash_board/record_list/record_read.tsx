@@ -1,16 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import { Typography, Breadcrumb, Tag } from 'antd';
 
+import './record_read.css'
+
 interface DataType {
     key: React.Key;
     title: string;
     abstract: string;
+    content: string;
     tags: string[];
+    author: string;
 }
 
 export default function RecordRead(props: any) {
     // 接收record_list数据
-    const [page_key, setPageKey] = useState(1);
     const [data, setData] = useState<DataType>();
     const { Title, Paragraph, Text } = Typography;
 
@@ -42,17 +45,19 @@ export default function RecordRead(props: any) {
                 <Typography style={{ textAlign: 'center' }}>
                     <Title>{data.title}</Title>
                     <Paragraph>
-                        <Text strong>摘要：</Text>
+                        <Text strong>作者:</Text>
+                        <span>{data.author}</span>
                     </Paragraph>
                     <Paragraph>
                         <Text strong>标签：</Text>
-
                         <Tag color="blue" key="tag">{data.tags}</Tag>
                     </Paragraph>
-                    <Paragraph>
-                        <Text strong>内容：</Text>
-                        {data.abstract}
-                    </Paragraph>
+                    <div className='record-content-container'>
+                        <Paragraph style={{whiteSpace:'pre-wrap', textAlign:'left'}}>
+                            <Text strong>内容：</Text>
+                            {data.content}
+                        </Paragraph>
+                    </div>
                 </Typography>
                 )}
             </div>

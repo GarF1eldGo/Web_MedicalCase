@@ -12,7 +12,9 @@ interface DataType {
     key: React.Key;
     title: string;
     abstract: string;
+    content: string;
     tags: string[];
+    author: string;
 }
 
 const {Search} = Input;
@@ -38,12 +40,6 @@ export default function RecordList(){
     ];
 
     const selectBefore = (
-        // <Select defaultValue={'全局搜索'} onChange={handleSelectChange}>
-        //   <Option value="searchAll">全局搜索</Option>
-        //   <Option value="author">医案作者</Option>
-        //   <Option value="tag">医案标签</Option>
-        //   <Option value="content">医案内容</Option>
-        // </Select>
         <Select defaultActiveFirstOption options={options} value={selectedValue} onChange={handleSelectChange} />
     );
 
@@ -75,47 +71,50 @@ export default function RecordList(){
     // TODO：有待完善
     // 页面加载时获取数据
     useEffect(() => {
-        const params = localStorage.getItem('params');
-        if(params){
-            // 删除前后的引号
-            let author = params.split('=')[1];
-            if(author && author.endsWith('"')){
-                author = author.substring(1, author.length - 1);
-            }
-            handleSearch(author);
-            localStorage.removeItem('params');
+        let value = localStorage.getItem('value')
+        let type = localStorage.getItem('type')
+        if(value && type){
+            value = value.replaceAll('"', '')
+            type = type.replaceAll('"', '')
+            setSelectedValue(type)
+            handleSearch(value, type);
+            localStorage.removeItem('value');
+            localStorage.removeItem('type');
         }
 
     }, []);
 
     function handleClickRow(record: DataType) {
         setClickRow(true);
-        localStorage.setItem('record', JSON.stringify(record));
-        history.push(`${match.path}/RecordDetail/${record.title}`);
+        localStorage.setItem('record', JSON.stringify(record))
+        history.push(`${match.path}/RecordDetail/id=${record.key}`);
     }
 
-    function handleSearch(value: string) {
+    function handleSearch(value: string, searchType = selectedValue) {
         // 根据搜索类型定义URL
         let url = 'http://127.0.0.1:8080/api/rawMedicalRecord';
         let newPathname = '';
         const encodedValue = encodeURIComponent(value);
-        // console.log('selected value:', selectedValue);
-        if(selectedValue === 'searchAll'){
+        if(searchType === 'searchAll'){
             url += '/searchAll/' + encodedValue;
             newPathname = `${match.path}/searchAll=${value}`;
-        }else if (selectedValue === 'author'){
+        }else if (searchType === 'author'){
             url += '/author/' + encodedValue;
             newPathname = `${match.path}/author=${value}`;
-        }else if (selectedValue === 'tag'){
+        }else if (searchType === 'tag'){
             url += '/tag/' + encodedValue;
             newPathname = `${match.path}/tag=${value}`;
-        }else if (selectedValue === 'content'){
+        }else if (searchType === 'content'){
             url += '/content/' + encodedValue;
             newPathname = `${match.path}/content=${value}`;
         }else{
             url += '/searchAll/' + encodedValue;
             newPathname = `${match.path}/searchAll=${value}`;
+            console.log('url type:', searchType)
         }
+
+        localStorage.setItem('value', JSON.stringify(value))
+        localStorage.setItem('type', JSON.stringify(selectedValue))
 
         axios.get(url)
         .then((response) =>  {
@@ -126,10 +125,12 @@ export default function RecordList(){
             for(let i = 0; i < result.length; i++){
                 console.log(result[i].title)
                 tempData.push({
-                    key: i,
-                    title: result[i].title,
-                    abstract: result[i].content,
-                    tags: result[i].author,
+                    key: result[i].id,
+                    title: result[i].title, 
+                    abstract: result[i].content.substring(0,20),
+                    content: result[i].content,
+                    tags: result[i].tags,
+                    author: result[i].author,
                 })
                 
             }
@@ -152,7 +153,7 @@ export default function RecordList(){
                 </div>
                 <div className="search-record-container">
                     <Space style={{width:'100%', justifyContent:'center'}}>
-                        <Search className="search-input" addonBefore={selectBefore} placeholder="请输入" onSearch ={handleSearch} allowClear />
+                        <Search className="search-input" addonBefore={selectBefore} placeholder="请输入" onSearch ={(value) => handleSearch(value, selectedValue)} allowClear />
                     </Space>
                     <Table className="record-table" columns={columns} dataSource={data} />
                 </div>
@@ -167,9 +168,6 @@ export default function RecordList(){
                 <Route path={`${match.path}/RecordDetail`}>
                     <RecordRead />
                 </Route>
-                {/* <Route path={`${match.path}/author`}>
-                    <SearchRecord />
-                </Route> */}
                 <Route path={`${match.path}`}>
                     <SearchRecord />
                 </Route>
