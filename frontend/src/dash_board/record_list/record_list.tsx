@@ -22,20 +22,29 @@ export default function RecordList(){
     const [clickRow, setClickRow] = useState<boolean>();
     const match = useRouteMatch();
     const history = useHistory();
-    const [selectedValue, setSelectedValue] = useState(null);
+    const [selectedValue, setSelectedValue] = useState('全局搜索');
 
     const handleSelectChange = (value:any) => {
         console.log(`selected ${value}`);
         setSelectedValue(value);
     };
 
+    
+    const options = [
+        { label: '全局搜索', value: 'searchAll' },
+        { label: '作者    ', value: 'author' },
+        { label: '标签    ', value: 'tag' },
+        { label: '医案内容', value: 'content' },
+    ];
+
     const selectBefore = (
-        <Select defaultValue="全局搜索" onChange={handleSelectChange}>
-          <Option value="searchAll">全局搜索</Option>
-          <Option value="author">作者</Option>
-          <Option value="tag">标签</Option>
-          <Option value="content">医案内容</Option>
-        </Select>
+        // <Select defaultValue={'全局搜索'} onChange={handleSelectChange}>
+        //   <Option value="searchAll">全局搜索</Option>
+        //   <Option value="author">医案作者</Option>
+        //   <Option value="tag">医案标签</Option>
+        //   <Option value="content">医案内容</Option>
+        // </Select>
+        <Select defaultActiveFirstOption options={options} value={selectedValue} onChange={handleSelectChange} />
     );
 
     // 列表信息

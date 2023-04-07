@@ -1,62 +1,103 @@
+.whole-page-container > * {
+    padding: 0;
+    margin: 0;
+    font-family: "Aguazyuan", Courier, monospace;
+}
 
 .whole-page-container{
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: lightpink;
+    background-color: rgb(186, 175, 221);
     margin: 0;
 }
 
-.whole-page-container .login-container{
+.login-wrapper{
     width: 70%;
     height: 80%;
-    margin: 10% 15%;
+    border-radius: 40px;
+    background-color: white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.whole-page-container .login-container{
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
 }
 
 .whole-page-container .login-container .left-container{
-    width: 50%;
+    flex: 1;
     position: relative;
-    z-index : 10;
+
+    background-image: url('../../attachment/img/login-bg.jpg');
+    background-size: cover;
+    background-position: 20% 0;
+    border-radius: 40px;
 }
 
 .whole-page-container .login-container .right-container{
-    width: 50%;
+    flex: 1;
     position: relative;
 }
 
 .background-img{
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: cover;
     border-radius: 40px;
+    display: none;
 }
 
 .login-slogan-container{
     position : absolute;
-    width: 80%;
-    margin-left : 10%;
-    margin-top : 10%;
-    z-index: 999;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    width: 60%;
+    z-index: 20;
     color: white;
+    padding: 20px;
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 15px;
+    border: 1px solid  rgba(255, 255, 255, 0.5);
 }
 
 .login-slogan-container .header-info{
-    font-size: 16px;
-    font-weight: bold;
-    margin: 10px;
-    color: aliceblue;
-    z-index: 1000;
+    width: 25%;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    padding: 10px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    z-index: 30;
+}
+
+.login-slogan-container .title-info{
+    margin: 15px 0px;
+}
+
+.login-slogan-container .sub-title-info span{
+    margin: 10px 0px;
+    font-weight: 100;
+    display: block;
 }
 
 /* ------------------left right divider-------------- */
@@ -67,16 +108,20 @@
     align-items: center;
     background-color: white;
     border-radius: 40px;
-    margin-left: -60px;
-    z-index:5;
 }
 
-.right-container .login-title{
+.right-container .right-form-container{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 80%;
+}
+
+.right-container .right-form-container h1{
     font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 10%;
-    margin-top: 10%;
-    color: #2f2f2f;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .right-container .login-form{
@@ -84,18 +129,56 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: -10%;
 }
 
 .right-container .login-form .login-form-item{
-    margin-bottom: 30px;
+    margin: 30px 0;
+    width: 100%;
 }
 .login-form-item-label{
+    display: inline-block;
     font-size: 20px;
     font-weight: bold;
     color: #2f2f2f;
 }
 .login-form-item-input{
-    width: 160%;
+    width: 100%;
     height: 40px;
+}
+
+.signup-tips{
+    text-align: center;
+    font-weight: 600;
+    margin: 10px, 0;
+}
+.signup-tips .sign-up-btn{
+    color: rgb(110, 87, 179);
+    cursor: pointer;
+}
+
+.login-button{
+    width: 100%;
+    margin: 20px 0;
+    background-color:  rgb(128, 106, 196);
+    font-size: 25px;
+    height: 50px;
+    cursor: pointer;
+    color:white;
+}
+
+.login-button:hover{
+    background-color: rgb(128, 106, 196);
+    color:white;
+}
+
+@media (max-width: 1024px){
+    .login-wrapper{
+        padding: 20px;
+    }
+    .login-wrapper .left-container{
+        display: none;
+    }
+    .login-wrapper .right-form-container{
+        padding: -20px;
+    }
 }
