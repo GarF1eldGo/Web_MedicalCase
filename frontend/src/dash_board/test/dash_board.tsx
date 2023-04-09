@@ -5,13 +5,11 @@ import { Link, Switch, Route, useRouteMatch, useHistory } from 'react-router-dom
 import { Header, Content } from 'antd/es/layout/layout';
 
 import './dash_board.css'
-import slash from '../../attachment/img/slash.png'
 import RecordList from '../record_list/record_list';
 import AddFile from '../upload_file/upload_file';
 import { DemoCirclePacking } from '../circle';
-import UserPage from '../../user_page/user_page';
 import FrameWork from './framework';
-import Test from './test';
+
 
 export default function TestDashboard(){
     const [showOptions, setShowOptions] = React.useState(false);
@@ -40,6 +38,32 @@ export default function TestDashboard(){
         setShowOptions(!showOptions);
     }
 
+    const displayContent = (
+        <div className='main-page-container'>
+            <div className='left'>
+                    <p>Navigator</p>
+            </div>
+            <div className='divider-left'></div>
+            <div className='center'>
+                <Switch>
+                    <Route path={`/Dashboard/RecordList`}>
+                        <RecordList />
+                    </Route>
+                    <Route path={`/Dashboard/Classification`}>
+                        <DemoCirclePacking />
+                    </Route>
+                    <Route path={`/Dashboard/AddFile`}>
+                        <AddFile />
+                    </Route>
+                </Switch>
+            </div>
+            <div className='divider-right'></div>
+            <div className='right'>
+                <p>Related Articles</p>
+            </div>
+        </div>
+    )
+
     // 更改输入框宽度
     function handleOnFocus(){
         setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
@@ -55,81 +79,7 @@ export default function TestDashboard(){
     }
 
     return (
-        <FrameWork displayContent={<Test />}></FrameWork>
+        <FrameWork displayContent={displayContent}></FrameWork>
     )
 
-    // return (
-    //     <div>
-    //         <Header className='header'>
-    //             <Space className='space-container' style={{width:'100%', height:'100%'}}>
-    //                 <GithubOutlined className="logo" style={{color:'white', fontSize:24, height:'100%'}}/>
-    //                 <div className='search-container'>
-    //                     <Input  className="search-input" 
-    //                         addonBefore={null} placeholder="Please input"
-    //                         value={inputValue} onChange={handleInputChange}  
-    //                         onPressEnter={handlePressUser}
-    //                         onClick={() => setShowIcon(false)}
-    //                         onBlur={handleOnBlur}
-    //                         onFocus={handleOnFocus}
-    //                     />
-    //                     <div className='suffix-container'>
-    //                         {showIcon && <img className='suffix-img' src={slash} alt="slash" />}
-    //                     </div>
-    //                 </div>
-                    
-    //                 <div className='nav' >
-    //                     {/* <Link to={match.path + '/RecordList'}>Document Search</Link>
-    //                     <Link to={match.path + '/Classification'}>Classification</Link>
-    //                     <Link to={match.path + '/AddFile'}>Import Documents</Link> */}
-    //                     <a onClick={() => {history.push('/test/RecordList')}}>Document Search</a>
-    //                     <a onClick={() => {history.push('/test/Classification')}}>Classification</a>
-    //                     <a onClick={() => {history.push('/test/AddFile')}}>Import Documents</a>
-    //                 </div>
-    //             </Space>
-
-    //             <div className='avatar-container' onClick={handleUserClick}>
-    //                 <Avatar className='user-avatar' icon={<AndroidOutlined/>} />
-    //             </div>
-
-    //             {showOptions && 
-    //                 <div className='user-options'>
-    //                     <p onClick={() => {history.push(match.path + '/UserPage')}}>Signed in as </p>
-    //                     <p onClick={() => {history.push('/UserPage')}} style={{fontWeight:'bold'}}>GarField</p>
-    //                     <Divider />
-    //                     <p>Profile</p>
-    //                     <p>Settings</p>
-    //                     <Divider />
-    //                     <p>Sign out</p>
-    //                 </div>}
-    //         </Header>
-
-    //         <Content className='content-container'>
-    //             <div className='left'>
-    //                 <p>Navigator</p>
-    //             </div>
-    //             <div className='divider-left'></div>
-    //             <div className='center'>
-    //                 <Switch>
-    //                     <Route path={`${match.path}/RecordList`}>
-    //                         <RecordList />
-    //                     </Route>
-    //                     <Route path={`${match.path}/Classification`}>
-    //                         <DemoCirclePacking />
-    //                     </Route>
-    //                     <Route path={`${match.path}/AddFile`}>
-    //                         <AddFile />
-    //                     </Route>
-    //                     <Route path={`${match.path}/UserPage`}>
-    //                         <UserPage />
-    //                     </Route>
-    //                 </Switch>
-    //             </div>
-    //             <div className='divider-right'></div>
-    //             <div className='right'>
-    //                 <p>Related Articles</p>
-    //             </div>
-    //         </Content>
-
-    //     </div>
-    // )
 }

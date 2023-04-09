@@ -16,8 +16,8 @@ root.render(
     <BrowserRouter>
       <Switch> 
         <Route exact path="/" component={App} />
-        <Route path="/Dashboard" component={Dashboard} />
-        <Route path="/test" component={TestDashboard} />
+        <Route path="/Dashboard" component={TestDashboard} />
+        <Route path="/test" component={Dashboard} />
         <Route path="/UserPage" component={UserPage} />
         <Route path="/Login" component={Login} />
         <Redirect from='/Home' to='/' />
