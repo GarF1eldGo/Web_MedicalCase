@@ -74,6 +74,12 @@ public class RawMedicalRecordController {
         return service.findByContent(content);
     }
 
+    @GetMapping("/tag/{tag}")
+    public List<RawMedicalRecord> findByTag(@PathVariable("tag") String tag){
+        System.out.println(getCurrentTime() + " tag:" + tag);
+        return service.findByTags(tag);
+    }
+
     @GetMapping("/searchAll/{searchAll}")
     public List<RawMedicalRecord> findBySearchAll(@PathVariable("searchAll") String searchAll){
         System.out.println(getCurrentTime() + "searchAll:" + searchAll);

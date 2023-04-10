@@ -10,11 +10,25 @@
     --suffix_margin_left : calc(-1*var(--suffix_width) - 4px);
 }
 
+.framework-container{
+    background-color: #f6f8fa;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.framework-container SideNav{
+    display: none;
+}
+
 .header{
     color: #002766;
     height: var(--header_height);
     width: 100%;
     padding : 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .space-container{
@@ -22,11 +36,18 @@
     flex-direction: row;
     justify-content: left;
     margin: 0px;
+    position : absolute;
+    top: 0;
+    left: 0;
 }
 
 /* space内部元素间距20px */
 .space-container > * {
     margin : 10px;
+}
+
+.space-container .side-trigger{
+    display: none;
 }
 
 /* 图标纵轴居中 */
@@ -155,8 +176,11 @@
     justify-content: center;
     width: 100%;
     height: var(--line_height);
-    position: relative;
+    position: absolute;
+    top: var(--header_height);
+    left: 0;
     background-color : #f6f8fa;
+    z-index: 10;
 }
 
 .divider-left{
@@ -196,3 +220,46 @@
     text-align: center;
     height: var(--line_height);
 }
+
+@media screen and (max-width: 1024px) {
+    .framework-container .header .logo{
+        display: none;
+    }
+    .framework-container .header .search-container{
+        display: none;
+    }
+    .framework-container .header .nav{
+        display: none;
+    }
+    .framework-container .header .side-trigger{
+        display: block;
+        background-color: transparent;
+        font-size: 20px;
+        color: white;
+        width: 20px;
+        z-index: 100;
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translate(0, -50%);
+    }
+    .framework-container .side-nav{
+        position: absolute;
+        display: block;
+        top: var(--header_height);
+        left: 0;
+        width: 100%;
+        height: var(--line_height);
+        background-color: #011428;
+        z-index: 20;
+    }
+    .framework-container .header .avatar-container{
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translate(0, -50%);
+    }
+}
+    

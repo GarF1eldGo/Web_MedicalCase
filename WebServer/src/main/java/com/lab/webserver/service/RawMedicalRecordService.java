@@ -12,8 +12,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RawMedicalRecordService {
@@ -54,19 +58,13 @@ public class RawMedicalRecordService {
         return rawMedicalRecordRepository.findAllByContentIn(content);
     }
 
+    public List<RawMedicalRecord> findByTags(String tags){
+        return rawMedicalRecordRepository.findByTags(tags);
+    }
+
     // 全局搜索
     public List<RawMedicalRecord> findBySearchAll(String content){
-        // 搜索作者
-        List<RawMedicalRecord> authorList = rawMedicalRecordRepository.findAllByAuthor(content);
-        // 搜索标题
-        List<RawMedicalRecord> titleList = rawMedicalRecordRepository.findAllByTitle(content);
-        // 搜索内容
-        List<RawMedicalRecord> contentList = rawMedicalRecordRepository.findAllByContentIn(content);
-        // 聚合结果
-        List<RawMedicalRecord> result = authorList.stream().collect(Collectors.toList());
-        result.addAll(titleList);
-        result.addAll(contentList);
-        return result;
+        return rawMedicalRecordRepository.findAllByTitleOrAuthorOrContentOrTags(content, content, content, content);
     }
 
     public String uploadFile(MultipartFile file){
@@ -75,7 +73,7 @@ public class RawMedicalRecordService {
 
         String str = "";
         String filename = file.getOriginalFilename();
-        String[] rec = filename.split("-");
+        String[] rec = filename.split("-", 2);
         String author = rec[0];
         String title = rec[1].substring(0, rec[1].lastIndexOf(".")); //忽略后缀
 
@@ -88,11 +86,9 @@ public class RawMedicalRecordService {
             // 文件开头#start到#end部分为tag信息
             String tagList = content.substring(content.indexOf("#start")+6, content.indexOf("#end"));
             // 逐行读取tag信息
-            String[] tags = tagList.split("\n");
-            for(int i = 0; i< tags.length; i++){
-                record.setTags(tags[i].replace("\r",""));
-            }
-//            record.setId(String.valueOf(rawMedicalRecordRepository.count()+1)); // 设置自增id
+            String[] tags = tagList.split("\r\n");
+            List<String> tag_list = List.of(tags);
+            record.setTags(tag_list);
             record.setAuthor(author);
             record.setTitle(title);
             record.setContent(content.substring(content.indexOf("#end")+4)); // 从#end后开始为医案内容

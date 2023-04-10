@@ -5,6 +5,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.util.List;
+
 @Document(indexName = "raw_medical_record", createIndex = true)
 public class RawMedicalRecord {
     @Id
@@ -21,7 +23,7 @@ public class RawMedicalRecord {
     private String content;
 
     @Field(type = FieldType.Text)
-    private  String tags;
+    private List<String> tags;
 
     public void setId(String id) {this.id = id;}
     public String getId() {return id;}
@@ -35,6 +37,6 @@ public class RawMedicalRecord {
     public void setContent(String content) {this.content = content;}
     public String getContent() {return content;}
 
-    public void setTags(String tags) {this.tags = tags;}
-    public String getTags() {return tags;}
+    public void setTags(List<String> tags) {this.tags = tags;}
+    public List<String> getTags() {return tags;}
 }

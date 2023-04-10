@@ -1,5 +1,4 @@
 
-
 /* 设置搜索框尺寸与距离*/
 .search-record-container{
     display: flex;
@@ -8,6 +7,8 @@
     margin-top: 20px;
     margin-bottom: 20px;
     flex-direction: column;
+    height: 50%;
+    background-color: #f6f8fa;
 }
 
 .search-record-container > * {
@@ -28,11 +29,26 @@
 }
 
 .bread-container .bread-crumb{
-    margin-left : 10px;
-    margin-top : 15px;
+    margin : 15px 10px 0px 10px;
 }
 
 .ant-select-selection-item{
     /* width:max-content; */
     margin: 0 10px;
+}
+
+@media screen and (max-width: 1024px) {
+    .search-record-container{
+        height: 100%;
+    }
+    .search-record-container .record-table{
+        width: 90%;
+        margin : 0 10px;
+    }
+    .search-record-container .record-table .ant-table-content{
+        font-size: 6px;
+    }
+    .search-record-container .record-table .ant-table-pagination{
+        font-size: 6px;
+    }
 }

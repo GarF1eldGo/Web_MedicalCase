@@ -9,4 +9,7 @@ public interface RawMedicalRecordRepository extends ElasticsearchRepository<RawM
     List<RawMedicalRecord> findAllByTitle(String title);
     List<RawMedicalRecord> findAllByAuthor(String author);
     List<RawMedicalRecord> findAllByContentIn(String content);
+    List<RawMedicalRecord> findByTags(String tags);
+
+    List<RawMedicalRecord> findAllByTitleOrAuthorOrContentOrTags(String title, String author, String content, String tags);
 }

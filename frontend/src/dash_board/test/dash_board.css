@@ -7,3 +7,21 @@
     height: 100%;
     background-color: #f6f8fa;
 }
+
+@media screen and (max-width: 1024px) {
+    .main-page-container .left{
+        display: none;
+    }
+    .main-page-container .divider-left{
+        display: none;
+    }
+    .main-page-container .divider-right{
+        display: none;
+    }
+    .main-page-container .right{
+        display: none;
+    }
+    .main-page-container .center{
+        font-size : 12px;
+    }
+}

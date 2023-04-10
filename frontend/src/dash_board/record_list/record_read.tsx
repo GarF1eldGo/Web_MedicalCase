@@ -8,13 +8,14 @@ interface DataType {
     title: string;
     abstract: string;
     content: string;
-    tags: string[];
+    tags: string;
     author: string;
 }
 
 export default function RecordRead(props: any) {
     // 接收record_list数据
     const [data, setData] = useState<DataType>();
+    const [tagList, setTagList] = useState<string[]>([]);
     const { Title, Paragraph, Text } = Typography;
 
     // 监听record变化
@@ -28,6 +29,11 @@ export default function RecordRead(props: any) {
     // 监听data变化
     useEffect(() => {
         console.log('record_detail:', data);
+        if (data) {
+            // 按照空格进行分割
+            const tags = data.tags.split(' ');
+            setTagList(tags);
+        }
     }, [data]);
 
     function displayContent(){
@@ -36,7 +42,7 @@ export default function RecordRead(props: any) {
                 <div className="bread-container">
                     <Breadcrumb className="bread-crumb" items={[
                         {title:<a href='/Home'>Home</a>},
-                        {title:<a href={'/test/RecordList'}>Search Record</a>},
+                        {title:<a href={'/Dashboard/RecordList'}>Search Record</a>},
                         {title:'Read Record'}
                         ]} />
                 </div>
@@ -50,7 +56,24 @@ export default function RecordRead(props: any) {
                     </Paragraph>
                     <Paragraph>
                         <Text strong>标签：</Text>
-                        <Tag color="blue" key="tag">{data.tags}</Tag>
+                        {tagList.map((tag) => {
+                            let color = 'blue';
+                            if (tag.indexOf('dia') === 0) {
+                                color = 'geekblue';
+                                tag = tag.substring(4);
+                            } else if (tag.indexOf('diease') === 0) {
+                                color = 'green';
+                                tag = tag.substring(7);
+                            } else if (tag.indexOf('cure') === 0) {
+                                color = 'volcano';
+                                tag = tag.substring(5);
+                            }
+                            return (
+                                <Tag color={color} key={tag}>
+                                    {tag}
+                                </Tag>
+                            );
+                        })}
                     </Paragraph>
                     <div className='record-content-container'>
                         <Paragraph style={{whiteSpace:'pre-wrap', textAlign:'left'}}>

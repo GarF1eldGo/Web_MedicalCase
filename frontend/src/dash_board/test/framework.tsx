@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { GithubOutlined, AndroidOutlined } from '@ant-design/icons';
+import { GithubOutlined, AndroidOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { Space, Input, Avatar, Divider, AutoComplete} from 'antd';
 import { Link, Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
 import { Header, Content } from 'antd/es/layout/layout';
@@ -8,6 +8,7 @@ import { InputRef } from 'antd/lib/input/Input';
 import './framework.css'
 import slash from '../../attachment/img/slash.png'
 import userAvatar from '../../attachment/img/avatar.jpg'
+import SideNav from '../side_nav/side_nav';
 
 
 export default function FrameWork(props:any){
@@ -15,6 +16,7 @@ export default function FrameWork(props:any){
     const [inputValue, setInputValue] = React.useState('');
     const [showIcon, setShowIcon] = React.useState(true);
     const [preWidth, setPreWidth] = React.useState(0);
+    const [displaySideNav, setDisplaySideNav] = React.useState(false);
     const match = useRouteMatch();
     const history = useHistory();
 
@@ -39,6 +41,7 @@ export default function FrameWork(props:any){
         console.log('user input : ', inputValue);
     }
 
+    // 显示用户选项
     function handleUserClick(){
         setShowOptions(!showOptions);
     }
@@ -50,6 +53,7 @@ export default function FrameWork(props:any){
         document.getElementsByClassName('search-input')[0].setAttribute('style', 'width: ' + newWidth + 'px');
     }
 
+    // 用户放弃输入
     function handleOnBlur(event: React.FocusEvent<HTMLInputElement>){
         if(event.target.value === ''){
             setShowIcon(true);
@@ -57,6 +61,7 @@ export default function FrameWork(props:any){
         }
     }
 
+    // 搜索框文本提示处理
     function handleOnSelect(value: string, option: any){
         console.log('onSelect', value, option);
         if(value === 'Document Search'){
@@ -68,9 +73,7 @@ export default function FrameWork(props:any){
         }
     }
 
-
     document.addEventListener('keydown', (event) => {
-        console.log('event: ', event);
         if(event.key === '/'){
             // 将光标移动到输入框中
             const input = document.getElementsByClassName('search-input')[0] as HTMLInputElement;
@@ -79,8 +82,15 @@ export default function FrameWork(props:any){
     })
 
     return (
-        <div>
+        <div className='framework-container'>
+            <SideNav className='side-nav' display={displaySideNav} ></SideNav>
             <Header className='header'>
+                {React.createElement(displaySideNav ? MenuFoldOutlined : MenuUnfoldOutlined , {
+                        className: 'side-trigger',
+                        onClick: () => {
+                            setDisplaySideNav(!displaySideNav);
+                        }
+                })}
                 <Space className='space-container' style={{width:'100%', height:'100%'}}>
                     <GithubOutlined className="logo" style={{color:'white', fontSize:24, height:'100%'}}/>
                     <div className='search-container'>   
