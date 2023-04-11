@@ -28,6 +28,10 @@
     line-height: 1em;
 }
 
+.search-record-container .record-table .ant-pagination-options{
+    display: none;
+}
+
 .bread-container .bread-crumb{
     margin : 15px 10px 0px 10px;
 }

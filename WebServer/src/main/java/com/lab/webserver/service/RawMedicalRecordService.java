@@ -98,7 +98,6 @@ public class RawMedicalRecordService {
             e.printStackTrace();
             return "error - receive file";
         }
-        System.out.println("upload success");
         return str;
     }
 

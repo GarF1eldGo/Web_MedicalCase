@@ -12,32 +12,6 @@ import FrameWork from './framework';
 
 
 export default function TestDashboard(){
-    const [showOptions, setShowOptions] = React.useState(false);
-    const [inputValue, setInputValue] = React.useState('');
-    const [showIcon, setShowIcon] = React.useState(true);
-    const [preWidth, setPreWidth] = React.useState(0);
-    const match = useRouteMatch();
-    const history = useHistory();
-
-    useEffect(() => {
-        // 初始化输入框宽度
-        setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
-        console.log('preWidth: ', preWidth);
-        console.log('match path : ', match.path);
-    }, []);
-
-    function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setInputValue(event.target.value);
-    }
-
-    function handlePressUser(event: React.KeyboardEvent<HTMLInputElement>){
-        console.log('user input : ', inputValue);
-    }
-
-    function handleUserClick(){
-        setShowOptions(!showOptions);
-    }
-
     const displayContent = (
         <div className='main-page-container'>
             <div className='left'>
@@ -63,20 +37,6 @@ export default function TestDashboard(){
             </div>
         </div>
     )
-
-    // 更改输入框宽度
-    function handleOnFocus(){
-        setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
-        const newWidth = preWidth + 80;
-        document.getElementsByClassName('search-input')[0].setAttribute('style', 'width: ' + newWidth + 'px');
-    }
-
-    function handleOnBlur(event: React.FocusEvent<HTMLInputElement>){
-        if(event.target.value === ''){
-            setShowIcon(true);
-            document.getElementsByClassName('search-input')[0].setAttribute('style', 'width: ' + preWidth + 'px');
-        }
-    }
 
     return (
         <FrameWork displayContent={displayContent}></FrameWork>

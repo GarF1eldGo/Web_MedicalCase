@@ -28,3 +28,13 @@
     box-shadow: 0 0 10px #ccc;
     padding: 10px;
 }
+
+@media screen and (max-width: 768px) {
+    .upload-box-container .upload-box {
+        height: 40%;
+    }
+
+    .upload-box-container .upload-box .dragger .ant-upload-hint{
+        margin: 10px 0;
+    }
+}

@@ -19,6 +19,7 @@ export default function FrameWork(props:any){
     const [displaySideNav, setDisplaySideNav] = React.useState(false);
     const match = useRouteMatch();
     const history = useHistory();
+    const divRef = useRef<HTMLDivElement>(null);
 
     const options = [
         { value: 'Document Search' },
@@ -32,6 +33,24 @@ export default function FrameWork(props:any){
         console.log('preWidth: ', preWidth);
         console.log('match path : ', match.path);
     }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const pageHeight = document.documentElement.scrollHeight;
+            if(divRef.current){
+                divRef.current.style.height = `${pageHeight}px`;
+            }
+          };
+      
+          window.addEventListener('scroll', handleResize);
+      
+          return () => {
+            if(divRef.current){
+                divRef.current.style.height = '100%';
+            }
+            window.removeEventListener('scroll', handleResize);
+          };
+        }, []);
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         // setInputValue(event.target.value);
@@ -82,7 +101,7 @@ export default function FrameWork(props:any){
     })
 
     return (
-        <div className='framework-container'>
+        <div className='framework-container' ref={divRef}>
             <SideNav className='side-nav' display={displaySideNav} ></SideNav>
             <Header className='header'>
                 {React.createElement(displaySideNav ? MenuFoldOutlined : MenuUnfoldOutlined , {

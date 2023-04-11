@@ -119,13 +119,14 @@ export default function RecordList(){
     useEffect(() => {
         let value = localStorage.getItem('value')
         let type = localStorage.getItem('type')
+        console.log('in record list : ', value, type)
         if(value && type){
+            localStorage.removeItem('value');
+            localStorage.removeItem('type');
             value = value.replaceAll('"', '')
             type = type.replaceAll('"', '')
             setSelectedValue(type)
             handleSearch(value, type);
-            localStorage.removeItem('value');
-            localStorage.removeItem('type');
         }
 
     }, []);

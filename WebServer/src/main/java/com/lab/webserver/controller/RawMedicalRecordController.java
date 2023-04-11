@@ -47,6 +47,7 @@ public class RawMedicalRecordController {
 
     @PostMapping("/upload")
     public String handlerFiledUpload(@RequestParam("upload_file") MultipartFile file){
+        System.out.println(getCurrentTime() +  " file:" + file.getOriginalFilename());
         return service.uploadFile(file);
     }
 

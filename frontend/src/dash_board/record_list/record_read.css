@@ -1,4 +1,8 @@
 
+.record-read-container{
+    background-color: #f6f8fa;
+}
+
 .record-read-container .bread-container{
     width : 100%;
     margin-top : 2-px;
@@ -11,4 +15,5 @@
 .record-read-container .record-content-container{
     margin: 10px 20px;
     padding: 10px 20px;
+    background-color: #f6f8fa;
 }

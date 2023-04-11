@@ -13,7 +13,7 @@
 .framework-container{
     background-color: #f6f8fa;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     position: relative;
 }
 

@@ -36,6 +36,18 @@ export default function RecordRead(props: any) {
         }
     }, [data]);
 
+    function featureDisplay(content: string) {
+        const reg = /初诊|辨证|治法|主方|二诊|三诊|四诊|五诊|六诊|七诊|八诊|九诊|按语/g;
+        const result = content.replace(reg, (match) => {
+            return `<br/><strong>${match}</strong>`
+        })
+
+
+        return (
+            <div dangerouslySetInnerHTML={{ __html: result }} />
+        )
+    }
+
     function displayContent(){
         return (
             <div className='record-read-container'>
@@ -78,7 +90,7 @@ export default function RecordRead(props: any) {
                     <div className='record-content-container'>
                         <Paragraph style={{whiteSpace:'pre-wrap', textAlign:'left'}}>
                             <Text strong>内容：</Text>
-                            {data.content}
+                            {featureDisplay(data.content)}
                         </Paragraph>
                     </div>
                 </Typography>
