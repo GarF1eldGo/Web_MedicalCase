@@ -94,9 +94,9 @@ export default function RecordList(){
                                 if (tag.indexOf('dia') === 0) {
                                     color = 'geekblue';
                                     tag = tag.substring(4);
-                                } else if (tag.indexOf('diease') === 0) {
+                                } else if (tag.indexOf('disease') === 0) {
                                     color = 'green';
-                                    tag = tag.substring(7);
+                                    tag = tag.substring(8);
                                 } else if (tag.indexOf('cure') === 0) {
                                     color = 'volcano';
                                     tag = tag.substring(5);
@@ -133,7 +133,19 @@ export default function RecordList(){
 
     function handleClickRow(record: DataType) {
         setClickRow(true);
-        localStorage.setItem('record', JSON.stringify(record))
+        // localStorage.setItem('record', JSON.stringify(record))
+        var date = new Date();
+        const curTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
+        
+        console.log('title: ', record.title);
+        // 更新浏览记录
+        axios.post('http://127.0.0.1:8080/api/user/updateHistory',{
+            "userID" : localStorage.getItem('userID'),
+            "recordID" : record.key,
+            "title" : record.title,
+            "description" : record.abstract,
+            "time" : curTime
+        })
         history.push(`${match.path}/RecordDetail/id=${record.key}`);
     }
 

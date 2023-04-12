@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Typography, Breadcrumb, Tag } from 'antd';
+import axios from 'axios';
 
 import './record_read.css'
 
@@ -20,21 +21,39 @@ export default function RecordRead(props: any) {
 
     // 监听record变化
     useEffect(() => {
-        const record = localStorage.getItem('record');
-        if (record) {
-            setData(JSON.parse(record));
-        }
-    }, []);
+        const url = window.location.href;
+        if(url.indexOf('id=') !== -1){
+            const id = url.substring(url.indexOf('id=') + 3);
+            axios.get(`http://127.0.0.1:8080/api/rawMedicalRecord/record/${id}`)
+            .then((res) => {
+                const result = res.data;
+                let tags = '';
+                for(let j = 0; j < result.tags.length; j++){
+                    if (result.tags[j] !== '' && j !== result.tags.length - 1) {
+                        tags += result.tags[j] + ' ' ;
+                    }
+                    else if (result.tags[j] !== '' && j === result.tags.length - 1) {
+                        tags += result.tags[j];
+                    }
+                }
+                
+                setTagList(tags.split(' '));
+                setData({
+                    key: res.data.id,
+                    title: res.data.title,
+                    abstract: res.data.content.substring(0, 100),
+                    content: res.data.content,
+                    tags: tags,
+                    author: res.data.author,
+                });
 
-    // 监听data变化
-    useEffect(() => {
-        console.log('record_detail:', data);
-        if (data) {
-            // 按照空格进行分割
-            const tags = data.tags.split(' ');
-            setTagList(tags);
-        }
-    }, [data]);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        } 
+    }, [window.location.href]);
+
 
     function featureDisplay(content: string) {
         const reg = /初诊|辨证|治法|主方|二诊|三诊|四诊|五诊|六诊|七诊|八诊|九诊|按语/g;
@@ -73,9 +92,9 @@ export default function RecordRead(props: any) {
                             if (tag.indexOf('dia') === 0) {
                                 color = 'geekblue';
                                 tag = tag.substring(4);
-                            } else if (tag.indexOf('diease') === 0) {
+                            } else if (tag.indexOf('disease') === 0) {
                                 color = 'green';
-                                tag = tag.substring(7);
+                                tag = tag.substring(8);
                             } else if (tag.indexOf('cure') === 0) {
                                 color = 'volcano';
                                 tag = tag.substring(5);

@@ -3,6 +3,8 @@ package com.lab.webserver.service;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import co.elastic.clients.elasticsearch._types.query_dsl.TermsQueryFieldBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab.webserver.entity.JsonDieaseClassification;
+import com.lab.webserver.entity.MedicalRecordNode;
 import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.respository.RawMedicalRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,6 +64,44 @@ public class RawMedicalRecordService {
     // 全局搜索
     public List<RawMedicalRecord> findBySearchAll(String content){
         return rawMedicalRecordRepository.findAllByTitleOrAuthorOrContentOrTags(content, content, content, content);
+    }
+
+    public JsonDieaseClassification findAllWithJSON(){
+        List<RawMedicalRecord>allRecord = rawMedicalRecordRepository.findAll();
+        JsonDieaseClassification root = new JsonDieaseClassification();
+        root.name = "root";
+        root.data = new HashMap<>();
+        for (RawMedicalRecord record : allRecord) {
+            List<String> tags = record.getTags();
+            // 找到带有disease的标签
+            for (String tag : tags) {
+                if (tag.contains("disease")){
+                    String[] disease = tag.split("-", 2);
+                    if(disease.length != 2) continue;
+
+                    String diseaseName = disease[1];
+                    // 如果已经有该疾病的分类
+                    MedicalRecordNode node = new MedicalRecordNode();
+                    if (root.data.containsKey(diseaseName)){
+                        node.id = record.getId();
+                        node.name = diseaseName;
+                        root.data.get(diseaseName).addChildren(node);
+                    }
+                    else{ // 不存在该疾病的分类
+                        MedicalRecordNode child = new MedicalRecordNode();
+                        child.id = record.getId();
+                        child.name = diseaseName;
+                        child.children = null;
+                        node.id = null;
+                        node.name = diseaseName;
+                        node.children = new ArrayList<>();
+                        node.addChildren(child);
+                        root.data.put(diseaseName, node);
+                    }
+                }
+            }
+        }
+        return root;
     }
 
     public String uploadFile(MultipartFile file){

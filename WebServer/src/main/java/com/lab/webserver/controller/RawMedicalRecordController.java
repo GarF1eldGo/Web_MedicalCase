@@ -2,6 +2,7 @@ package com.lab.webserver.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lab.webserver.entity.JsonDieaseClassification;
 import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.service.RawMedicalRecordService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,7 +53,7 @@ public class RawMedicalRecordController {
     }
 
     // 根据id查询医案
-    @GetMapping("/{id}")
+    @GetMapping("/record/{id}")
     public RawMedicalRecord findById(@PathVariable final String id){
         return service.findById(id);
     }
@@ -85,6 +86,12 @@ public class RawMedicalRecordController {
     public List<RawMedicalRecord> findBySearchAll(@PathVariable("searchAll") String searchAll){
         System.out.println(getCurrentTime() + "searchAll:" + searchAll);
         return service.findBySearchAll(searchAll);
+    }
+
+    @GetMapping("/classification/disease")
+    public JsonDieaseClassification getDiseaseClassification(){
+        System.out.println(getCurrentTime() + " getDiseaseClassification");
+        return service.findAllWithJSON();
     }
 
     @DeleteMapping("/{id}")

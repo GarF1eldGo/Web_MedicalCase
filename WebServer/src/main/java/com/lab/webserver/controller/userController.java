@@ -1,21 +1,23 @@
 package com.lab.webserver.controller;
 import com.lab.webserver.entity.User;
-import com.lab.webserver.respository.UserRepository;
+import com.lab.webserver.entity.UserHistory;
 import com.lab.webserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/user")
-public class helloController {
+public class userController {
 
     private final UserService service;
 
     @Autowired
-    public helloController(UserService service){
+    public userController(UserService service){
         this.service = service;
     }
 
@@ -43,5 +45,21 @@ public class helloController {
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable final String id){
         service.deleteById(id);
+    }
+    @ResponseBody
+    @PostMapping("/login")
+    public User login(@RequestBody final User user){
+        return service.login(user);
+    }
+
+    @ResponseBody
+    @PostMapping("/updateHistory")
+    public void updateHistory(@RequestBody final UserHistory history){
+        service.updateHistory(history);
+    }
+
+    @GetMapping("/viewHistory/{id}")
+    public List<User.History> findHistoryById(@PathVariable final String id){
+        return service.findHistoryById(id);
     }
 }

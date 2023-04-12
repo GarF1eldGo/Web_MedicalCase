@@ -9,10 +9,40 @@ export function DemoCirclePacking(){
     asyncFetch();
   }, []);
 
+  useEffect(() => {
+    console.log('data', data);
+  }, [data]);
+
+  // 解析json数据
+  function parseData(json){
+    const result = {
+      name: json.name,
+      children: [],
+      value: 0,
+    };
+
+    let cnt = 1;
+    for(const key in json.data){
+      const item = json.data[key];
+      const child = {
+        name: item.name,
+        children: []
+      };
+      if(item.children){
+        child.children=parseData(item).children;
+      }
+      result.children.push(child);
+    }
+    result.value = parseInt(Math.random()*(400+1),10);;
+    console.log('cnt = ', cnt, 'result = ', result)
+    return result;
+  }
+
   const asyncFetch = () => {
-    fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/flare.json')
+    // fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/flare.json')
+    fetch('http://127.0.0.1:8080/api/rawMedicalRecord/classification/disease')
       .then((response) => response.json())
-      .then((json) => setData(json))
+      .then((json) => setData(parseData(json)) )
       .catch((error) => {
         console.log('fetch data failed', error);
       });
