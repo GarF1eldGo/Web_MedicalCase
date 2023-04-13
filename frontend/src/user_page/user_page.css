@@ -85,6 +85,7 @@
 }
 
 .user-page-container .content-container .right-container{
+    position: relative;
     width: 80%;
     height: 100%;
     float: right;
@@ -106,7 +107,15 @@
     color : black;
 }
 
-@media screen and (max-width: 1000px){
+.user-page-container .content-container .right-container .overview-container{
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 80%;
+}
+
+
+@media screen and (max-width: 700px){
     .user-page-container .content-container .left-container{
         display: none;
     }

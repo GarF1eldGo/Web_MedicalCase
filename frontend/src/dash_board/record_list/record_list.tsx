@@ -5,6 +5,7 @@ import axios from 'axios';
 import {Switch, Route, useHistory, useRouteMatch} from 'react-router-dom';
 import RecordRead from "./record_read";
 import './record_list.css'
+import { local } from "d3";
 
 const {Option} = Select;
 
@@ -21,7 +22,6 @@ const {Search} = Input;
 
 export default function RecordList(){
     const [data, setData] = useState<DataType[]>([]);
-    const [clickRow, setClickRow] = useState<boolean>();
     const match = useRouteMatch();
     const history = useHistory();
     const [selectedValue, setSelectedValue] = useState('全局搜索');
@@ -34,7 +34,7 @@ export default function RecordList(){
     };
 
     const pagination = {
-        pageSize:5,
+        pageSize:10,
         total: dataCnt,
     };
 
@@ -114,7 +114,6 @@ export default function RecordList(){
         },
     ];
 
-    // TODO：有待完善
     // 页面加载时获取数据
     useEffect(() => {
         let value = localStorage.getItem('value')
@@ -128,25 +127,16 @@ export default function RecordList(){
             setSelectedValue(type)
             handleSearch(value, type);
         }
-
+        
+        return () => {
+            localStorage.removeItem('value');
+            localStorage.removeItem('type');
+            console.log('remove value and type');
+        }
     }, []);
 
     function handleClickRow(record: DataType) {
-        setClickRow(true);
-        // localStorage.setItem('record', JSON.stringify(record))
-        var date = new Date();
-        const curTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
-        
-        console.log('title: ', record.title);
-        // 更新浏览记录
-        axios.post('http://127.0.0.1:8080/api/user/updateHistory',{
-            "userID" : localStorage.getItem('userID'),
-            "recordID" : record.key,
-            "title" : record.title,
-            "description" : record.abstract,
-            "time" : curTime
-        })
-        history.push(`${match.path}/RecordDetail/id=${record.key}`);
+        history.push(`/Dashboard/RecordList/RecordDetail/id=${record.key}`);
     }
 
     function handleSearch(value: string, searchType = selectedValue) {
@@ -226,7 +216,8 @@ export default function RecordList(){
                 </div>
                 <div className="search-record-container">
                     <Space style={{width:'100%', justifyContent:'center'}}>
-                        <Search className="input-search" addonBefore={selectBefore} placeholder="请输入" onSearch ={(value) => handleSearch(value, selectedValue)} allowClear />
+                        <Search className="input-search" addonBefore={selectBefore} placeholder="请输入" 
+                            onSearch ={(value) => handleSearch(value, selectedValue)} allowClear />
                     </Space>
                     <Table className="record-table" columns={columns} dataSource={data} pagination={pagination}/>
                 </div>

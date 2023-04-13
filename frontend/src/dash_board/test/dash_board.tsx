@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { List } from 'antd';
-import { Link, Switch, Route, useRouteMatch, useHistory } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react'
+import { List, Timeline } from 'antd';
+import { Link, Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 import './dash_board.css'
@@ -16,53 +16,152 @@ interface ViewHistory{
     time: string;
     day: string;
     hour: string;
+    children: ViewHistory[];
 };
+
+interface TimelineItemProps{
+    id: string;
+    title: string;
+    description: string;
+}
 
 export default function TestDashboard(){
     const [viewHistory, setViewHistory] = useState<ViewHistory[]>([]);
+    const [responsiveNum, setResponsiveNum] = useState<number>(4);
+    const [pathChange, setPathChange] = useState<boolean>(false);
+    const [relatedSource, setRelatedSource] = useState<TimelineItemProps[]>([]);
+    const location = useLocation();
+    const leftRef = useRef<HTMLDivElement>(null);
+    const rightRef = useRef<HTMLDivElement>(null);
+    const relatedRef = useRef<HTMLDivElement>(null);
+    const history = useHistory();
     
+    useEffect(() => {
+        relatedSource.push({
+            id: '1',
+            title: 'title1',
+            description: '诉前段时间经医院检查患有乙肝，其表面'
+        });
+        relatedSource.push({
+            id: '2',
+            title: 'title2',
+            description: '生石膏20g,熟石膏15g,知母10g,黄连3g,桅子炭10g, 土茯苓30g, 连翘15g,天花粉15g,蹩香6'
+        });
+        relatedSource.push({
+            id: '3',
+            title: 'title3',
+            description: '生石膏30g,知母10g,黄苓10g,黄连4g, 土茯苓30g,桅子 炭10g'
+        });
+    }, []);
+
+    useEffect(() => {
+        // 如果路径为'Classification'或者'AddFile', 不显示右侧的timeline
+        console.log('pathname:', location.pathname);
+        if (location.pathname === '/Dashboard/Classification' || location.pathname === '/Dashboard/AddFile') {
+            if (relatedRef.current) {
+                relatedRef.current.style.display = 'none';
+            }
+        } else {
+            if (relatedRef.current) {
+                relatedRef.current.style.display = 'block';
+            }
+        }
+    }, [location.pathname]);
+
+    // 路径发生变化时，重新获取数据
     useEffect(() => {
         let url = 'http://127.0.0.1:8080/api/user/viewHistory/';
         url += localStorage.getItem('userID');
+        console.log('get history : ', url);
         
         axios.get(url)
         .then((res) => {
             // 解析history数据
             let history = res.data;
-            console.log(history);
+            let preDay = '';
             for(let i = 0; i < history.length; i++){
                 let day = history[i].time.split(' ')[0];
                 let hour = history[i].time.split(' ')[1];
-                viewHistory.push({
-                    id: history[i].id,
-                    title: history[i].title,
-                    description: history[i].description,
-                    time: history[i].time,
-                    day: day,
-                    hour: hour,
-                });
+                if (day !== preDay) {
+                    viewHistory.push({
+                        id: '',
+                        title: day,
+                        description: '',
+                        time: '',
+                        day: day,
+                        hour: '',
+                        children: [{
+                            id: history[i].id,
+                            title: history[i].title,
+                            description: history[i].description,
+                            time: history[i].time,
+                            day: '',
+                            hour: hour,
+                            children: []
+                        }]
+                    });
+                    preDay = day;
+                } else {
+                    viewHistory[viewHistory.length - 1].children.push({
+                        id: history[i].id,
+                        title: history[i].title,
+                        description: history[i].description,
+                        time: history[i].time,
+                        day: '',
+                        hour: hour,
+                        children: []
+                    });
+                }
             }
-            console.log('in view history:', viewHistory.length);
         })
         .catch((err) => {
             console.log(err);
         })
-    }, []);
+    }, [pathChange]);
 
     // 根据屏幕大小调整history列表显示数量
-    const [responsiveNum, setResponsiveNum] = useState<number>(5);
     useEffect(() => {
         let height = window.innerHeight;
         let width = window.innerWidth;
         if(height < 800){
             setResponsiveNum(4);
         }else if(height < 1000){
-            setResponsiveNum(10);
-        }else if(height < 1200){
-            setResponsiveNum(12);
+            setResponsiveNum(5);
         }else{
-            setResponsiveNum(14);
+            setResponsiveNum(6);
         }
+    }, []);
+
+    // 监听路径变化
+    useEffect(() => {
+      setPathChange(!pathChange);
+    }, [location]);
+
+    // 监听滚动条事件
+    useEffect(() => {
+        const handleResize = () => {
+            const headerHeight = document.getElementsByClassName('header')[0].clientHeight;
+            const pageHeight = document.documentElement.scrollHeight - headerHeight;
+            console.log('in handleResize', pageHeight);
+            if(leftRef.current){
+                leftRef.current.style.height = `${pageHeight}px`;
+            }
+            if(rightRef.current){
+                rightRef.current.style.height = `${pageHeight}px`;
+            }
+          };
+      
+          window.addEventListener('scroll', handleResize);
+      
+          return () => {
+            if(leftRef.current){
+                leftRef.current.style.height = '100%';
+            }
+            if(rightRef.current){
+                rightRef.current.style.height = '100%';
+            }
+            window.removeEventListener('scroll', handleResize);
+          };
     }, []);
 
     const displayContent = (
@@ -70,23 +169,33 @@ export default function TestDashboard(){
             <div className='left'>
                 <p>Read History</p>
                 <div className='history-list-container'>
-                    <List className='history-list' itemLayout="horizontal" dataSource={viewHistory.slice(0, responsiveNum)}
+                    <List className='history-list' itemLayout="horizontal" dataSource={viewHistory.slice(0, 2)}
                         renderItem={(item:any) => (
-                            <List.Item style={{ textAlign: 'center' }}>
-                                <div className='history-list-item'>
-                                    <span className='time'>{item.hour}</span>
-                                    <div className='right'>
-                                        <Link className='title' to={`/Dashboard/RecordList/RecordDetail/id=${item.id}`}>{item.title}</Link>
-                                        <p className='description'>{item.description}</p>
-                                    </div>
-                                    
-                                </div>
+                            <List.Item className='history-root-item' style={{ textAlign: 'center' }}>
+                                <h3 className='day-title-history'>{item.title}</h3>
+                                <List className='history-children-list' itemLayout="horizontal" 
+                                    dataSource={item.children.slice(0, responsiveNum)}
+                                    renderItem={(item:any) => {
+                                        return (
+                                            <div className='history-list-item'>
+                                                <span className='time'>{item.hour}</span>
+                                                <div className='right-history'>
+                                                    <Link className='title' 
+                                                        to={`/Dashboard/RecordList/RecordDetail/id=${item.id}`}>
+                                                            {item.title}
+                                                    </Link>
+                                                    <p className='description'>{item.description}</p>
+                                                </div> 
+                                            </div>
+                                        )
+                                    }} />
                             </List.Item>
                         )}
+                        bordered={false}
                     />
                 </div>
             </div>
-            <div className='divider-left'></div>
+            <div className='divider-left' ref={leftRef}></div>
             <div className='center'>
                 <Switch>
                     <Route path={`/Dashboard/RecordList`}>
@@ -98,11 +207,24 @@ export default function TestDashboard(){
                     <Route path={`/Dashboard/AddFile`}>
                         <AddFile />
                     </Route>
+                    <Route path={`/Dashboard`}>
+                        <RecordList />
+                    </Route>
                 </Switch>
             </div>
-            <div className='divider-right'></div>
-            <div className='right'>
-                <p>Related Articles</p>
+            <div className='divider-right' ref={rightRef}></div>
+            <div className='right' ref={relatedRef}>
+                <p className='right-title'>Related Articles</p>
+                <Timeline className='timeline-related' >
+                    {relatedSource.map((item) => {
+                        return (
+                            <Timeline.Item key={item.id} className='timeline-item'>
+                                <Link to={`/Dashboard/RecordList/RecordDetail/id=${item.id}`}>{item.title}</Link>
+                                <p>{item.description}</p>
+                            </Timeline.Item>
+                        )
+                    })}
+                </Timeline>
             </div>
         </div>
     )

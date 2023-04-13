@@ -183,29 +183,7 @@
     z-index: 10;
 }
 
-.divider-left{
-    content: "";
-    display: block;
-    width: 1px;
-    height: var(--line_height);
-    background-color: gray;
-    position: absolute;
-    left: 25%;
-    top:0
-}
-
-.divider-right{
-    content: "";
-    display: block;
-    width: 0.5px;
-    height: var(--line_height);
-    background-color: gray;
-    position: absolute;
-    left: 75%;
-    top:0
-}
-
-.left{
+/* .left{
     flex:1;
     text-align: center;
     height: var(--line_height);
@@ -219,7 +197,7 @@
     flex:1;
     text-align: center;
     height: var(--line_height);
-}
+} */
 
 @media screen and (max-width: 1024px) {
     .framework-container .header .logo{

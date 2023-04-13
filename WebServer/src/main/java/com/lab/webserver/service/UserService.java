@@ -72,6 +72,10 @@ public class UserService {
             h.setTitle(history.getTitle());
             h.setDescription(history.getDescription());
             user.addViewHistory(h);
+            // 只保留前50条记录
+            while(user.getViewHistory().size() > 50){
+                user.getViewHistory().remove(50);
+            }
             userRepository.save(user);
             System.out.println(getCurrentTime()+" " + user.getUserID() + " " + history.getRecordID() + " " + history.getTime());
         }

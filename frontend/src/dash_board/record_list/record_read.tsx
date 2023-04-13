@@ -3,6 +3,7 @@ import { Typography, Breadcrumb, Tag } from 'antd';
 import axios from 'axios';
 
 import './record_read.css'
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 interface DataType {
     key: React.Key;
@@ -18,12 +19,15 @@ export default function RecordRead(props: any) {
     const [data, setData] = useState<DataType>();
     const [tagList, setTagList] = useState<string[]>([]);
     const { Title, Paragraph, Text } = Typography;
+    const history = useHistory();
+    const match = useRouteMatch();
 
-    // 监听record变化
+    // 监听url变化
     useEffect(() => {
         const url = window.location.href;
         if(url.indexOf('id=') !== -1){
             const id = url.substring(url.indexOf('id=') + 3);
+            console.log('get record', url);
             axios.get(`http://127.0.0.1:8080/api/rawMedicalRecord/record/${id}`)
             .then((res) => {
                 const result = res.data;
@@ -46,7 +50,22 @@ export default function RecordRead(props: any) {
                     tags: tags,
                     author: res.data.author,
                 });
-
+                // 更新历史记录
+                
+                var date = new Date();
+                const curTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
+                axios.post('http://127.0.0.1:8080/api/user/updateHistory',{
+                    "userID" : localStorage.getItem('userID'),
+                    "recordID" : res.data.id,
+                    "title" : res.data.title,
+                    "description" : res.data.content.substring(0, 20),
+                    "time" : curTime
+                }).then((res) => {
+                    console.log('update history: ', res);
+                }
+                ).catch((err) => {
+                    console.log(err);
+                });
             })
             .catch((err) => {
                 console.log(err);

@@ -8,6 +8,32 @@
     background-color: #f6f8fa;
 }
 
+.main-page-container .left{
+    position: fixed;
+    top: var(--header_height);
+    left: 0;
+    width: 25%;
+    text-align: center;
+}
+
+.main-page-container .center{
+    position: absolute;
+    left: 25%;
+    top: 0;
+    width: 50%;
+}
+
+.main-page-container .right{
+    position: fixed;
+    top: var(--header_height);
+    right: 0;
+    width: 25%;
+    text-align: left;
+} 
+
+.main-page-container .right .right-title{
+    margin-left: 20px;
+}
 
 .main-page-container .left .history-list-container{
     position: relative;
@@ -23,28 +49,47 @@
     transform: translate(-50%, 0);
     width: 80%;
 }
+.main-page-container .left .history-list-container .history-list .history-children-list{
+    width: 100%;
+}
+
+.main-page-container .left .history-list-container .history-list .history-root-item{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: none !important;
+}
+
+
+.main-page-container .left .history-list-container .history-list .history-root-item .day-title-history{
+    width: 100%;
+    text-align: left;
+    font-weight: bold;
+}
 
 .main-page-container .left .history-list-container .history-list .history-list-item{
     width: 100%;
-    text-align: center;
     display: flex;
     flex-direction: row;
+    border-bottom: #e8e9eb 1px solid;
 }
 
 .main-page-container .left .history-list-container .history-list .history-list-item .time{
-    width: 30%;
+    width: 20%;
     height: auto;
     font-size: 12px;
     color: #999;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
 }
 
-.main-page-container .left .history-list-container .history-list .history-list-item .right{
-    width: 70%;
+.main-page-container .left .history-list-container .history-list .history-list-item .right-history{
+    width: 80%;
     height: auto;
     text-align: left;
+    margin: 5px 0px;
 }
 
 .main-page-container .left .history-list-container .history-list .history-list-item .title{
@@ -57,8 +102,41 @@
     line-height: 1em;
 }
 
+.main-page-container .divider-left{
+    content: "";
+    display: block;
+    width: 1px;
+    height: 100%;
+    background-color: gray;
+    position: absolute;
+    left: 25%;
+    top:0;
+    z-index : 20;
+}
 
-@media screen and (max-width: 1024px) {
+.main-page-container .divider-right{
+    content: "";
+    display: none;
+    width: 0.5px;
+    height: 100%;
+    background-color: gray;
+    position: absolute;
+    right: 25%;
+    top:0;
+}
+
+.main-page-container .timeline-related{
+    margin: 40px 0;
+}
+
+.main-page-container .timeline-related .timeline-item{
+    text-align: left;
+    margin: 0 20px;
+    padding: 0;
+}
+
+
+@media screen and (max-width: 700px) {
     .main-page-container .left{
         display: none;
     }
@@ -73,5 +151,7 @@
     }
     .main-page-container .center{
         font-size : 12px;
+        width: 100%;
+        left : 0;
     }
 }

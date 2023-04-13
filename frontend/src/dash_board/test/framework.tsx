@@ -34,6 +34,7 @@ export default function FrameWork(props:any){
         console.log('match path : ', match.path);
     }, []);
 
+    // 监听滚动条事件
     useEffect(() => {
         const handleResize = () => {
             const pageHeight = document.documentElement.scrollHeight;

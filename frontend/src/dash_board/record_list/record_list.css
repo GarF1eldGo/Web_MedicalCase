@@ -26,6 +26,17 @@
 .search-record-container .record-table{
     width: 80%;
     line-height: 1em;
+    position: relative;
+}
+
+.search-record-container .record-table .ant-table-pagination{
+    position: absolute;
+    bottom: -100px;
+    left: -10%;
+    width: 100%;
+    margin: 0 10 0 10;
+    padding-bottom: 10px;
+    width: 110%;
 }
 
 .search-record-container .record-table .ant-pagination-options{
@@ -37,22 +48,17 @@
 }
 
 .ant-select-selection-item{
-    /* width:max-content; */
     margin: 0 10px;
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 700) {
     .search-record-container{
+        position : relative;
         height: 100%;
+        width: 90%;
+        margin: 0 20px;
     }
     .search-record-container .record-table{
-        width: 90%;
-        margin : 0 10px;
-    }
-    .search-record-container .record-table .ant-table-content{
-        font-size: 6px;
-    }
-    .search-record-container .record-table .ant-table-pagination{
-        font-size: 6px;
+        width: 100%;
     }
 }
