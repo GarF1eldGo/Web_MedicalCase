@@ -114,6 +114,19 @@
     width: 80%;
 }
 
+.user-page-container .content-container .right-container .overview-container .overview-hint{
+    margin:0 30px 20px 50px;
+}
+
+/* heatmap颜色设置 */
+.user-page-container .content-container .right-container .overview-container .react-calendar-heatmap .color-scale-1 { fill: #d6e685; }
+.user-page-container .content-container .right-container .overview-container .react-calendar-heatmap .color-scale-2 { fill: #8cc665; }
+.user-page-container .content-container .right-container .overview-container .react-calendar-heatmap .color-scale-3 { fill: #44a340; }
+.user-page-container .content-container .right-container .overview-container .react-calendar-heatmap .color-scale-4 { fill: #1e6823; }
+
+.user-page-container .content-container .right-container .overview-container .react-calendar-heatmap{
+    margin: 0 30px 0 30px;
+}
 
 @media screen and (max-width: 700px){
     .user-page-container .content-container .left-container{
