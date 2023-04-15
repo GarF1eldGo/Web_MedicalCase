@@ -195,7 +195,7 @@ export default function TestDashboard(){
                     />
                 </div>
             </div>
-            <div className='divider-left' ref={leftRef}></div>
+            <div className='divider-left' ref={leftRef} ></div>
             <div className='center'>
                 <Switch>
                     <Route path={`/Dashboard/RecordList`}>

@@ -4,7 +4,7 @@ import {
     ReadOutlined,
     HistoryOutlined,
     HeartOutlined } from '@ant-design/icons';
-import { Avatar, Button, Divider } from 'antd';
+import { Avatar, Button, Divider, Slider } from 'antd';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
@@ -13,10 +13,14 @@ import './user_page.css';
 import FrameWork from '../dash_board/test/framework';
 import userAvatar from '../attachment/img/avatar.jpg';
 import ReactTooltip from 'react-tooltip';
+import tinycolor from 'tinycolor2';
 
 export default function UserPage(){
     const history = useHistory();
     const now = new Date();
+    const [backgroundColor, setBackgroundColor] = React.useState(localStorage.getItem('record-setting-background-color') || '#fff');
+    const [fontColor, setFontColor] = React.useState(localStorage.getItem('record-setting-font-color') || '#000');
+    const [curColor, setCurColor] = React.useState(100);
 
     const data = [
       { date: new Date(now.getFullYear(), now.getMonth(), 1), count: 5 },
@@ -50,7 +54,6 @@ export default function UserPage(){
         if(!value || !value.date){
             return null;
         }
-        console.log('value: ', value);
         return {
             'data-tip': `${value.date.toDateString()}: ${value.count} article`,
             style: {
@@ -60,9 +63,24 @@ export default function UserPage(){
         }
     }
 
+    function handleFontAfterChange(value: any){
+        localStorage.setItem('record-setting-font-size', value);
+    }
+
+    function handleLightAfterChange(value: any){
+        const color = tinycolor.mix('#FFFFFF', '#000000', 100-value).toHexString();
+        const fontColor = tinycolor(color).isDark() ? '#fff' : '#000';
+        console.log('color',color);
+        setBackgroundColor(color);
+        setFontColor(fontColor);
+        localStorage.setItem('record-setting-background-color', color);
+        localStorage.setItem('record-setting-font-color', fontColor);
+        setCurColor(value);
+    }
+
     function Overview(){
         return (
-            <div className='overview-container'>
+            <div className='overview-container' >
                 <h3 className='overview-hint'>Read 152 books in the past year</h3>
                 <CalendarHeatmap
                     startDate={new Date(now.getFullYear(), now.getMonth() - 11, 1)}
@@ -73,13 +91,43 @@ export default function UserPage(){
                     classForValue={(value) => colorScale(value)}
                     onClick={(value) => console.log('click value: ', value)}
                 />
+                <div className='record-setting-container'>
+                    <div className='record-setting-item'>
+                        <h3 className='record-setting-title'>修改医案字体大小</h3>
+                        <Slider className='record-setting-slider' 
+                            defaultValue={16} min={10} max={20} step={1}
+                            onAfterChange={handleFontAfterChange}
+                            railStyle={{backgroundColor: '#8cc665'}}
+                            trackStyle={{backgroundColor: '#8cc665'}}
+                            marks={{
+                                10: '10',
+                                16: '16',
+                                20: '20',
+                            }}
+                        />
+                    </div>
+                    <div className='record-setting-item'>
+                        <h3 className='record-setting-title'>修改屏幕亮度</h3>
+                        <Slider className='record-setting-slider' 
+                            defaultValue={curColor} min={10} max={100} step={10}
+                            onAfterChange={handleLightAfterChange}
+                            railStyle={{backgroundColor: '#8cc665'}}
+                            trackStyle={{backgroundColor: '#8cc665'}}
+                            marks={{
+                                10: '10',
+                                50: '50',
+                                100: '100',
+                            }}
+                        />
+                    </div>
+                </div>
                 <ReactTooltip />
             </div>
         )
     }
 
     const userContent = (
-        <div className="user-page-container">
+        <div className="user-page-container" style={{backgroundColor:backgroundColor , color:fontColor}}>
             <Header className='user-navi-header'>
                 <Button onClick={() => {history.push('/UserPage/Overview')}} icon={<ReadOutlined />}>Overview</Button>
                 <Button onClick={() => {history.push('/UserPage/Favoriate')}} icon={<HeartOutlined />}>Favoriate</Button>
@@ -89,7 +137,7 @@ export default function UserPage(){
             <Content className='content-container'>
                 <div className='left-container'>
                     <Avatar className='user-avatar' src={userAvatar} />
-                    <h1 className='username'>马保国中医</h1>
+                    <h1 className='username'>马保国</h1>
                     <div className='edit-container'>
                         <Button>Edit profile</Button>
                     </div>

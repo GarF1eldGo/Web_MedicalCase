@@ -65,7 +65,7 @@
 /* --------------------- content header 分界线 ----------------- */
 
 .user-page-container .content-container{
-    margin: 3px 0 0 0;
+    margin: 1px 0 0 0;
     position: absolute;
     width: 100%;
     height: var(--content-height);
@@ -127,6 +127,42 @@
 .user-page-container .content-container .right-container .overview-container .react-calendar-heatmap{
     margin: 0 30px 0 30px;
 }
+
+
+/* --------------- record setting ------------- */
+.overview-container .record-setting-container{
+    position: relative;
+    width: 100%;
+    margin: 0 60px;
+    display: flex;
+    flex-direction: column;
+}
+.overview-container .record-setting-container .record-setting-item{
+    position: relative;
+    width: 80%;
+    height: auto;
+    border-radius: 25px;
+    border-color: #d0d7de;
+    border-width: 1px;
+    border-style: solid;
+    margin: 10px 0;
+}
+.overview-container .record-setting-container .record-setting-item .record-setting-title{
+    width: 100%;
+    text-align: left;
+    margin-left: 20px;
+}
+.overview-container .record-setting-container .record-setting-item .record-setting-slider{
+    width: 90%;
+    margin-left: 20px;
+}
+.overview-container .record-setting-container .record-setting-item .record-setting-slider .ant-slider-dot{
+    border-color: #d6e685;
+}
+.ant-slider-handle::after{
+    box-shadow: 0 0 0 4px #d6e685 !important;
+}
+
 
 @media screen and (max-width: 700px){
     .user-page-container .content-container .left-container{

@@ -18,6 +18,7 @@ export default function RecordRead(props: any) {
     // 接收record_list数据
     const [data, setData] = useState<DataType>();
     const [tagList, setTagList] = useState<string[]>([]);
+    const [fontSize, setFontSize] = useState<number>(parseInt(localStorage.getItem('fontSize') || '16'));
     const { Title, Paragraph, Text } = Typography;
     const history = useHistory();
     const match = useRouteMatch();
@@ -73,6 +74,10 @@ export default function RecordRead(props: any) {
         } 
     }, [window.location.href]);
 
+    useEffect(() => {
+        const newFontSize = parseInt(localStorage.getItem('fontSize') || '16');
+        setFontSize(newFontSize);
+    }, [localStorage.getItem('fontSize')]);
 
     function featureDisplay(content: string) {
         const reg = /初诊|辨证|治法|主方|二诊|三诊|四诊|五诊|六诊|七诊|八诊|九诊|按语/g;
@@ -126,7 +131,7 @@ export default function RecordRead(props: any) {
                         })}
                     </Paragraph>
                     <div className='record-content-container'>
-                        <Paragraph style={{whiteSpace:'pre-wrap', textAlign:'left'}}>
+                        <Paragraph style={{whiteSpace:'pre-wrap', textAlign:'left', fontSize:`${fontSize}px`}}>
                             <Text strong>内容：</Text>
                             {featureDisplay(data.content)}
                         </Paragraph>

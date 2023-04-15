@@ -33,7 +33,7 @@
     color: #210060;
 }
 
-.navigator button{
+.navigator .home-button{
     margin: 30px;
     width: 150px;
     height: 40px;
@@ -45,14 +45,14 @@
     color: #210060;
 
     border-radius: 25px;
-    border-color: #210060;
+    border-color: black;
 }
 
 .background_image{
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     z-index: 1;
 }

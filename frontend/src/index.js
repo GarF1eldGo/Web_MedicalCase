@@ -14,15 +14,6 @@ import MyCirclePacking from './dash_board/classification/diease_classification';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-    <BrowserRouter>
-      <Switch> 
-        <Route exact path="/" component={App} />
-        <Route path="/Dashboard" component={TestDashboard} />
-        <Route path="/test" component={MyCirclePacking} />
-        <Route path="/UserPage" component={UserPage} />
-        <Route path="/Login" component={Login} />
-        <Redirect from='/Home' to='/' />
-      </Switch>
-    </BrowserRouter>
+    <App />
 );
 

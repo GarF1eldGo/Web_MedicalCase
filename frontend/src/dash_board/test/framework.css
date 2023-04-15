@@ -46,7 +46,7 @@
     margin : 10px;
 }
 
-.space-container .side-trigger{
+.framework-container .side-trigger{
     display: none;
 }
 
@@ -199,7 +199,7 @@
     height: var(--line_height);
 } */
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 800px) {
     .framework-container .header .logo{
         display: none;
     }
@@ -208,6 +208,9 @@
     }
     .framework-container .header .nav{
         display: none;
+    }
+    .framework-container .header .fold-icon{
+        display: block;
     }
     .framework-container .header .side-trigger{
         display: block;
