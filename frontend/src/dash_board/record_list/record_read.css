@@ -17,3 +17,24 @@
     padding: 10px 20px;
     /* background-color: #f6f8fa; */
 }
+
+.record-read-container .record-title-container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.record-read-container .favorite-span{
+    height: 30px;
+    width: 30px;
+
+}
+.record-read-container .favorite-span .favorite-icon{
+    margin-left: 40px;
+    position: absolute;
+    top: 60%;
+    transform: translateY(-50%);
+}

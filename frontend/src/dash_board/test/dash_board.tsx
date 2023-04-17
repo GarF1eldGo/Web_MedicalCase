@@ -64,26 +64,43 @@ export default function TestDashboard(){
         } else {
             if (relatedRef.current && window.innerWidth > 700) {
                 relatedRef.current.style.display = 'block';
+            }else if(relatedRef.current && window.innerWidth <= 700){
+                relatedRef.current.style.display = 'none';
             }
         }
     }, [location.pathname]);
+
+    useEffect(() => {
+        if(window.innerWidth <= 700){
+            if(relatedRef.current){
+                relatedRef.current.style.display = 'none';
+            }
+        }else if(window.innerWidth > 700){
+            if(relatedRef.current){
+                relatedRef.current.style.display = 'block';
+            }
+        }
+    }, [window.innerWidth]);
 
     // 路径发生变化时，重新获取数据
     useEffect(() => {
         let url = 'http://127.0.0.1:8080/api/user/viewHistory/';
         url += localStorage.getItem('userID');
         console.log('get history : ', url);
-        
+
+        setViewHistory([]);
         axios.get(url)
         .then((res) => {
             // 解析history数据
             let history = res.data;
             let preDay = '';
+            let tmpList = [];
+            //清空viewHistory
             for(let i = 0; i < history.length; i++){
                 let day = history[i].time.split(' ')[0];
                 let hour = history[i].time.split(' ')[1];
                 if (day !== preDay) {
-                    viewHistory.push({
+                    tmpList.push({
                         id: '',
                         title: day,
                         description: '',
@@ -102,7 +119,7 @@ export default function TestDashboard(){
                     });
                     preDay = day;
                 } else {
-                    viewHistory[viewHistory.length - 1].children.push({
+                    tmpList[tmpList.length - 1].children.push({
                         id: history[i].id,
                         title: history[i].title,
                         description: history[i].description,
@@ -113,6 +130,7 @@ export default function TestDashboard(){
                     });
                 }
             }
+            setViewHistory(tmpList);
         })
         .catch((err) => {
             console.log(err);

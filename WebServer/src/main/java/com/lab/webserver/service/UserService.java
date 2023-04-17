@@ -64,6 +64,7 @@ public class UserService {
                     break;
                 }
             }
+
             if(index != -1){
                 user.getViewHistory().remove(index.intValue());
             }
@@ -73,7 +74,7 @@ public class UserService {
             h.setTitle(history.getTitle());
             h.setDescription(history.getDescription());
             user.addViewHistory(h);
-            // 只保留前50条记录
+//             只保留前50条记录
 //            while(user.getViewHistory().size() > 50){
 //                user.getViewHistory().remove(50);
 //            }
@@ -94,6 +95,35 @@ public class UserService {
         User user = userRepository.findById(id).orElse(null);
         if(user != null){
             return user.getHistoryCount();
+        }
+        return null;
+    }
+
+    public void updateFavorite(UserHistory favorite){
+        User user = userRepository.findById(favorite.getUserID()).orElse(null);
+        if(user != null) {
+            user.addFavorite(favorite);
+            userRepository.save(user);
+        }
+    }
+
+    public boolean findFavoriteByIdAndRecord(String id, String recordID){
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null){
+            List<User.Favorite> favorites = user.getFavoriteHashMap();
+            for(User.Favorite favorite : favorites){
+                if(favorite.getId().equals(recordID)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public List<User.Favorite> findFavoriteById(String id){
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null){
+            return user.getFavoriteHashMap();
         }
         return null;
     }

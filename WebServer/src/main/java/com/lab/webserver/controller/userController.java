@@ -68,4 +68,19 @@ public class userController {
     public List<HistoryCount> findHistoryCountById(@PathVariable final String id){
         return service.findHistoryCountById(id);
     }
+
+    @PostMapping("/updateFavorite")
+    public void updateFavorite(@RequestBody final UserHistory favorite){
+        service.updateFavorite(favorite);
+    }
+
+    @GetMapping("/favorite/{id}/{recordID}")
+    public boolean findFavoriteById(@PathVariable final String id, @PathVariable final String recordID){
+        return service.findFavoriteByIdAndRecord(id, recordID);
+    }
+
+    @GetMapping("/getFavorite/{id}")
+    public List<User.Favorite> findFavoriteById(@PathVariable final String id){
+        return service.findFavoriteById(id);
+    }
 }

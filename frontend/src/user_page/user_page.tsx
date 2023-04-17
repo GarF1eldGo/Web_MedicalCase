@@ -15,6 +15,8 @@ import userAvatar from '../attachment/img/avatar.jpg';
 import ReactTooltip from 'react-tooltip';
 import tinycolor from 'tinycolor2';
 import axios from 'axios';
+import UserHistory from './user_history';
+import UserFavorite from './user_favorite';
 
 interface historyCount{
     date: Date;
@@ -195,7 +197,7 @@ export default function UserPage(){
         <div className="user-page-container" style={{backgroundColor:backgroundColor , color:fontColor}}>
             <Header className='user-navi-header' style={{backgroundColor:backgroundColor, color:fontColor}}>
                 <Button onClick={() => {history.push('/UserPage/Overview')}} icon={<ReadOutlined />}>Overview</Button>
-                <Button onClick={() => {history.push('/UserPage/Favoriate')}} icon={<HeartOutlined />}>Favoriate</Button>
+                <Button onClick={() => {history.push('/UserPage/Favorite')}} icon={<HeartOutlined />}>Favoriate</Button>
                 <Button onClick={() => {history.push('/UserPage/History')}} icon={<HistoryOutlined />}>History</Button>
             </Header>
             <Divider className='user-navi-divider'/>
@@ -212,12 +214,12 @@ export default function UserPage(){
                         <Route path={`/UserPage/Overview`}>
                             <Overview />
                         </Route>
-                        {/* <Route path={`/UserPage/History`}>
-                            <Overview />
+                        <Route path={`/UserPage/History`}>
+                            <UserHistory />
                         </Route>
                         <Route path={`/UserPage/Favorite`}>
-                            <Overview />
-                        </Route> */}
+                            <UserFavorite />
+                        </Route> 
                         <Route path={`/UserPage`}>
                             <Overview />
                         </Route>

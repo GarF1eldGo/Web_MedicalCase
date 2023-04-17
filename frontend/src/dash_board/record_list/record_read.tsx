@@ -1,9 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Typography, Breadcrumb, Tag } from 'antd';
+import { HeartOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 import './record_read.css'
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import BlackHeart from '../../attachment/img/blackHeart.png';
+import RedHeart from '../../attachment/img/redHeart.png';
 
 interface DataType {
     key: React.Key;
@@ -22,6 +25,7 @@ export default function RecordRead(props: any) {
     const { Title, Paragraph, Text } = Typography;
     const history = useHistory();
     const match = useRouteMatch();
+    const heartRef = useRef<HTMLDivElement>(null);
 
     // 监听url变化
     useEffect(() => {
@@ -52,7 +56,6 @@ export default function RecordRead(props: any) {
                     author: res.data.author,
                 });
                 // 更新历史记录
-                
                 var date = new Date();
                 const curTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
                 axios.post('http://127.0.0.1:8080/api/user/updateHistory',{
@@ -67,6 +70,24 @@ export default function RecordRead(props: any) {
                 ).catch((err) => {
                     console.log(err);
                 });
+
+                // 获取收藏状态
+                const favoriteURL = 'http://127.0.0.1:8080/api/user/favorite/' + localStorage.getItem('userID') + '/' + res.data.id;
+                axios.get(favoriteURL)
+                .then((res) => {
+                    if(res.data){
+                        if(heartRef.current){
+                            heartRef.current.children[0].setAttribute('src', RedHeart);
+                        }
+                    }else{
+                        if(heartRef.current){
+                            heartRef.current.children[0].setAttribute('src', BlackHeart);
+                        }
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+
             })
             .catch((err) => {
                 console.log(err);
@@ -93,6 +114,34 @@ export default function RecordRead(props: any) {
         )
     }
 
+    function handleFavoriteClick() {
+        // 修改图标样式
+        if (heartRef.current) {
+            if(heartRef.current.children[0].getAttribute('src') === BlackHeart){
+                heartRef.current.children[0].setAttribute('src', RedHeart);
+            } else {
+                heartRef.current.children[0].setAttribute('src', BlackHeart);
+            }
+        }
+        // 向后端发送请求
+        var date = new Date();
+        const curTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
+        const url = 'http://127.0.0.1:8080/api/user/updateFavorite';
+        if(data !== undefined) {
+            axios.post(url,{
+                'userID': localStorage.getItem('userID'),
+                'recordID': data.key,
+                'title': data.title,
+                'description': data.abstract,
+                'time': curTime
+            }).then((res) => {
+                console.log('update favorite: ', res);
+            }).catch((err) => {
+                console.log(err);
+            });
+        }
+        
+    }
     function displayContent(){
         return (
             <div className='record-read-container'>
@@ -106,7 +155,15 @@ export default function RecordRead(props: any) {
                 {data && (
                 // 居中显示
                 <Typography style={{ textAlign: 'center' }}>
-                    <Title>{data.title}</Title>
+                    <div className='record-title-container'>
+                        <Title className='record-title'>{data.title}</Title>
+                        <span className='favorite-span' ref={heartRef} >
+                                <img className='favorite-icon' src={BlackHeart}
+                                    style={{ width: '30px', height: '30px' }}
+                                    alt='favorite' onClick={handleFavoriteClick} />
+                        </span>
+                    </div>
+                    
                     <Paragraph>
                         <Text strong>作者:</Text>
                         <span>{data.author}</span>

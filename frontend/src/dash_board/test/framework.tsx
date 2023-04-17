@@ -9,6 +9,7 @@ import './framework.css'
 import slash from '../../attachment/img/slash.png'
 import userAvatar from '../../attachment/img/avatar.jpg'
 import SideNav from '../side_nav/side_nav';
+import { local } from 'd3';
 
 
 export default function FrameWork(props:any){
@@ -108,6 +109,15 @@ export default function FrameWork(props:any){
         }
     }
 
+    function signOutHandle(){
+        // 删除localStorage
+        localStorage.removeItem('username');
+        localStorage.removeItem('password');
+        localStorage.removeItem('userID');
+        // 进入home page
+        history.push('/');
+    }
+
     document.addEventListener('keydown', (event) => {
         if(event.key === '/'){
             // 将光标移动到输入框中
@@ -171,7 +181,7 @@ export default function FrameWork(props:any){
                         <p>Profile</p>
                         <p>Settings</p>
                         <Divider />
-                        <p>Sign out</p>
+                        <p onClick={signOutHandle}>Sign out</p>
                     </div>}
             </Header>
 
