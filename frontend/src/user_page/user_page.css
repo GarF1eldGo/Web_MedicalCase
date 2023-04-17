@@ -9,7 +9,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .user-navi-header{
@@ -20,7 +20,7 @@
     justify-content: center;
     flex-direction: row;
     padding-bottom: 0px;
-    background-color: white;
+    /* background-color: white; */
     height: var(--header-height);
 }
 
@@ -31,14 +31,14 @@
     align-items: center;
     border:0px;
     border-radius: 10px;
-    background-color: white;
+    /* background-color: white; */
     font-size: 18px;
     box-shadow: black;
 }
 
 .user-navi-header .ant-btn:hover{
     color:black;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .user-navi-header .ant-btn:focus::after{
@@ -72,14 +72,14 @@
     top: var(--header-height);
     left: 0;
     display: flex;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .user-page-container .content-container .left-container{
     width: 20%;
     height: 100%;
     float: left;
-    background-color: white;
+    /* background-color: white; */
     flex: 1;
     margin : 0 0 0 100px;
 }
@@ -89,7 +89,7 @@
     width: 80%;
     height: 100%;
     float: right;
-    background-color: white;
+    /* background-color: white; */
     flex: 4;
 }
 
@@ -130,6 +130,21 @@
 
 
 /* --------------- record setting ------------- */
+.overview-container .setting-title {
+    margin: 0;
+    width: 100%;
+    margin: 0 30px;
+}
+.overview-container .setting-title .setting-title-text{
+    margin: 0 0 0 30px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+}
+.overview-container .setting-title .setting-divider{
+    margin: 0 30px 10px 30px;
+}
+
 .overview-container .record-setting-container{
     position: relative;
     width: 100%;
@@ -170,5 +185,30 @@
     }
     .user-page-container .content-container .right-container{
         width: 100%;
+    }
+    .user-page-container .content-container .right-container .overview-container{
+        width: 100%;
+    }
+
+    .user-page-container .content-container .right-container .overview-container .react-calendar-heatmap{
+        width: 100%;
+        margin: 0;  
+    }
+
+    .user-page-container .content-container .right-container .overview-container .record-setting-container{
+        width: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-page-container .content-container .right-container .overview-container .record-setting-item .record-setting-title{
+        margin: 6px;
+        font-size: 12px;
+    }
+
+    .user-page-container .content-container .right-container .overview-container .record-setting-slider{
+        width: 90%;
     }
 }

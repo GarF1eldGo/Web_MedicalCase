@@ -119,6 +119,26 @@ public class User {
         System.out.println("addViewHistory: " + this.viewHistory.size());
     }
 
+    public List<HistoryCount> getHistoryCount(){
+        List<HistoryCount> historyCountList = new ArrayList<>();
+        // 统计每天的历史记录
+        Map<String, Integer> historyCountMap = new HashMap<>();
+        for(History history : viewHistory){
+            String time = history.getTime();
+            String date = time.split(" ")[0];
+            if(historyCountMap.containsKey(date)){
+                historyCountMap.put(date, historyCountMap.get(date) + 1);
+            }else{
+                historyCountMap.put(date, 1);
+            }
+        }
+        // 将统计结果转换为List
+        for(Map.Entry<String, Integer> entry : historyCountMap.entrySet()){
+            historyCountList.add(new HistoryCount(entry.getKey(), entry.getValue()));
+        }
+        return historyCountList;
+    }
+
     public void setIsAdmin(boolean isAdmin) {this.isAdmin = isAdmin;}
     public boolean getIsAdmin() {return isAdmin;}
 }

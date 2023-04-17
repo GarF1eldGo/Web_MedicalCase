@@ -62,7 +62,7 @@ export default function TestDashboard(){
                 relatedRef.current.style.display = 'none';
             }
         } else {
-            if (relatedRef.current) {
+            if (relatedRef.current && window.innerWidth > 700) {
                 relatedRef.current.style.display = 'block';
             }
         }

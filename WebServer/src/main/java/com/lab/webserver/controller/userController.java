@@ -1,4 +1,5 @@
 package com.lab.webserver.controller;
+import com.lab.webserver.entity.HistoryCount;
 import com.lab.webserver.entity.User;
 import com.lab.webserver.entity.UserHistory;
 import com.lab.webserver.service.UserService;
@@ -61,5 +62,10 @@ public class userController {
     @GetMapping("/viewHistory/{id}")
     public List<User.History> findHistoryById(@PathVariable final String id){
         return service.findHistoryById(id);
+    }
+
+    @GetMapping("/historyCount/{id}")
+    public List<HistoryCount> findHistoryCountById(@PathVariable final String id){
+        return service.findHistoryCountById(id);
     }
 }

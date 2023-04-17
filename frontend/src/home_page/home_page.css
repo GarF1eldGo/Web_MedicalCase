@@ -10,7 +10,7 @@
     left: 3vw;
     width: 90vw;
     height: 20vh;
-    z-index: 2;
+    z-index: 30;
 }
 
 .navigator li{

@@ -19,6 +19,8 @@
     "react-router": "^6.9.0",
     "react-router-dom": "^5.3.4",
     "react-scripts": "^2.1.8",
+    "react-tooltip": "^4.2.21",
+    "tinycolor2": "^1.6.0",
     "typescript": "^5.0.2",
     "web-vitals": "^2.1.4"
   },
@@ -49,6 +51,7 @@
   "proxy": "http://127.0.0.1:8080",
   "devDependencies": {
     "@types/react-router-dom": "^5.3.3",
+    "@types/tinycolor2": "^1.4.3",
     "http-proxy-middleware": "^2.0.6"
   }
 }

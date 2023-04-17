@@ -18,7 +18,7 @@ export default function RecordRead(props: any) {
     // 接收record_list数据
     const [data, setData] = useState<DataType>();
     const [tagList, setTagList] = useState<string[]>([]);
-    const [fontSize, setFontSize] = useState<number>(parseInt(localStorage.getItem('fontSize') || '16'));
+    const [fontSize, setFontSize] = useState<number>(parseInt(localStorage.getItem('record-setting-font-size') || '16'));
     const { Title, Paragraph, Text } = Typography;
     const history = useHistory();
     const match = useRouteMatch();
@@ -75,9 +75,11 @@ export default function RecordRead(props: any) {
     }, [window.location.href]);
 
     useEffect(() => {
-        const newFontSize = parseInt(localStorage.getItem('fontSize') || '16');
+        console.log('fontSize', fontSize);
+        console.log('localStorage.getItem(record-setting-font-color)', localStorage.getItem('record-setting-font-size'));
+        const newFontSize = parseInt(localStorage.getItem('record-setting-font-size') || '16');
         setFontSize(newFontSize);
-    }, [localStorage.getItem('fontSize')]);
+    }, [localStorage.getItem('record-setting-font-color')]);
 
     function featureDisplay(content: string) {
         const reg = /初诊|辨证|治法|主方|二诊|三诊|四诊|五诊|六诊|七诊|八诊|九诊|按语/g;

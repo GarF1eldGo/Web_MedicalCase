@@ -1,5 +1,6 @@
 package com.lab.webserver.service;
 
+import com.lab.webserver.entity.HistoryCount;
 import com.lab.webserver.entity.User;
 import com.lab.webserver.entity.UserHistory;
 import com.lab.webserver.respository.UserRepository;
@@ -73,9 +74,9 @@ public class UserService {
             h.setDescription(history.getDescription());
             user.addViewHistory(h);
             // 只保留前50条记录
-            while(user.getViewHistory().size() > 50){
-                user.getViewHistory().remove(50);
-            }
+//            while(user.getViewHistory().size() > 50){
+//                user.getViewHistory().remove(50);
+//            }
             userRepository.save(user);
             System.out.println(getCurrentTime()+" " + user.getUserID() + " " + history.getRecordID() + " " + history.getTime());
         }
@@ -85,6 +86,14 @@ public class UserService {
         User user = userRepository.findById(id).orElse(null);
         if(user != null){
             return user.getViewHistory();
+        }
+        return null;
+    }
+
+    public List<HistoryCount> findHistoryCountById(String id){
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null){
+            return user.getHistoryCount();
         }
         return null;
     }

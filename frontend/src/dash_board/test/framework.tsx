@@ -17,6 +17,9 @@ export default function FrameWork(props:any){
     const [showIcon, setShowIcon] = React.useState(true);
     const [preWidth, setPreWidth] = React.useState(0);
     const [displaySideNav, setDisplaySideNav] = React.useState(false);
+    const [backgroundColor, setBackgroundColor] = React.useState(localStorage.getItem('record-setting-background-color') || '#fff');
+    const [fontColor, setFontColor] = React.useState(localStorage.getItem('record-setting-font-color') || '#000');
+
     const match = useRouteMatch();
     const history = useHistory();
     const divRef = useRef<HTMLDivElement>(null);
@@ -34,7 +37,7 @@ export default function FrameWork(props:any){
         console.log('match path : ', match.path);
     }, []);
 
-    // 监听滚动条事件
+    // 监听滚动条事件&&storage变化
     useEffect(() => {
         const handleResize = () => {
             const pageHeight = document.documentElement.scrollHeight;
@@ -44,14 +47,26 @@ export default function FrameWork(props:any){
           };
       
           window.addEventListener('scroll', handleResize);
+          window.addEventListener('storage', handleStorageChange);
       
           return () => {
             if(divRef.current){
                 divRef.current.style.height = '100%';
             }
             window.removeEventListener('scroll', handleResize);
+            window.removeEventListener('storage', handleStorageChange);
           };
-        }, []);
+    }, []);
+
+
+    function handleStorageChange(event: StorageEvent) {
+        console.log('event', event);
+        if (event.key === 'record-setting-background-color'){
+            setBackgroundColor(event.newValue || '#fff');
+        }else if (event.key === 'record-setting-font-color'){
+            setFontColor(event.newValue || '#000');
+        }
+    }
 
     function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
         // setInputValue(event.target.value);
@@ -160,7 +175,7 @@ export default function FrameWork(props:any){
                     </div>}
             </Header>
 
-            <Content className='content-container'>
+            <Content className='content-container' style={{backgroundColor:backgroundColor, color:fontColor}}>
                 {props.displayContent}
             </Content>
 
