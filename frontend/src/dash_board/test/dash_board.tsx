@@ -30,6 +30,7 @@ export default function TestDashboard(){
     const [responsiveNum, setResponsiveNum] = useState<number>(4);
     const [pathChange, setPathChange] = useState<boolean>(false);
     const [relatedSource, setRelatedSource] = useState<TimelineItemProps[]>([]);
+    const [hideState, setHideState] = useState<string>('block');
     const location = useLocation();
     const leftRef = useRef<HTMLDivElement>(null);
     const rightRef = useRef<HTMLDivElement>(null);
@@ -60,12 +61,15 @@ export default function TestDashboard(){
         if (location.pathname === '/Dashboard/Classification' || location.pathname === '/Dashboard/AddFile') {
             if (relatedRef.current) {
                 relatedRef.current.style.display = 'none';
+                setHideState('none');
             }
         } else {
             if (relatedRef.current && window.innerWidth > 700) {
                 relatedRef.current.style.display = 'block';
+                setHideState('block');
             }else if(relatedRef.current && window.innerWidth <= 700){
                 relatedRef.current.style.display = 'none';
+                setHideState('none');
             }
         }
     }, [location.pathname]);
@@ -231,7 +235,7 @@ export default function TestDashboard(){
                 </Switch>
             </div>
             <div className='divider-right' ref={rightRef}></div>
-            <div className='right' ref={relatedRef}>
+            <div className='right' ref={relatedRef} style={{display:hideState}}>
                 <p className='right-title'>Related Articles</p>
                 <Timeline className='timeline-related' >
                     {relatedSource.map((item) => {
