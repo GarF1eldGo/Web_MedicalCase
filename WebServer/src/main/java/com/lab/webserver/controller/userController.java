@@ -1,7 +1,9 @@
 package com.lab.webserver.controller;
 import com.lab.webserver.entity.HistoryCount;
+import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.entity.User;
 import com.lab.webserver.entity.UserHistory;
+import com.lab.webserver.service.RawMedicalRecordService;
 import com.lab.webserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ import java.util.List;
 public class userController {
 
     private final UserService service;
+    private final RawMedicalRecordService recordService;
 
     @Autowired
-    public userController(UserService service){
+    public userController(UserService service, RawMedicalRecordService recordService){
         this.service = service;
+        this.recordService = recordService;
     }
 
     @ResponseBody
@@ -53,6 +57,11 @@ public class userController {
         return service.login(user);
     }
 
+    @PostMapping("/logout")
+    public void logout(@RequestBody final User user){
+        service.logout();
+    }
+
     @ResponseBody
     @PostMapping("/updateHistory")
     public void updateHistory(@RequestBody final UserHistory history){
@@ -82,5 +91,13 @@ public class userController {
     @GetMapping("/getFavorite/{id}")
     public List<User.Favorite> findFavoriteById(@PathVariable final String id){
         return service.findFavoriteById(id);
+    }
+
+    @GetMapping("/recommendation/{recordID}")
+    public List<RawMedicalRecord> findRecommendation(@PathVariable final String recordID){
+        String content = recordService.findById(recordID).getContent();
+        String filename = recordService.findById(recordID).getTitle();
+        List<String>filenameList = service.findRecommendation(filename, content);
+        return recordService.findByTitleList(filenameList);
     }
 }

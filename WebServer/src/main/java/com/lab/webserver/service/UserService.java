@@ -1,20 +1,27 @@
 package com.lab.webserver.service;
 
+import co.elastic.clients.elasticsearch._types.Script;
 import com.lab.webserver.entity.HistoryCount;
+import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.entity.User;
 import com.lab.webserver.entity.UserHistory;
 import com.lab.webserver.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ScriptService scriptService;
 
     private String getCurrentTime(){
         // 获取当前时间
@@ -25,7 +32,10 @@ public class UserService {
     }
 
     @Autowired
-    public UserService(UserRepository userRepository){this.userRepository = userRepository;}
+    public UserService(UserRepository userRepository, ScriptService scriptService){
+        this.userRepository = userRepository;
+        this.scriptService = scriptService;
+    }
 
     public long count(){
         return userRepository.count();
@@ -47,7 +57,16 @@ public class UserService {
 
     public User login(User user){
         User ret =  userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+        // 用户登录就启动推荐算法脚本
+        String scriptPath = "src/main/resources/static/Recommendation.py";
+        String currentPath = Path.of("").toAbsolutePath().toString();
+        scriptService.startScript(scriptPath);
         return ret;
+    }
+
+    public void logout(){
+        // 用户登出就停止推荐算法脚本
+        scriptService.stopScript();
     }
 
     public void updateHistory(UserHistory history){
@@ -107,6 +126,12 @@ public class UserService {
         }
     }
 
+    /**
+     * 根据用户ID和医案ID判断是否已经收藏
+     * @param id
+     * @param recordID
+     * @return boolean
+     */
     public boolean findFavoriteByIdAndRecord(String id, String recordID){
         User user = userRepository.findById(id).orElse(null);
         if(user != null){
@@ -120,10 +145,38 @@ public class UserService {
         return false;
     }
 
+    /**
+     * 通过用户ID获取用户收藏夹
+     * @param id
+     * @return 用户收藏夹List
+     */
     public List<User.Favorite> findFavoriteById(String id){
         User user = userRepository.findById(id).orElse(null);
         if(user != null){
             return user.getFavoriteHashMap();
+        }
+        return null;
+    }
+
+
+    /**
+     * 通过推荐算法获取推荐结果
+     * @param filename
+     * @param content
+     * @return 医案名称
+     */
+    public List<String> findRecommendation(String filename, String content){
+        // 输入
+        String newContent = content.replaceAll("\r\n", ""); // 删除换行符
+        newContent = newContent.replaceAll("\t", "");
+        newContent += "\n";
+        String input = filename + "###" + newContent;
+        scriptService.sendInputToScript(input);
+        // 获取输出,数据结构按照';'分隔
+        String output = scriptService.readScriptOutput();
+        if(output != null){
+            String[] result = output.split(";");
+            return new ArrayList<>(List.of(result));
         }
         return null;
     }

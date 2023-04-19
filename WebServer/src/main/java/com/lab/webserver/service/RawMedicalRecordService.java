@@ -138,4 +138,8 @@ public class RawMedicalRecordService {
         return str;
     }
 
+
+    public List<RawMedicalRecord> findByTitleList(List<String> titleList){
+        return rawMedicalRecordRepository.findAllByTitleIn(titleList);
+    }
 }

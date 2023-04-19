@@ -94,6 +94,7 @@ public class RawMedicalRecordController {
         return service.findAllWithJSON();
     }
 
+
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable final String id){
         service.deleteById(id);
