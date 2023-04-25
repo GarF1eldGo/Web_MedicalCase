@@ -9,6 +9,10 @@ import com.lab.webserver.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -166,14 +170,37 @@ public class UserService {
      * @return 医案名称
      */
     public List<String> findRecommendation(String filename, String content){
+//        读取csv文件
+        String csvFilePath = "src/main/resources/static/ConsineHashMap.csv";
+
+        FileReader fileReader = null;
+        try {
+            fileReader = new FileReader(csvFilePath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = "";
+        String everyLine = "";
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                everyLine += line + "\n";
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(everyLine);
+
         // 输入
         String newContent = content.replaceAll("\r\n", ""); // 删除换行符
         newContent = newContent.replaceAll("\t", "");
-        newContent += "\n";
         String input = filename + "###" + newContent;
+        input += "\n";
         scriptService.sendInputToScript(input);
+
         // 获取输出,数据结构按照';'分隔
         String output = scriptService.readScriptOutput();
+//        scriptService.stopScript();
         if(output != null){
             String[] result = output.split(";");
             return new ArrayList<>(List.of(result));

@@ -46,14 +46,16 @@ export default function UserPage(){
         .then((res) => {
             const data = res.data;
             const historyCount: historyCount[] = [];
+            let tmpCount = 0;
             for(let i = 0; i < data.length; i++){
                 historyCount.push({
                     date: new Date(data[i].date),
                     count: data[i].count,
                 });
-                setTotalCount(totalCount + data[i].count);
+                tmpCount += data[i].count;
             }
             setData(historyCount);
+            setTotalCount(tmpCount);
         })
         .catch((err) => {
             console.log(err);

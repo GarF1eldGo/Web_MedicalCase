@@ -31,6 +31,7 @@ export default function TestDashboard(){
     const [pathChange, setPathChange] = useState<boolean>(false);
     const [relatedSource, setRelatedSource] = useState<TimelineItemProps[]>([]);
     const [hideState, setHideState] = useState<string>('block');
+    const [loading, setLoading] = useState<boolean>(false);
     const location = useLocation();
     const leftRef = useRef<HTMLDivElement>(null);
     const rightRef = useRef<HTMLDivElement>(null);
@@ -38,22 +39,47 @@ export default function TestDashboard(){
     const history = useHistory();
     
     useEffect(() => {
-        relatedSource.push({
-            id: '1',
-            title: 'title1',
-            description: '诉前段时间经医院检查患有乙肝，其表面'
-        });
-        relatedSource.push({
-            id: '2',
-            title: 'title2',
-            description: '生石膏20g,熟石膏15g,知母10g,黄连3g,桅子炭10g, 土茯苓30g, 连翘15g,天花粉15g,蹩香6'
-        });
-        relatedSource.push({
-            id: '3',
-            title: 'title3',
-            description: '生石膏30g,知母10g,黄苓10g,黄连4g, 土茯苓30g,桅子 炭10g'
-        });
-    }, []);
+        // relatedSource.push({
+        //     id: '1',
+        //     title: 'title1',
+        //     description: '诉前段时间经医院检查患有乙肝，其表面'
+        // });
+        // relatedSource.push({
+        //     id: '2',
+        //     title: 'title2',
+        //     description: '生石膏20g,熟石膏15g,知母10g,黄连3g,桅子炭10g, 土茯苓30g, 连翘15g,天花粉15g,蹩香6'
+        // });
+        // relatedSource.push({
+        //     id: '3',
+        //     title: 'title3',
+        //     description: '生石膏30g,知母10g,黄苓10g,黄连4g, 土茯苓30g,桅子 炭10g'
+        // });
+
+        const recordID = location.pathname.split('=')[1];
+        if(location.pathname === `/Dashboard/RecordList/RecordDetail/id=${recordID}`){
+            setLoading(true);
+            setRelatedSource([]);
+            let url = 'http://127.0.0.1:8080/api/user/recommendation/' + recordID;
+            axios.get(url)
+            .then((res) => {
+                let data = res.data;
+                let tmpList: TimelineItemProps[] = [];
+                for(let i = 0; i < data.length; i++){
+                    tmpList.push({
+                        id: data[i].id,
+                        title: data[i].title,
+                        description: data[i].content.substring(0, 20)
+                    });
+                }
+                setRelatedSource(tmpList);
+                setLoading(false);
+            }
+            )
+            .catch((err) => {
+                console.log(err);
+            });
+        }
+    }, [location.pathname]);
 
     useEffect(() => {
         // 如果路径为'Classification'或者'AddFile', 不显示右侧的timeline
@@ -237,16 +263,18 @@ export default function TestDashboard(){
             <div className='divider-right' ref={rightRef}></div>
             <div className='right' ref={relatedRef} style={{display:hideState}}>
                 <p className='right-title'>Related Articles</p>
-                <Timeline className='timeline-related' >
-                    {relatedSource.map((item) => {
-                        return (
-                            <Timeline.Item key={item.id} className='timeline-item'>
-                                <Link to={`/Dashboard/RecordList/RecordDetail/id=${item.id}`}>{item.title}</Link>
-                                <p>{item.description}</p>
-                            </Timeline.Item>
-                        )
-                    })}
-                </Timeline>
+                {loading && <div className="spinner" />}
+                {relatedSource && <Timeline className='timeline-related' >
+                        {relatedSource.map((item) => {
+                            return (
+                                <Timeline.Item key={item.id} className='timeline-item'>
+                                    <Link to={`/Dashboard/RecordList/RecordDetail/id=${item.id}`}>{item.title}</Link>
+                                    <p>{item.description}</p>
+                                </Timeline.Item>
+                            )
+                        })}
+                    </Timeline>
+                }
             </div>
         </div>
     )

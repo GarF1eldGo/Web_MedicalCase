@@ -2,9 +2,7 @@ package com.lab.webserver.service;
 
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.CharBuffer;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.StandardCharsets;
@@ -30,7 +28,6 @@ public class ScriptService {
             StringBuilder output = new StringBuilder();
             while ((line = reader.readLine()) != null) {
                 output.append(line);
-                break;
             }
             return output.toString();
         } catch (Exception e) {
@@ -41,10 +38,11 @@ public class ScriptService {
 
     public void sendInputToScript(String input) {
         try {
-            OutputStream stdin = process.getOutputStream();
+            BufferedOutputStream stdin = new BufferedOutputStream(process.getOutputStream());
             stdin.write(input.getBytes("UTF-8"));
+            stdin.flush();
 //            stdin.flush();
-            stdin.close();
+//            stdin.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

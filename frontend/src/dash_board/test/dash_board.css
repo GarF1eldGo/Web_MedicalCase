@@ -35,6 +35,28 @@
     margin-left: 20px;
 }
 
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+.main-page-container .right .spinner{
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 2rem;
+    height: 2rem;
+    border: 0.3rem solid #ccc;
+    border-top-color: #0099ff;
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+}
+
 .main-page-container .left .history-list-container{
     position: relative;
     top: 20px;

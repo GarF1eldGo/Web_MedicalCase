@@ -1,4 +1,4 @@
-
+#coding=utf-8
 import jieba
 import pandas as pd
 import numpy as np
@@ -6,12 +6,14 @@ import os
 import torch
 from sklearn.feature_extraction.text import CountVectorizer
 import sys
+import io
 import codecs
+from charset_normalizer import detect
 
 ROOT_DIR = 'Record Collections'
 BASE_DIR = 'src/main/resources/static'
 TARGET_FILE = BASE_DIR + '/ConsineHashMap.csv'
-
+# TARGET_FILE =  'ConsineHashMap.csv'
 
 # 加载停用词表
 def load_stopwords():
@@ -117,7 +119,7 @@ def main():
         save_matrix(similarity_matrix, filename_list)
 
     # 读取csv文件
-    df = pd.read_csv(TARGET_FILE, encoding='utf-8')
+    df = pd.read_csv(TARGET_FILE, encoding='utf-8', header=None)
     # 构造hashmap
     hashmap = {}
     for i in range(df.shape[1]):
@@ -127,39 +129,41 @@ def main():
         value = df.iloc[1:, i].dropna().tolist()
         hashmap[key] = value
 
-    # 读取用户输入
-    sys.stdin = codecs.getreader('utf-8')(sys.stdin.buffer)
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
+
+    # # 读取用户输入
+    # sys.stdin = codecs.getreader('utf-8')(sys.stdin.buffer)
+    # sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf8')
+
+
     while True:
-        user_input = sys.stdin.read()
+        user_input = sys.stdin.readline()
+
 
         filename = user_input.split('###')[0]
         content = ''
         if len(user_input.split('###')) > 1:
             content = user_input.split('###')[1]
-
-        if filename == 'exit':
-            break
+        print('keys:',hashmap.keys())
+        print('filename:', filename)
+        print('result:', filename in hashmap.keys())
         if filename in hashmap.keys():
             output = (";").join(hashmap[filename])
             print(output)
         else:
-            print(filename)
-            print('result :{}'.format(filename in hashmap.keys()))
-        # else:
-        #     # 根据content计算新的相似度
-        #     stopword = load_stopwords()
-        #     content = chinese_word_segmentation(content, stopword)
-        #     content = ' '.join(content)
-        #     load_data(data=[content], filename_list=[filename])
-        #     X_array = build_vector(data=[content])
-        #
-        #     similarity_matrix = calculate_consine(X_array)
-        #     top_k_index = np.argsort(similarity_matrix[0])[-5:]
-        #     top_k_index = top_k_index[top_k_index != 0]
-        #     tmp_list = [filename_list[index].split('\\')[-1].split('.txt')[0] for index in top_k_index]
-        #     output = (";").join(tmp_list)
-        #     print(output)
+            # 根据content计算新的相似度
+            stopword = load_stopwords()
+            content = chinese_word_segmentation(content, stopword)
+            content = ' '.join(content)
+            load_data(data=[content], filename_list=[filename])
+            X_array = build_vector(data=[content])
+
+            similarity_matrix = calculate_consine(X_array)
+            top_k_index = np.argsort(similarity_matrix[0])[-5:]
+            top_k_index = top_k_index[top_k_index != 0]
+            tmp_list = [filename_list[index].split('\\')[-1].split('.txt')[0] for index in top_k_index]
+            output = (";").join(tmp_list)
+            print(output)
 
 
 if __name__ == '__main__':
