@@ -120,12 +120,15 @@ public class RawMedicalRecordService {
             File dest = new File(path + "/" + filename);
             file.transferTo(dest);
             String content = Files.readString(dest.toPath()); // 读取文件内容
+            // 文件从#book到#start部分为书籍信息
+            String bookInfo = content.substring(content.indexOf("#book")+5, content.indexOf("#start"));
             // 文件开头#start到#end部分为tag信息
             String tagList = content.substring(content.indexOf("#start")+6, content.indexOf("#end"));
             // 逐行读取tag信息
             String[] tags = tagList.split("\r\n");
             List<String> tag_list = List.of(tags);
             record.setTags(tag_list);
+            record.setBook(bookInfo);
             record.setAuthor(author);
             record.setTitle(title);
             record.setContent(content.substring(content.indexOf("#end")+4)); // 从#end后开始为医案内容

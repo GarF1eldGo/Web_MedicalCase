@@ -25,6 +25,9 @@ public class RawMedicalRecord {
     @Field(type = FieldType.Text)
     private List<String> tags;
 
+    @Field(type = FieldType.Text)
+    private String book;
+
     public void setId(String id) {this.id = id;}
     public String getId() {return id;}
 
@@ -39,4 +42,7 @@ public class RawMedicalRecord {
 
     public void setTags(List<String> tags) {this.tags = tags;}
     public List<String> getTags() {return tags;}
+
+    public void setBook(String book) {this.book = book;}
+    public String getBook() {return book;}
 }

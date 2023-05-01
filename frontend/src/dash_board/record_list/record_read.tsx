@@ -15,6 +15,7 @@ interface DataType {
     content: string;
     tags: string;
     author: string;
+    book: string;
 }
 
 export default function RecordRead(props: any) {
@@ -54,6 +55,7 @@ export default function RecordRead(props: any) {
                     content: res.data.content,
                     tags: tags,
                     author: res.data.author,
+                    book: res.data.book,
                 });
                 // 更新历史记录
                 var date = new Date();
@@ -163,7 +165,10 @@ export default function RecordRead(props: any) {
                                     alt='favorite' onClick={handleFavoriteClick} />
                         </span>
                     </div>
-                    
+                    <Paragraph>
+                        <Text strong>书名:</Text>
+                        <span>{data.book}</span>
+                    </Paragraph>
                     <Paragraph>
                         <Text strong>作者:</Text>
                         <span>{data.author}</span>
