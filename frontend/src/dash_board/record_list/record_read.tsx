@@ -149,9 +149,9 @@ export default function RecordRead(props: any) {
             <div className='record-read-container'>
                 <div className="bread-container">
                     <Breadcrumb className="bread-crumb" items={[
-                        {title:<a href='/Home'>Home</a>},
-                        {title:<a href={'/Dashboard/RecordList'}>Search Record</a>},
-                        {title:'Read Record'}
+                        {title:<a href='/Home'>主页</a>},
+                        {title:<a href={'/Dashboard/RecordList'}>搜索医案</a>},
+                        {title:'医案阅读'}
                         ]} />
                 </div>
                 {data && (

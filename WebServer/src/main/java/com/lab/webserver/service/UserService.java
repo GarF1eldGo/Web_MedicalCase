@@ -18,14 +18,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final ScriptService scriptService;
+
+    private HashMap<String, List<String>> recommentdationMap;
 
     private String getCurrentTime(){
         // 获取当前时间
@@ -39,6 +40,7 @@ public class UserService {
     public UserService(UserRepository userRepository, ScriptService scriptService){
         this.userRepository = userRepository;
         this.scriptService = scriptService;
+        this.recommentdationMap = readCSVFile();
     }
 
     public long count(){
@@ -61,10 +63,10 @@ public class UserService {
 
     public User login(User user){
         User ret =  userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-        // 用户登录就启动推荐算法脚本
-        String scriptPath = "src/main/resources/static/Recommendation.py";
-        String currentPath = Path.of("").toAbsolutePath().toString();
-        scriptService.startScript(scriptPath);
+//        // 用户登录就启动推荐算法脚本
+//        String scriptPath = "src/main/resources/static/Recommendation.py";
+//        String currentPath = Path.of("").toAbsolutePath().toString();
+//        scriptService.startScript(scriptPath);
         return ret;
     }
 
@@ -170,7 +172,29 @@ public class UserService {
      * @return 医案名称
      */
     public List<String> findRecommendation(String filename, String content){
-//        读取csv文件
+        if (this.recommentdationMap.containsKey(filename)){
+            return this.recommentdationMap.get(filename);
+        }else{
+            return null;
+        }
+//        // 输入
+//        String newContent = content.replaceAll("\r\n", ""); // 删除换行符
+//        newContent = newContent.replaceAll("\t", "");
+//        String input = filename + "###" + newContent;
+//        input += "\n";
+//        scriptService.sendInputToScript(input);
+//
+//        // 获取输出,数据结构按照';'分隔
+//        String output = scriptService.readScriptOutput();
+////        scriptService.stopScript();
+//        if(output != null){
+//            String[] result = output.split(";");
+//            return new ArrayList<>(List.of(result));
+//        }
+//        return null;
+    }
+
+    private HashMap<String, List<String>> readCSVFile(){
         String csvFilePath = "src/main/resources/static/ConsineHashMap.csv";
 
         FileReader fileReader = null;
@@ -181,29 +205,24 @@ public class UserService {
         }
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         String line = "";
-        String everyLine = "";
+        List<List<String>> eachLine = new ArrayList<>();
         try {
             while ((line = bufferedReader.readLine()) != null) {
-                everyLine += line + "\n";
+                String[] item = line.split(",");
+                eachLine.add(Arrays.asList(item));
             }
+            HashMap<String, List<String>> map = new HashMap<>();
+            for(int i = 0; i < eachLine.get(0).size(); i++){
+                String key = eachLine.get(0).get(i);
+                List<String> values = new ArrayList<>();
+                for (int j = 1; j < eachLine.size(); j++) {
+                    values.add(eachLine.get(j).get(i));
+                }
+                map.put(key, values);
+            }
+            return map;
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        System.out.println(everyLine);
-
-        // 输入
-        String newContent = content.replaceAll("\r\n", ""); // 删除换行符
-        newContent = newContent.replaceAll("\t", "");
-        String input = filename + "###" + newContent;
-        input += "\n";
-        scriptService.sendInputToScript(input);
-
-        // 获取输出,数据结构按照';'分隔
-        String output = scriptService.readScriptOutput();
-//        scriptService.stopScript();
-        if(output != null){
-            String[] result = output.split(";");
-            return new ArrayList<>(List.of(result));
         }
         return null;
     }

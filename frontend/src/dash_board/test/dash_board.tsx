@@ -215,7 +215,7 @@ export default function TestDashboard(){
     const displayContent = (
         <div className='main-page-container'>
             <div className='left'>
-                <p>Read History</p>
+                <p>浏览历史</p>
                 <div className='history-list-container'>
                     <List className='history-list' itemLayout="horizontal" dataSource={viewHistory.slice(0, 2)}
                         renderItem={(item:any) => (
@@ -262,7 +262,7 @@ export default function TestDashboard(){
             </div>
             <div className='divider-right' ref={rightRef}></div>
             <div className='right' ref={relatedRef} style={{display:hideState}}>
-                <p className='right-title'>Related Articles</p>
+                <p className='right-title'>相关医案推荐</p>
                 {loading && <div className="spinner" />}
                 {relatedSource && <Timeline className='timeline-related' >
                         {relatedSource.map((item) => {

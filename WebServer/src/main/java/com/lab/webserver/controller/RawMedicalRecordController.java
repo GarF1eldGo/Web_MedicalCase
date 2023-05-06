@@ -99,4 +99,16 @@ public class RawMedicalRecordController {
     public void deleteById(@PathVariable final String id){
         service.deleteById(id);
     }
+
+    @GetMapping("/tagList/{type}")
+    public List<String> getTagList(@PathVariable final String type){
+        System.out.println(getCurrentTime() + " getTagList");
+        return service.getTagList(type);
+    }
+
+    @GetMapping("/tagListRecord/{type}/{tag}")
+    public List<RawMedicalRecord> getTagListRecord(@PathVariable final String type, @PathVariable final String tag){
+        System.out.println(getCurrentTime() + " getTagListRecord");
+        return service.getTagListRecord(type, tag);
+    }
 }

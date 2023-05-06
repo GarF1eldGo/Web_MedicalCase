@@ -31,6 +31,7 @@ export default function Login() {
                     localStorage.setItem('username', res.data.username);
                     localStorage.setItem('password', res.data.password);
                     localStorage.setItem('userID', res.data.userID);
+                    localStorage.setItem('isAdmin', res.data.isAdmin);
                     history.push('/Dashboard/RecordList');
                 }else{
                     hintRef.current!.style.display = 'block';

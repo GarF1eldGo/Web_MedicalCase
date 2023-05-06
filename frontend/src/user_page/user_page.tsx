@@ -144,7 +144,7 @@ export default function UserPage(){
     function Overview(){
         return (
             <div className='overview-container' >
-                <h3 className='overview-hint'>Read {totalCount} articles in the past year</h3>
+                <h3 className='overview-hint'>过去一年共阅读 {totalCount} 篇医案！</h3>
                 <CalendarHeatmap
                     startDate={new Date(now.getFullYear(), now.getMonth() - 11, 1)}
                     endDate={new Date(now.getFullYear(), now.getMonth() + 1, 0)}
@@ -198,9 +198,9 @@ export default function UserPage(){
     const userContent = (
         <div className="user-page-container" style={{backgroundColor:backgroundColor , color:fontColor}}>
             <Header className='user-navi-header' style={{backgroundColor:backgroundColor, color:fontColor}}>
-                <Button onClick={() => {history.push('/UserPage/Overview')}} icon={<ReadOutlined />}>Overview</Button>
-                <Button onClick={() => {history.push('/UserPage/Favorite')}} icon={<HeartOutlined />}>Favoriate</Button>
-                <Button onClick={() => {history.push('/UserPage/History')}} icon={<HistoryOutlined />}>History</Button>
+                <Button onClick={() => {history.push('/UserPage/Overview')}} icon={<ReadOutlined />}>总览</Button>
+                <Button onClick={() => {history.push('/UserPage/Favorite')}} icon={<HeartOutlined />}>收藏</Button>
+                <Button onClick={() => {history.push('/UserPage/History')}} icon={<HistoryOutlined />}>浏览历史</Button>
             </Header>
             <Divider className='user-navi-divider'/>
             <Content className='content-container'>

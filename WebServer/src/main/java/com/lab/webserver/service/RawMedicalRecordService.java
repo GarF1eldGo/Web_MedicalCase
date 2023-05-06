@@ -145,4 +145,51 @@ public class RawMedicalRecordService {
     public List<RawMedicalRecord> findByTitleList(List<String> titleList){
         return rawMedicalRecordRepository.findAllByTitleIn(titleList);
     }
+
+    // 获取标签列表
+    public List<String> getTagList(String type){
+        List<String>ret = new ArrayList<>();
+        List<RawMedicalRecord> allRecord = rawMedicalRecordRepository.findAll();
+        int threshold = 0;
+        if (type.equals("disease")){
+            threshold = 5;
+        }else{
+            threshold = 2;
+        }
+
+        HashMap<String, Integer> map = new HashMap<>();
+        for (RawMedicalRecord record : allRecord) {
+            List<String> tags = record.getTags();
+            for (String tag : tags) {
+                if (tag.contains(type)){
+                    String[] disease = tag.split("-", 2);
+                    if(disease.length != 2) continue;
+
+                    String diseaseName = disease[1];
+                    if(map.containsKey(diseaseName)){
+                        map.put(diseaseName, map.get(diseaseName)+1);
+                    }else{
+                        map.put(diseaseName, 1);
+                    }
+                }
+            }
+        }
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() >= threshold){
+                // 判断字符数是否大于6
+                if (entry.getKey().length() > 6) {
+                    ret.add(entry.getKey().substring(0, 6) + "...");
+                }else {
+                    ret.add(entry.getKey());
+                }
+            }
+        }
+        return ret;
+    }
+
+    public List<RawMedicalRecord> getTagListRecord(String type, String tag) {
+        String oneTag = type + '-' + tag;
+        List<RawMedicalRecord>ret = rawMedicalRecordRepository.findByTags(oneTag);
+        return ret;
+    }
 }

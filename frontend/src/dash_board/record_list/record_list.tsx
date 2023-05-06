@@ -210,8 +210,8 @@ export default function RecordList(){
             <div className="record-list-container">
                 <div className="bread-container">
                     <Breadcrumb className="bread-crumb" items={[
-                        {title:<a href='/Home'>Home</a>},
-                        {title:'Search Record'}
+                        {title:<a href='/Home'>主页</a>},
+                        {title:'搜索医案'}
                     ]} />
                 </div>
                 <div className="search-record-container">

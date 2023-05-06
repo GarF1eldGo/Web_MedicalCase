@@ -51,9 +51,9 @@ export default function SideNav(props:any){
         if(key === 1){
             history.push('/Dashboard/RecordList')
         }else if(key === 2.1){
-            history.push('/Dashboard/DemoCirclePacking')
+            history.push('/Dashboard/Classification')
         }else if(key === 2.2){
-            history.push('/Dashboard/DemoCirclePacking')
+            history.push('/Dashboard/Classification')
         }else if(key === 3){
             history.push('/Dashboard/AddFile')
         }

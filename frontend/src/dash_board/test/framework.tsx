@@ -20,22 +20,28 @@ export default function FrameWork(props:any){
     const [displaySideNav, setDisplaySideNav] = React.useState(false);
     const [backgroundColor, setBackgroundColor] = React.useState(localStorage.getItem('record-setting-background-color') || '#fff');
     const [fontColor, setFontColor] = React.useState(localStorage.getItem('record-setting-font-color') || '#000');
+    const [showImport, setShowImport] = React.useState(false);
 
     const match = useRouteMatch();
     const history = useHistory();
     const divRef = useRef<HTMLDivElement>(null);
 
     const options = [
-        { value: 'Document Search' },
-        { value: 'Classification' },
-        { value: 'Import Documents' },
+        { value: '搜索医案' },
+        { value: '医案分类' },
+        { value: '导入医案' },
       ];
 
     useEffect(() => {
         // 初始化输入框宽度
         setPreWidth(document.getElementsByClassName('search-input')[0].clientWidth);
-        console.log('preWidth: ', preWidth);
-        console.log('match path : ', match.path);
+        
+        const isAdmin = localStorage.getItem('isAdmin');
+        if(isAdmin === 'true'){
+            setShowImport(true);
+        }else{
+            setShowImport(false);
+        }
     }, []);
 
     // 监听滚动条事件&&storage变化
@@ -114,6 +120,7 @@ export default function FrameWork(props:any){
         localStorage.removeItem('username');
         localStorage.removeItem('password');
         localStorage.removeItem('userID');
+        localStorage.removeItem('isAdmin');
         // 进入home page
         history.push('/');
     }
@@ -163,9 +170,9 @@ export default function FrameWork(props:any){
                     </div>
                     
                     <div className='nav' >
-                        <a onClick={() => {history.push('/Dashboard/RecordList')}}>Document Search</a>
-                        <a onClick={() => {history.push('/Dashboard/Classification')}}>Classification</a>
-                        <a onClick={() => {history.push('/Dashboard/AddFile')}}>Import Documents</a>
+                        <a onClick={() => {history.push('/Dashboard/RecordList')}}>搜索医案</a>
+                        <a onClick={() => {history.push('/Dashboard/Classification')}}>医案分类</a>
+                        {showImport && <a onClick={() => {history.push('/Dashboard/AddFile')}}>导入医案</a>}
                     </div>
                 </Space>
 
@@ -175,13 +182,13 @@ export default function FrameWork(props:any){
 
                 {showOptions && 
                     <div className='user-options'>
-                        <p onClick={() => {history.push('/UserPage')}}>Signed in as </p>
+                        <p onClick={() => {history.push('/UserPage')}}>已登录 </p>
                         <p onClick={() => {history.push('/UserPage')}} style={{fontWeight:'bold'}}>GarField</p>
                         <Divider />
                         <p>Profile</p>
                         <p>Settings</p>
                         <Divider />
-                        <p onClick={signOutHandle}>Sign out</p>
+                        <p onClick={signOutHandle}>登出</p>
                     </div>}
             </Header>
 
