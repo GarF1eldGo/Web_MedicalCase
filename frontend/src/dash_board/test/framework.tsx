@@ -135,7 +135,7 @@ export default function FrameWork(props:any){
 
     return (
         <div className='framework-container' ref={divRef}>
-            <SideNav className='side-nav' display={displaySideNav} ></SideNav>
+            <SideNav className='side-nav' display={displaySideNav} />
             <Header className='header'>
                 {React.createElement(displaySideNav ? MenuFoldOutlined : MenuUnfoldOutlined , {
                         className: 'side-trigger',

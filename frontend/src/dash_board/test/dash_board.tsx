@@ -39,22 +39,6 @@ export default function TestDashboard(){
     const history = useHistory();
     
     useEffect(() => {
-        // relatedSource.push({
-        //     id: '1',
-        //     title: 'title1',
-        //     description: '诉前段时间经医院检查患有乙肝，其表面'
-        // });
-        // relatedSource.push({
-        //     id: '2',
-        //     title: 'title2',
-        //     description: '生石膏20g,熟石膏15g,知母10g,黄连3g,桅子炭10g, 土茯苓30g, 连翘15g,天花粉15g,蹩香6'
-        // });
-        // relatedSource.push({
-        //     id: '3',
-        //     title: 'title3',
-        //     description: '生石膏30g,知母10g,黄苓10g,黄连4g, 土茯苓30g,桅子 炭10g'
-        // });
-
         const recordID = location.pathname.split('=')[1];
         if(location.pathname === `/Dashboard/RecordList/RecordDetail/id=${recordID}`){
             setLoading(true);
@@ -262,7 +246,7 @@ export default function TestDashboard(){
             </div>
             <div className='divider-right' ref={rightRef}></div>
             <div className='right' ref={relatedRef} style={{display:hideState}}>
-                <p className='right-title'>相关医案推荐</p>
+                {relatedSource.length != 0 && <p className='right-title'>相关医案推荐</p>}
                 {loading && <div className="spinner" />}
                 {relatedSource && <Timeline className='timeline-related' >
                         {relatedSource.map((item) => {

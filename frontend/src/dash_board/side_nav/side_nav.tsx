@@ -39,20 +39,15 @@ export default function SideNav(props:any){
     const history = useHistory();
 
     const items: MenuItem[] = [
-        getItem('搜索文档', '1', <FileSearchOutlined />,() => changePageKey(1) ),
-        getItem('文档分类', 'sub', <DotChartOutlined />, ()=>{}, [
-            getItem('按疾病分类', 'sub-1', <MonitorOutlined />,  () => changePageKey(2.1)),
-            getItem('按治法分类', 'sub-2', <BulbOutlined />, () => changePageKey(2.2)),
-        ]),
-        getItem('导入文档', '3', <FileAddOutlined />, () => changePageKey(3)),
+        getItem('搜索医案', '1', <FileSearchOutlined />,() => changePageKey(1) ),
+        getItem('医案分类', '2', <DotChartOutlined />, ()=> changePageKey(2)),
+        getItem('导入医案', '3', <FileAddOutlined />, () => changePageKey(3)),
     ];
 
     function changePageKey(key: number) {
         if(key === 1){
             history.push('/Dashboard/RecordList')
-        }else if(key === 2.1){
-            history.push('/Dashboard/Classification')
-        }else if(key === 2.2){
+        }else if(key === 2){
             history.push('/Dashboard/Classification')
         }else if(key === 3){
             history.push('/Dashboard/AddFile')
@@ -67,7 +62,7 @@ export default function SideNav(props:any){
                 mode="inline"
                 defaultSelectedKeys={['1']}
                 items={items}
-                style={{marginTop: '30px'}}
+                style={{marginTop: '70px'}}
             />
         </Sider>
     )

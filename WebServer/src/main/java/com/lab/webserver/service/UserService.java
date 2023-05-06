@@ -1,10 +1,7 @@
 package com.lab.webserver.service;
 
 import co.elastic.clients.elasticsearch._types.Script;
-import com.lab.webserver.entity.HistoryCount;
-import com.lab.webserver.entity.RawMedicalRecord;
-import com.lab.webserver.entity.User;
-import com.lab.webserver.entity.UserHistory;
+import com.lab.webserver.entity.*;
 import com.lab.webserver.respository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -192,6 +189,37 @@ public class UserService {
 //            return new ArrayList<>(List.of(result));
 //        }
 //        return null;
+    }
+
+    public List<ViewHistoryCount> findViewHistoryCountById(String id){
+        User user = userRepository.findById(id).orElse(null);
+        if(user != null){
+            List<User.History>userHistory = user.getViewHistory();
+            HashMap<String, Integer> map = new HashMap<>();
+            for(User.History history : userHistory){
+                String title = history.getTitle();
+                if(map.containsKey(title)){
+                    map.put(title, map.get(title)+1);
+                }else{
+                    map.put(title, 1);
+                }
+            }
+            List<ViewHistoryCount> ret = new ArrayList<>();
+            for(String key : map.keySet()){
+                ViewHistoryCount viewHistoryCount = new ViewHistoryCount(key, map.get(key));
+                ret.add(viewHistoryCount);
+            }
+            // 按次数排序
+            Collections.sort(ret, new Comparator<ViewHistoryCount>() {
+                @Override
+                public int compare(ViewHistoryCount o1, ViewHistoryCount o2) {
+                    return o2.getCount() - o1.getCount();
+                }
+            });
+            // 返回前10个记录
+            return ret.subList(0, Math.min(10, ret.size()));
+        }
+        return null;
     }
 
     private HashMap<String, List<String>> readCSVFile(){

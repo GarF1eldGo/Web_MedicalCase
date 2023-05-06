@@ -144,6 +144,9 @@
 .overview-container .setting-title .setting-divider{
     margin: 0 30px 10px 30px;
 }
+.overview-container .setting-title .column-viewhistory{
+    margin: 10px 30px;
+}
 
 .overview-container .record-setting-container{
     position: relative;
@@ -210,5 +213,9 @@
 
     .user-page-container .content-container .right-container .overview-container .record-setting-slider{
         width: 90%;
+    }
+    .overview-container .setting-title{
+        margin: 0;
+        width: 100%;
     }
 }

@@ -8,6 +8,7 @@ import { Avatar, Button, Divider, Slider } from 'antd';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
+import { Column } from '@ant-design/plots';
 
 import './user_page.css';
 import FrameWork from '../dash_board/test/framework';
@@ -23,6 +24,11 @@ interface historyCount{
     count: number;
 };
 
+interface viewHistoryCount{
+    title: string;
+    count: number;
+}
+
 export default function UserPage(){
     const history = useHistory();
     const now = new Date();
@@ -35,6 +41,52 @@ export default function UserPage(){
     const [curColor, setCurColor] = React.useState( parseInt(localStorage.getItem('record-setting-light') || '100', 10));
     const [data, setData] = React.useState<historyCount[]>([]);
     const [totalCount, setTotalCount] = React.useState(0);
+    const [viewHistoryData, setViewHistoryData] = React.useState<viewHistoryCount[]>([]);
+    const [maxCount, setMaxCount] = React.useState(0);
+    const [minCount, setMinCount] = React.useState(0);
+    const [recordTitle, setRecordTitle] = React.useState('');
+
+    const config = {
+        className: 'column-viewhistory',
+        data : viewHistoryData,
+        xField: 'title',
+        yField: 'count',
+        columnWidthRatio: 0.8,
+        color : (title:any) => {
+            const readTitle = title.title;
+            let count = 0;
+            const historyItem = viewHistoryData.find((item) => item.title === readTitle);
+            if (historyItem !== undefined) {
+              count = historyItem.count;
+            }
+
+            // 计算占比
+            const ratio = (count - minCount) / (maxCount - minCount);
+            if (ratio < 0.25){
+                return '#d6e685';
+            }else if(ratio < 0.5){
+                return '#8cc665';
+            }else if(ratio < 0.9){
+                return '#44a340';
+            }else{
+                return '#1e6823';
+            }
+        },
+        xAxis: {
+          label: {
+            autoHide: true,
+            autoRotate: false,
+          },
+        },
+        meta: {
+          title: {
+            alias: '医案名',
+          },
+          count: {
+            alias: '阅读次数',
+          },
+        },
+    };
 
     // 监听storage事件
     useEffect(() => {
@@ -56,6 +108,26 @@ export default function UserPage(){
             }
             setData(historyCount);
             setTotalCount(tmpCount);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+
+        const url2 = 'http://127.0.0.1:8080/api/user/viewHistoryCount/' + localStorage.getItem('userID');
+        axios.get(url2)
+        .then((res) => {
+            const data = res.data;
+            const viewHistoryCntArray: any[] = [];
+            for(let i = 0; i < data.length; i++){
+                viewHistoryCntArray.push({
+                    title: data[i].title,
+                    count: data[i].count,
+                });
+            }
+            setViewHistoryData(viewHistoryCntArray);
+            setMaxCount(viewHistoryCntArray[0].count);
+            setMinCount(viewHistoryCntArray[viewHistoryCntArray.length - 1].count);
+            setRecordTitle(viewHistoryCntArray[0].title);
         })
         .catch((err) => {
             console.log(err);
@@ -155,10 +227,12 @@ export default function UserPage(){
                     onClick={(value) => console.log('click value: ', value)}
                 />
                 <div className='setting-title'>
-                    <h1 className='setting-title-text'>设置</h1>
+                    <h1 className='setting-title-text'>阅读统计：你最感兴趣的医案是 {recordTitle}</h1>
                     <Divider className='setting-divider'/>
+                    <Column {...config} />
                 </div>
-                <div className='record-setting-container'>
+                
+                {/* <div className='record-setting-container'>
                     <div className='record-setting-item'>
                         <h3 className='record-setting-title'>修改医案字体大小</h3>
                         <Slider className='record-setting-slider' 
@@ -189,7 +263,7 @@ export default function UserPage(){
                             }}
                         />
                     </div>
-                </div>
+                </div> */}
                 <ReactTooltip />
             </div>
         )

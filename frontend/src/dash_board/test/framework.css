@@ -209,12 +209,13 @@
         transform: translate(0, -50%);
     }
     .framework-container .side-nav{
-        position: absolute;
+        position: fixed;
         display: block;
-        top: var(--header_height);
+        /* top: var(--header_height); */
+        top: 0;
         left: 0;
         width: 100%;
-        height: var(--line_height);
+        height: 100%;
         background-color: #011428;
         z-index: 20;
     }

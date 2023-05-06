@@ -1,8 +1,5 @@
 package com.lab.webserver.controller;
-import com.lab.webserver.entity.HistoryCount;
-import com.lab.webserver.entity.RawMedicalRecord;
-import com.lab.webserver.entity.User;
-import com.lab.webserver.entity.UserHistory;
+import com.lab.webserver.entity.*;
 import com.lab.webserver.service.RawMedicalRecordService;
 import com.lab.webserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,5 +96,10 @@ public class userController {
         String filename = recordService.findById(recordID).getTitle();
         List<String>filenameList = service.findRecommendation(filename, content);
         return recordService.findByTitleList(filenameList);
+    }
+
+    @GetMapping("/viewHistoryCount/{id}")
+    public List<ViewHistoryCount> findViewHistoryCountById(@PathVariable final String id){
+        return service.findViewHistoryCountById(id);
     }
 }
