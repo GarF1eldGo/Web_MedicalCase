@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import './classification.css';
 import axios from 'axios';
 import { Route, Switch, useHistory, useRouteMatch } from 'react-router-dom';
-import RecordList from '../record_list/record_list';
+
+import ClassificationCircle from './classification_circle';
 import ClassificationList from './classification_list';
 
 export default function ClassificationDisease(){
@@ -104,7 +105,8 @@ export default function ClassificationDisease(){
               type="card"
               items={tabItems}
             />
-            <div className='tag-container'>
+            <ClassificationCircle />
+            {/* <div className='tag-container'>
               {tagList.map((row:any, rowIndex:number) => (
                 <div className='tag-row'>
                   <Row key={rowIndex} justify="space-evenly" align="middle" gutter={[16,16]}>
@@ -117,7 +119,7 @@ export default function ClassificationDisease(){
                   <Divider />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </Route>
       </Switch>

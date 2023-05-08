@@ -66,41 +66,56 @@ public class RawMedicalRecordService {
         return rawMedicalRecordRepository.findAllByTitleOrAuthorOrContentOrTags(content, content, content, content);
     }
 
-    public JsonDieaseClassification findAllWithJSON(){
+    public JsonDieaseClassification findAllWithJSON(String type){
         List<RawMedicalRecord>allRecord = rawMedicalRecordRepository.findAll();
         JsonDieaseClassification root = new JsonDieaseClassification();
-        root.name = "root";
-        root.data = new HashMap<>();
-        for (RawMedicalRecord record : allRecord) {
-            List<String> tags = record.getTags();
-            // 找到带有disease的标签
-            for (String tag : tags) {
-                if (tag.contains("disease")){
-                    String[] disease = tag.split("-", 2);
-                    if(disease.length != 2) continue;
+        if(type.equals("disease")){
+            root.setName("疾病");
+        } else if (type.equals("cure")) {
+            root.setName("治法");
+        } else if (type.equals("dia")){
+            root.setName("辨证");
+        }
+        List<MedicalRecordNode>data = new ArrayList<>();
+        Integer threshold = 0;
+        if(type.equals("disease")) {
+            threshold = 5;
+        }else{
+            threshold = 2;
+        }
 
-                    String diseaseName = disease[1];
-                    // 如果已经有该疾病的分类
-                    MedicalRecordNode node = new MedicalRecordNode();
-                    if (root.data.containsKey(diseaseName)){
-                        node.id = record.getId();
-                        node.name = diseaseName;
-                        root.data.get(diseaseName).addChildren(node);
-                    }
-                    else{ // 不存在该疾病的分类
-                        MedicalRecordNode child = new MedicalRecordNode();
-                        child.id = record.getId();
-                        child.name = diseaseName;
-                        child.children = null;
-                        node.id = null;
-                        node.name = diseaseName;
-                        node.children = new ArrayList<>();
-                        node.addChildren(child);
-                        root.data.put(diseaseName, node);
+        // 统计同类的数量
+        Map<String, Integer> map = new HashMap<>();
+        for(RawMedicalRecord record: allRecord){
+            List<String> tags = record.getTags();
+            for(String tag: tags){
+                if (tag.contains(type)) {
+                    if (map.containsKey(tag)) {
+                        map.put(tag, map.get(tag) + 1);
+                    } else {
+                        map.put(tag, 1);
                     }
                 }
             }
         }
+
+        // 将同类数量大于阈值的加入到data中
+        for(Map.Entry<String, Integer> entry: map.entrySet()){
+            if(entry.getValue() >= threshold){
+                MedicalRecordNode node = new MedicalRecordNode(entry.getKey(), 100 * entry.getValue() * entry.getValue());
+                // 添加children
+                List<RawMedicalRecord> records = rawMedicalRecordRepository.findByTags(entry.getKey());
+                List<MedicalRecordNode> children = new ArrayList<>();
+                for (RawMedicalRecord record: records){
+                    MedicalRecordNode child = new MedicalRecordNode(record.getId(), record.getTitle());
+                    children.add(child);
+                }
+//                node.setChildren(children);
+                
+                data.add(node);
+            }
+        }
+        root.setChildren(data);
         return root;
     }
 

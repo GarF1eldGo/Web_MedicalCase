@@ -88,10 +88,10 @@ public class RawMedicalRecordController {
         return service.findBySearchAll(searchAll);
     }
 
-    @GetMapping("/classification/disease")
-    public JsonDieaseClassification getDiseaseClassification(){
+    @GetMapping("/classification/{type}")
+    public JsonDieaseClassification getDiseaseClassification(@PathVariable final String type){
         System.out.println(getCurrentTime() + " getDiseaseClassification");
-        return service.findAllWithJSON();
+        return service.findAllWithJSON(type);
     }
 
 
