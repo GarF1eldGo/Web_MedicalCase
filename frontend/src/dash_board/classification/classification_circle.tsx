@@ -1,75 +1,48 @@
 import React, { useState, useEffect, Children } from 'react';
+import { useHistory } from 'react-router-dom';
 import { CirclePacking, CirclePackingConfig  } from '@ant-design/plots';
 import axios from 'axios';
 import BubbleChart from './react-bubble-chart-d3';
 import './classification_circle.css'
+import { type } from '@testing-library/user-event/dist/type';
+import { local } from 'd3';
 
-export default function ClassificationCircle(){
-    const [data, setData] = useState([]);
+export default function ClassificationCircle(props:any){
+    const [data, setData] = useState<any[]>([]);
+    const history = useHistory();
 
     useEffect(() => {
-        // asyncFetch();
+        console.log('tagData', props.tagData);
     }, []);
-    
-    const asyncFetch = () => {
-        axios.get('http://127.0.0.1:8080/api/rawMedicalRecord/classification/disease')
+
+    useEffect(() => {
+        setData(props.tagData);
+    }, [props.tagData]);
+
+     const bubbleClick = (label:any, recordID:any) =>{
+        console.log('label', label, 'recordID', recordID);
+        if (recordID != null) {
+            console.log('recordID', recordID);
+            history.push('/Dashboard/RecordList/RecordDetail/id=' + recordID)
+        }else{
+            const type = localStorage.getItem('tagType');
+            const url = 'http://127.0.0.1:8080/api/rawMedicalRecord/tagListRecord/' + type + "/" + label;
+            console.log(url)
+            axios.get(url)
             .then((res) => {
-                console.log(res.data);
-                setData(res.data);
+                
+                let tmpData : any = [];
+                for (let i = 0; i < res.data.length; i++) {
+                    const label = res.data[i].title;
+                    tmpData.push({label: label, value: 1, recordId: res.data[i].id});
+                }
+                setData(tmpData);
             })
-            .catch((error) => {
-            console.log('fetch data failed', error);
-        });
-    };
-
-    const config : CirclePackingConfig  = {
-        autoFit: true,
-        padding: 0,
-        data,
-        sizeField: 'r',
-         // 自定义颜色
-        colorField: 'r',
-        color: 'rgb(252, 253, 191)-rgb(231, 82, 99)-rgb(183, 55, 121)',
-        // 自定义样式
-        pointStyle: {
-            stroke: 'rgb(183, 55, 121)',
-            lineWidth: 0.5,
-        },
-        label: {
-            // 可手动配置 label 数据标签位置
-            position: 'middle', // 'top', 'bottom', 'middle',
-            // 可配置附加的布局方法
-            layout: [
-                // 柱形图数据标签位置自动调整
-                { type: 'interval-adjust-position' },
-                // 数据标签文颜色自动调整
-                { type: 'interval-hide-overlap' },
-                // 数据标签文颜色自动调整
-                { type: 'adjust-color' },
-            ],
-        },
-        legend: false,
-        drilldown: {
-            enabled: true,
-            breadCrumb: {
-                position: "top-left",
-            },
-        },
-        onEvent: (event, chartInstance) => {
-            if(event.type === 'click') {
-                console.log(event)
-            }
+            .catch((err) => {
+                console.log(err);
+            })
         }
-    };
-
-    const longData = [
-        { key: 'Department of Curtains and Interior Design', data: 100 },
-        { key: 'Fresh Kitchen Pasta Dish and Pizza', data: 45 },
-        { key: 'Short Name', data: 25 }
-      ];
-
-     const bubbleClick = (label:any) =>{
-        console.log("Custom bubble click func ", label)
+        
       }
      const legendClick = (label:any) =>{
         console.log("Customer legend click func")
@@ -83,8 +56,8 @@ export default function ClassificationCircle(){
                 offsetX: 0,
                 offsetY: 0
             }}
-            width={600}
-            height={600}
+            width={800}
+            height={800}
             showLegend={true} // optional value, pass false to disable the legend.
             legendPercentage={20} // number that represent the % of with that legend going to use.
             valueFont={{
@@ -102,12 +75,7 @@ export default function ClassificationCircle(){
             //Custom bubble/legend click functions such as searching using the label, redirecting to other page
             bubbleClickFun={bubbleClick}
             legendClickFun={legendClick}
-            data={[
-                { label: "Net Banking", value: 5, color: "#F08871" },
-                { label: "great", value: 10, color: "#6EB97B" },
-                { label: "Credit Card", value: 3, color: "#5496F6" },
-                { label: "Debit Card", value: 3, color: "#F08871" },
-            ]}
+            data={data}
             />
         </div>
     )

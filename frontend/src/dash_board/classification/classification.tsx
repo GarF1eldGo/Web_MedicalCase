@@ -11,6 +11,7 @@ export default function ClassificationDisease(){
   const history = useHistory();
   const match = useRouteMatch();
   const [tagList, setTagList] = useState<any[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [tagType, setTagType] = useState<String>('disease');
   // const tagList : any = [];
   const tabItems: TabsProps['items'] = [
@@ -30,16 +31,19 @@ export default function ClassificationDisease(){
 
   // 切换tab页，获取tag列表
   const onChangeTab = (key: string) => {
-    const url = 'http://127.0.0.1:8080/api/rawMedicalRecord/tagList/' + key;
+    const url = 'http://127.0.0.1:8080/api/rawMedicalRecord/classification/' + key;
     setTagType(key);
+    localStorage.setItem('tagType', key);
+    const type = localStorage.getItem('tagType');
     axios.get(url)
     .then((res) => {
-      const itemPerRow = 6;
-      let tmpList: any[] = [];
-      for(let i = 0; i < res.data.length; i += itemPerRow){
-        tmpList.push(res.data.slice(i, i + itemPerRow));
+      let tmpData : any = [];
+      for (let i = 0; i < res.data.length; i++) {
+          let label = res.data[i].name;
+          label = label.substring(label.indexOf('-') + 1);
+          tmpData.push({label: label, value: res.data[i].value});
       }
-      setTagList(tmpList);
+      setData(tmpData);
     })
     .catch((err) => {
       console.log(err);
@@ -105,7 +109,7 @@ export default function ClassificationDisease(){
               type="card"
               items={tabItems}
             />
-            <ClassificationCircle />
+            <ClassificationCircle tagData={data}/>
             {/* <div className='tag-container'>
               {tagList.map((row:any, rowIndex:number) => (
                 <div className='tag-row'>

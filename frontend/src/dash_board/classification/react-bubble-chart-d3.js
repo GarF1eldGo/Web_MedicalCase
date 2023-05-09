@@ -107,6 +107,7 @@ export default class BubbleChart extends Component {
     // });
     
     node.append("circle")
+      .attr("record-id", function(d) { return d.data.recordId;})
       .attr("id", function(d) { return d.id; })
       .attr("r", function(d) { return d.r - (d.r * .04); })
       .style("fill", function(d) { return d.data.color ? d.data.color : color(nodes.indexOf(d)); })
@@ -121,7 +122,13 @@ export default class BubbleChart extends Component {
         d3.select(this).attr("r", r);
       })
       .on('click', function(d){
-        bubbleClickFun(this.attributes.id.nodeValue);
+        console.log('id:',this.attributes);
+        if (this.attributes[0].nodeName === 'record-id') {
+          bubbleClickFun(this.attributes.id.nodeValue, this.attributes[0].nodeValue);
+        }else{
+          bubbleClickFun(this.attributes.id.nodeValue, null);
+        }
+       
       });
 
     node.append("clipPath")
@@ -138,7 +145,7 @@ export default class BubbleChart extends Component {
       })
       .style("font-family", valueFont.family)
       .style("fill", () => {
-        return valueFont.color ? valueFont.color : '#000';
+        return  '#000';
       })
       .style("stroke", () => {
         return valueFont.lineColor ? valueFont.lineColor : '#000';
@@ -157,7 +164,7 @@ export default class BubbleChart extends Component {
       })
       .style("font-family", labelFont.family)
       .style("fill", () => {
-        return labelFont.color ? labelFont.color : '#000';
+        return  '#000';
       })
       .style("stroke", () => {
         return labelFont.lineColor ? labelFont.lineColor : '#000';

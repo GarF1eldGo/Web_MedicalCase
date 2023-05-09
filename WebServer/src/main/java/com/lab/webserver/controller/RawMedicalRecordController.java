@@ -3,6 +3,7 @@ package com.lab.webserver.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lab.webserver.entity.JsonDieaseClassification;
+import com.lab.webserver.entity.MedicalRecordNode;
 import com.lab.webserver.entity.RawMedicalRecord;
 import com.lab.webserver.service.RawMedicalRecordService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -89,7 +90,7 @@ public class RawMedicalRecordController {
     }
 
     @GetMapping("/classification/{type}")
-    public JsonDieaseClassification getDiseaseClassification(@PathVariable final String type){
+    public List<MedicalRecordNode> getDiseaseClassification(@PathVariable final String type){
         System.out.println(getCurrentTime() + " getDiseaseClassification");
         return service.findAllWithJSON(type);
     }

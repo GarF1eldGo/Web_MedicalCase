@@ -51,7 +51,7 @@ export default function Login() {
                         {/* <img className='background-img' src={backgroundImg} /> */}
                         <div className='login-slogan-container'>
                             <div className='header-info'>
-                                中医医案
+                                中医医案<br/>
                                 阅读系统
                             </div>
                             <h1 className='title-info'>

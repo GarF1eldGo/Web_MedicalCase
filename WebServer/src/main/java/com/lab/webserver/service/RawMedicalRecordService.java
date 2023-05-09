@@ -66,17 +66,10 @@ public class RawMedicalRecordService {
         return rawMedicalRecordRepository.findAllByTitleOrAuthorOrContentOrTags(content, content, content, content);
     }
 
-    public JsonDieaseClassification findAllWithJSON(String type){
-        List<RawMedicalRecord>allRecord = rawMedicalRecordRepository.findAll();
-        JsonDieaseClassification root = new JsonDieaseClassification();
-        if(type.equals("disease")){
-            root.setName("疾病");
-        } else if (type.equals("cure")) {
-            root.setName("治法");
-        } else if (type.equals("dia")){
-            root.setName("辨证");
-        }
-        List<MedicalRecordNode>data = new ArrayList<>();
+    public List<MedicalRecordNode> findAllWithJSON(String type){
+        List<RawMedicalRecord> allRecord = rawMedicalRecordRepository.findAll();
+        List<MedicalRecordNode> data = new ArrayList<>();
+
         Integer threshold = 0;
         if(type.equals("disease")) {
             threshold = 5;
@@ -102,21 +95,12 @@ public class RawMedicalRecordService {
         // 将同类数量大于阈值的加入到data中
         for(Map.Entry<String, Integer> entry: map.entrySet()){
             if(entry.getValue() >= threshold){
-                MedicalRecordNode node = new MedicalRecordNode(entry.getKey(), 100 * entry.getValue() * entry.getValue());
-                // 添加children
-                List<RawMedicalRecord> records = rawMedicalRecordRepository.findByTags(entry.getKey());
-                List<MedicalRecordNode> children = new ArrayList<>();
-                for (RawMedicalRecord record: records){
-                    MedicalRecordNode child = new MedicalRecordNode(record.getId(), record.getTitle());
-                    children.add(child);
-                }
-//                node.setChildren(children);
-                
+                MedicalRecordNode node = new MedicalRecordNode(entry.getKey(), entry.getValue());
                 data.add(node);
             }
         }
-        root.setChildren(data);
-        return root;
+
+        return data;
     }
 
     public String uploadFile(MultipartFile file){
@@ -204,7 +188,7 @@ public class RawMedicalRecordService {
 
     public List<RawMedicalRecord> getTagListRecord(String type, String tag) {
         String oneTag = type + '-' + tag;
-        List<RawMedicalRecord>ret = rawMedicalRecordRepository.findByTags(oneTag);
+        List<RawMedicalRecord>ret = rawMedicalRecordRepository.findByTagsIn(oneTag);
         return ret;
     }
 }
