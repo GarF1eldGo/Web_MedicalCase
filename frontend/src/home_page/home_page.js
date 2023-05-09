@@ -2,7 +2,7 @@ import React from 'react';
 import {Image} from "react-native";
 import './home_page.css';
 
-import background_image from "../attachment/img/background.png";
+import background_image from "../attachment/img/login.jpg";
 
 export default function Home() {
   return (

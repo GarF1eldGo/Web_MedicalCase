@@ -1,0 +1,9 @@
+.classification_circle_container{
+    /* background-color: red; */
+    position: relative;
+    top: 100px;
+    left: 10%;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}

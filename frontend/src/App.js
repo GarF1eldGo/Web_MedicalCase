@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Home from './home_page/home_page.js';
 
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';

@@ -11,7 +11,7 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: rgb(186, 175, 221);
+    background-color: rgb(227, 150, 72);
     margin: 0;
 }
 
@@ -37,7 +37,7 @@
     flex: 1;
     position: relative;
 
-    background-image: url('../../attachment/img/login-bg.jpg');
+    background-image: url('../../attachment/img/login.jpg');
     background-size: cover;
     background-position: 20% 0;
     border-radius: 40px;
@@ -152,14 +152,14 @@
     margin: 10px, 0;
 }
 .signup-tips .sign-up-btn{
-    color: rgb(110, 87, 179);
+    color: rgb(238, 143, 75);
     cursor: pointer;
 }
 
 .login-button{
     width: 100%;
     margin: 20px 0;
-    background-color:  rgb(128, 106, 196);
+    background-color:  rgb(238, 143, 75);
     font-size: 25px;
     height: 50px;
     cursor: pointer;
@@ -167,7 +167,7 @@
 }
 
 .login-button:hover{
-    background-color: rgb(128, 106, 196);
+    background-color: rgb(238,143,75);
     color:white;
 }
 

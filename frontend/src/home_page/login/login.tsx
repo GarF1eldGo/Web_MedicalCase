@@ -51,31 +51,33 @@ export default function Login() {
                         {/* <img className='background-img' src={backgroundImg} /> */}
                         <div className='login-slogan-container'>
                             <div className='header-info'>
-                                THE SPACE NETWORK
+                                中医医案
+                                阅读系统
                             </div>
                             <h1 className='title-info'>
-                                Explore The Universe
+                            人以天地之气生<br/>
+                            四时之法成
                             </h1>
                             <div className='sub-title-info'>
-                                <span>5 Million+ people have joined our network.</span>
-                                <span>we invite you to join the tribe.</span>
+                                <span>不治已病治未病，不治已乱治未乱</span>
+                                <span>春夏养阳，秋冬养阴</span>
                             </div>
                         </div>
                     </div>
                     <div className='right-container'>
                         <div className='right-form-container'>
-                            <h1>Log in</h1>
+                            <h1>用户登录</h1>
                             <p ref={hintRef} className='login-hint' style={{color:'red',height:'16px'}}></p>
                             <div className='login-form'>
                                 <div className='login-form-item'>
-                                    <div className='login-form-item-label'>Username</div>
+                                    <div className='login-form-item-label'>账号</div>
                                     <Input className='login-form-item-input' 
                                         onChange={handleUserNameChange}
                                         onPressEnter={handlePressEnter}
                                         placeholder='Enter user name'/>
                                 </div>
                                 <div className='login-form-item'>
-                                    <div className='login-form-item-label'>Password</div>
+                                    <div className='login-form-item-label'>密码</div>
                                     <Input.Password className='login-form-item-input'
                                         onChange={handlePasswordChange}
                                         onPressEnter={handlePressEnter}
@@ -83,10 +85,10 @@ export default function Login() {
                                     
                                 </div>
                             </div>
-                            <Button className='login-button' onClick={handlePressEnter}>Log in</Button>
+                            <Button className='login-button' onClick={handlePressEnter}>登录</Button>
                             <div className="signup-tips">
-                                <span>Don't Have An Account? </span>
-                                <span className='sign-up-btn'>Signup</span>
+                                <span>没有账号? </span>
+                                <span className='sign-up-btn'>注册</span>
                             </div>
                         </div>
                     </div>

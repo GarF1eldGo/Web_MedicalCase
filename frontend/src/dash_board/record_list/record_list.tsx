@@ -5,7 +5,7 @@ import axios from 'axios';
 import {Switch, Route, useHistory, useRouteMatch} from 'react-router-dom';
 import RecordRead from "./record_read";
 import './record_list.css'
-import { local } from "d3";
+// import { local } from "d3";
 
 const {Option} = Select;
 

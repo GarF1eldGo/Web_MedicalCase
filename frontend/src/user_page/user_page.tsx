@@ -282,7 +282,7 @@ export default function UserPage(){
                     <Avatar className='user-avatar' src={userAvatar} />
                     <h1 className='username'>马保国</h1>
                     <div className='edit-container'>
-                        <Button>Edit profile</Button>
+                        <Button>修改昵称</Button>
                     </div>
                 </div>
                 <div className='right-container'>

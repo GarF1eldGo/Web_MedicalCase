@@ -1,25 +1,24 @@
 import React, { useState, useEffect, Children } from 'react';
 import { CirclePacking, CirclePackingConfig  } from '@ant-design/plots';
 import axios from 'axios';
-import './react-bubble-chart-d3';
 import BubbleChart from './react-bubble-chart-d3';
-// import BubbleChart from '@weknow/react-bubble-chart-d3';
+import './classification_circle.css'
 
 export default function ClassificationCircle(){
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        asyncFetch();
+        // asyncFetch();
     }, []);
     
     const asyncFetch = () => {
-    axios.get('http://127.0.0.1:8080/api/rawMedicalRecord/classification/disease')
-        .then((res) => {
-            console.log(res.data);
-            setData(res.data);
-        })
-        .catch((error) => {
-        console.log('fetch data failed', error);
+        axios.get('http://127.0.0.1:8080/api/rawMedicalRecord/classification/disease')
+            .then((res) => {
+                console.log(res.data);
+                setData(res.data);
+            })
+            .catch((error) => {
+            console.log('fetch data failed', error);
         });
     };
 
@@ -70,12 +69,46 @@ export default function ClassificationCircle(){
       ];
 
      const bubbleClick = (label:any) =>{
-        console.log("Custom bubble click func")
+        console.log("Custom bubble click func ", label)
       }
      const legendClick = (label:any) =>{
         console.log("Customer legend click func")
       }
     return (
-        <CirclePacking {...config}/>
+        // <CirclePacking {...config}/>
+        <div className='classification_circle_container'>
+            <BubbleChart
+            graph={{
+                zoom: 1,
+                offsetX: 0,
+                offsetY: 0
+            }}
+            width={600}
+            height={600}
+            showLegend={true} // optional value, pass false to disable the legend.
+            legendPercentage={20} // number that represent the % of with that legend going to use.
+            valueFont={{
+                family: "Arial",
+                size: 20,
+                color: "#fff",
+                weight: "bold"
+            }}
+            labelFont={{
+                family: "Arial",
+                size: 15,
+                color: "#fff",
+                weight: "normal"
+            }}
+            //Custom bubble/legend click functions such as searching using the label, redirecting to other page
+            bubbleClickFun={bubbleClick}
+            legendClickFun={legendClick}
+            data={[
+                { label: "Net Banking", value: 5, color: "#F08871" },
+                { label: "great", value: 10, color: "#6EB97B" },
+                { label: "Credit Card", value: 3, color: "#5496F6" },
+                { label: "Debit Card", value: 3, color: "#F08871" },
+            ]}
+            />
+        </div>
     )
 }
