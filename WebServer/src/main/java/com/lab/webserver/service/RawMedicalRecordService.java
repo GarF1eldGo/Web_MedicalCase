@@ -63,7 +63,17 @@ public class RawMedicalRecordService {
 
     // 全局搜索
     public List<RawMedicalRecord> findBySearchAll(String content){
-        return rawMedicalRecordRepository.findAllByTitleOrAuthorOrContentOrTags(content, content, content, content);
+        List<RawMedicalRecord> titleList = rawMedicalRecordRepository.findAllByTitle(content);
+        List<RawMedicalRecord> authorList = rawMedicalRecordRepository.findAllByAuthor(content);
+        List<RawMedicalRecord> contentList = rawMedicalRecordRepository.findAllByContentIn(content);
+        List<RawMedicalRecord> tagsList = rawMedicalRecordRepository.findByTags(content);
+        // 取并集
+        List<RawMedicalRecord> allList = Stream.of(titleList, authorList, contentList, tagsList)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
+        return allList;
+//        return rawMedicalRecordRepository.findAllByTitleOrAuthorOrContentOrTags(content, content, content, content);
     }
 
     public List<MedicalRecordNode> findAllWithJSON(String type){
@@ -95,7 +105,12 @@ public class RawMedicalRecordService {
         // 将同类数量大于阈值的加入到data中
         for(Map.Entry<String, Integer> entry: map.entrySet()){
             if(entry.getValue() >= threshold){
-                MedicalRecordNode node = new MedicalRecordNode(entry.getKey(), entry.getValue());
+                String label = entry.getKey();
+                label = label.split("-")[1];
+                if (label.length() > 6){
+                    label = label.substring(0,6);
+                }
+                MedicalRecordNode node = new MedicalRecordNode(label, entry.getValue());
                 data.add(node);
             }
         }

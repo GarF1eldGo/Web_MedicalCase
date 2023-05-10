@@ -40,7 +40,7 @@ export default function ClassificationDisease(){
       let tmpData : any = [];
       for (let i = 0; i < res.data.length; i++) {
           let label = res.data[i].name;
-          label = label.substring(label.indexOf('-') + 1);
+          // label = label.substring(label.indexOf('-') + 1);
           tmpData.push({label: label, value: res.data[i].value});
       }
       setData(tmpData);

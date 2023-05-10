@@ -34,7 +34,8 @@ export default function ClassificationCircle(props:any){
                 let tmpData : any = [];
                 for (let i = 0; i < res.data.length; i++) {
                     const label = res.data[i].title;
-                    tmpData.push({label: label, value: 1, recordId: res.data[i].id});
+                    const contentCount = res.data[i].content.length;
+                    tmpData.push({label: label, value: contentCount, recordId: res.data[i].id});
                 }
                 setData(tmpData);
             })
