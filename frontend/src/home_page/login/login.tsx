@@ -1,10 +1,11 @@
 import React from 'react';
 import { Button, Input } from 'antd';
-import { useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 
 import './login.css'
 import axios from 'axios';
 import { local } from 'd3';
+import Signup from './signup';
 
 export default function Login() {
     const [userName, setUserName] = React.useState('');
@@ -42,7 +43,10 @@ export default function Login() {
             })
         }
     }
-
+    function signupClick(){
+        history.push('/Signup');
+    }
+    
     return (
         <div className='whole-page-container'>
             <div className='login-wrapper'>
@@ -88,13 +92,12 @@ export default function Login() {
                             <Button className='login-button' onClick={handlePressEnter}>登录</Button>
                             <div className="signup-tips">
                                 <span>没有账号? </span>
-                                <span className='sign-up-btn'>注册</span>
+                                <span className='sign-up-btn' onClick={signupClick}>注册</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
- 
     )
 }

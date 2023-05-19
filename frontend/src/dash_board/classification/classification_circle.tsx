@@ -9,9 +9,22 @@ import { local } from 'd3';
 
 export default function ClassificationCircle(props:any){
     const [data, setData] = useState<any[]>([]);
+    const [width, setWidth] = useState<number>(0);
+    const [height, setHeight] = useState<number>(0);
+    const [show, setShow] = useState<boolean>(true);
     const history = useHistory();
 
     useEffect(() => {
+        if (window.innerWidth <= 768) {
+            setShow(false);
+            setWidth(window.innerWidth * 0.9);
+            setHeight(window.innerHeight * 0.9);
+        }else{
+            setShow(true);
+            setWidth(window.innerWidth * 0.5);
+            setHeight(window.innerHeight * 0.8);
+        }
+        
         console.log('tagData', props.tagData);
     }, []);
 
@@ -57,9 +70,9 @@ export default function ClassificationCircle(props:any){
                 offsetX: 0,
                 offsetY: 0
             }}
-            width={800}
-            height={800}
-            showLegend={true} // optional value, pass false to disable the legend.
+            width={width}
+            height={height}
+            showLegend={show} // optional value, pass false to disable the legend.
             legendPercentage={20} // number that represent the % of with that legend going to use.
             valueFont={{
                 family: "Arial",

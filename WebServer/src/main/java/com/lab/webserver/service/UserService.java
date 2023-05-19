@@ -60,16 +60,27 @@ public class UserService {
 
     public User login(User user){
         User ret =  userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-//        // 用户登录就启动推荐算法脚本
-//        String scriptPath = "src/main/resources/static/Recommendation.py";
-//        String currentPath = Path.of("").toAbsolutePath().toString();
-//        scriptService.startScript(scriptPath);
         return ret;
     }
 
     public void logout(){
         // 用户登出就停止推荐算法脚本
-        scriptService.stopScript();
+//        scriptService.stopScript();
+    }
+
+    public User signup(User user){
+        // 判断用户名是否已经存在
+        List<User> ret = userRepository.findAllByUsername(user.getUsername());
+        if(ret.size() > 0){
+            return null;
+        }
+        // 不存在则创建新用户
+        user.setUsername(user.getUsername());
+        user.setPassword(user.getPassword());
+        user.setIsAdmin(false);
+        user.setNickname("新用户");
+        userRepository.save(user);
+        return user;
     }
 
     public void updateHistory(UserHistory history){

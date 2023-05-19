@@ -66,7 +66,7 @@ export default function UserFavorite(){
                 data_list.push({
                     compoundKey: data[i].id+'-'+data[i].time,
                     title: data[i].title,
-                    abstract: data[i].description,
+                    abstract: data[i].description.substring(0, 20),
                     time: data[i].time,
                 });
             }

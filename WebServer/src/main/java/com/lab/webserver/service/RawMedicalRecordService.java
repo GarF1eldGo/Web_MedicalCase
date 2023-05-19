@@ -84,7 +84,7 @@ public class RawMedicalRecordService {
         if(type.equals("disease")) {
             threshold = 5;
         }else{
-            threshold = 2;
+            threshold = 3;
         }
 
         // 统计同类的数量
@@ -106,6 +106,8 @@ public class RawMedicalRecordService {
         for(Map.Entry<String, Integer> entry: map.entrySet()){
             if(entry.getValue() >= threshold){
                 String label = entry.getKey();
+                if (label.split("-").length < 2) continue;
+
                 label = label.split("-")[1];
                 if (label.length() > 6){
                     label = label.substring(0,6);
@@ -146,6 +148,7 @@ public class RawMedicalRecordService {
             record.setAuthor(author);
             record.setTitle(title);
             record.setContent(content.substring(content.indexOf("#end")+4)); // 从#end后开始为医案内容
+            record.setReal(true);
             rawMedicalRecordRepository.save(record); // 保存到数据库
             str = mapper.writeValueAsString(record);
         } catch (Exception e){

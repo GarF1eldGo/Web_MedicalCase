@@ -10,6 +10,7 @@ public interface UserRepository extends ElasticsearchRepository<User, String>{
     List<User> findAllByUsername(String username);
 
     User findByUsernameAndPassword(String username, String password);
+
 }
 
 

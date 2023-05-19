@@ -30,6 +30,7 @@ export default function FrameWork(props:any){
         { value: '搜索医案' },
         { value: '医案分类' },
         { value: '导入医案' },
+        { value: '个人主页' },
       ];
 
     useEffect(() => {
@@ -106,13 +107,17 @@ export default function FrameWork(props:any){
     // 搜索框文本提示处理
     function handleOnSelect(value: string, option: any){
         console.log('onSelect', value, option);
-        if(value === 'Document Search'){
+        
+        if(value === '搜索医案'){
             history.push('/Dashboard/RecordList');
-        }else if(value === 'Classification'){
+        }else if(value === '医案分类'){
             history.push('/Dashboard/Classification');
-        }else if(value === 'Import Documents'){
+        }else if(value === '导入医案'){
             history.push('/Dashboard/AddFile');
+        }else if(value === '个人主页'){
+            history.push('/UserPage');
         }
+        setInputValue(''); // 清空输入框
     }
 
     function signOutHandle(){
@@ -149,7 +154,7 @@ export default function FrameWork(props:any){
                         <AutoComplete className='auto-complete-container'
                              style={{ width: '100%' }}
                              options={options}
-                             placeholder="Search or jump to..."
+                            //  placeholder="Search or jump to..."
                              onSelect={handleOnSelect}
                              filterOption={(inputValue, option) =>
                                option!.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
@@ -183,11 +188,11 @@ export default function FrameWork(props:any){
                 {showOptions && 
                     <div className='user-options'>
                         <p onClick={() => {history.push('/UserPage')}}>已登录 </p>
-                        <p onClick={() => {history.push('/UserPage')}} style={{fontWeight:'bold'}}>GarField</p>
+                        <p onClick={() => {history.push('/UserPage')}} style={{fontWeight:'bold'}}>加菲</p>
                         <Divider />
-                        <p>Profile</p>
+                        {/* <p>Profile</p>
                         <p>Settings</p>
-                        <Divider />
+                        <Divider /> */}
                         <p onClick={signOutHandle}>登出</p>
                     </div>}
             </Header>

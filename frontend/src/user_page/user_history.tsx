@@ -28,7 +28,11 @@ export default function UserHistory(){
             width: firstColWidth,
             key: 'compoundKey',
             defaultSortOrder: 'descend',
-            sorter: (a, b) => a.time.localeCompare(b.time),
+            sorter: (a, b) => {
+                const dateA = new Date(a.time);
+                const dateB = new Date(b.time);
+                return dateA.getTime() - dateB.getTime();
+            },
             showSorterTooltip:{
                 title: '按日期排序',
             }
@@ -70,6 +74,7 @@ export default function UserHistory(){
                     time: data[i].time,
                 });
             }
+            console.log('history data: ', data_list)
             setData(data_list);
             setDataCnt(data_list.length);
         }).catch((err) => {

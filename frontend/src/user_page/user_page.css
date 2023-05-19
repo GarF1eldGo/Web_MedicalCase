@@ -86,7 +86,7 @@
 
 .user-page-container .content-container .right-container{
     position: relative;
-    width: 80%;
+    width: 70%;
     height: 100%;
     float: right;
     /* background-color: white; */
@@ -188,6 +188,7 @@
     }
     .user-page-container .content-container .right-container{
         width: 100%;
+        margin: 0;
     }
     .user-page-container .content-container .right-container .overview-container{
         width: 100%;

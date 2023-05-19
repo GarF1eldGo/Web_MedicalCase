@@ -7,3 +7,9 @@
     width: 100%;
     z-index: 1;
 }
+
+@media screen and (max-width: 768px) {
+    .classification_circle_container{
+        left: 0;
+    }
+}

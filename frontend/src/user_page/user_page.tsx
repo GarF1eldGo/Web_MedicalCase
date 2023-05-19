@@ -280,7 +280,7 @@ export default function UserPage(){
             <Content className='content-container'>
                 <div className='left-container'>
                     <Avatar className='user-avatar' src={userAvatar} />
-                    <h1 className='username'>马保国</h1>
+                    <h1 className='username'>加菲</h1>
                     <div className='edit-container'>
                         <Button>修改昵称</Button>
                     </div>

@@ -59,6 +59,9 @@ public class userController {
         service.logout();
     }
 
+    @PostMapping("/signup")
+    public User signup(@RequestBody final User user){ return service.signup(user); }
+
     @ResponseBody
     @PostMapping("/updateHistory")
     public void updateHistory(@RequestBody final UserHistory history){
