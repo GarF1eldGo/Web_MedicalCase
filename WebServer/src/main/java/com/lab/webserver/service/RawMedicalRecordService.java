@@ -159,8 +159,14 @@ public class RawMedicalRecordService {
     }
 
 
-    public List<RawMedicalRecord> findByTitleList(List<String> titleList){
-        return rawMedicalRecordRepository.findAllByTitleIn(titleList);
+    public List<RawMedicalRecord> findByTitleList(List<String> titleList, String book){
+        List<RawMedicalRecord> result1 = rawMedicalRecordRepository.findAllByTitleIn(titleList);
+        List<RawMedicalRecord> result2 = rawMedicalRecordRepository.findAllByBook(book);
+        List<RawMedicalRecord> result = Stream.of(result1, result2)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(Collectors.toList());
+        return result;
     }
 
     // 获取标签列表

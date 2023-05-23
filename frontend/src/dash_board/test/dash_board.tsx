@@ -55,6 +55,7 @@ export default function TestDashboard(){
                         description: data[i].content.substring(0, 20)
                     });
                 }
+                tmpList = tmpList.slice(0, Math.min(5, tmpList.length));
                 setRelatedSource(tmpList);
                 setLoading(false);
             }

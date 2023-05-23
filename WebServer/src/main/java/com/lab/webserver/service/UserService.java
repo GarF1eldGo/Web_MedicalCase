@@ -23,7 +23,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final ScriptService scriptService;
 
-    private HashMap<String, List<String>> recommentdationMap;
+    private HashMap<String, List<String>> recommendationMap;
+    private HashMap<String, List<String>> recommendationMapMZY;
+    private HashMap<String, List<String>> recommendationMapMHP;
 
     private String getCurrentTime(){
         // 获取当前时间
@@ -37,7 +39,9 @@ public class UserService {
     public UserService(UserRepository userRepository, ScriptService scriptService){
         this.userRepository = userRepository;
         this.scriptService = scriptService;
-        this.recommentdationMap = readCSVFile();
+        this.recommendationMap = readCSVFile("src/main/resources/static/ConsineHashMap.csv");
+        this.recommendationMapMZY = readCSVFile("src/main/resources/static/ConsineHashMapMZY.csv");
+        this.recommendationMapMHP = readCSVFile("src/main/resources/static/ConsineHashMapMHP.csv");
     }
 
     public long count(){
@@ -175,31 +179,26 @@ public class UserService {
 
     /**
      * 通过推荐算法获取推荐结果
-     * @param filename
-     * @param content
+     * @param record
      * @return 医案名称
      */
-    public List<String> findRecommendation(String filename, String content){
-        if (this.recommentdationMap.containsKey(filename)){
-            return this.recommentdationMap.get(filename);
+    public List<String> findRecommendation(RawMedicalRecord record){
+        String book = record.getBook().strip();
+        String title = record.getTitle();
+        if (book.equals("中国现代名中医医案精华")){
+            title = record.getAuthor() + "-" + title;
+            List<String>titleList = new ArrayList<>(recommendationMapMZY.get(title));
+            for (int i = 0; i < titleList.size(); i++){
+                titleList.set(i, titleList.get(i).split("-")[1]);
+            }
+            return titleList;
+        }else if (book.equals("茅汉平-名老中医临证验案集")) {
+            return recommendationMapMHP.get(title);
+        }else if (book.equals("熊继柏临证医案实录1")) {
+            return recommendationMap.get(title);
         }else{
             return null;
         }
-//        // 输入
-//        String newContent = content.replaceAll("\r\n", ""); // 删除换行符
-//        newContent = newContent.replaceAll("\t", "");
-//        String input = filename + "###" + newContent;
-//        input += "\n";
-//        scriptService.sendInputToScript(input);
-//
-//        // 获取输出,数据结构按照';'分隔
-//        String output = scriptService.readScriptOutput();
-////        scriptService.stopScript();
-//        if(output != null){
-//            String[] result = output.split(";");
-//            return new ArrayList<>(List.of(result));
-//        }
-//        return null;
     }
 
     public List<ViewHistoryCount> findViewHistoryCountById(String id){
@@ -233,9 +232,7 @@ public class UserService {
         return null;
     }
 
-    private HashMap<String, List<String>> readCSVFile(){
-        String csvFilePath = "src/main/resources/static/ConsineHashMap.csv";
-
+    private HashMap<String, List<String>> readCSVFile(String csvFilePath){
         FileReader fileReader = null;
         try {
             fileReader = new FileReader(csvFilePath);

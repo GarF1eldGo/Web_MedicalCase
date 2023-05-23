@@ -95,10 +95,10 @@ public class userController {
 
     @GetMapping("/recommendation/{recordID}")
     public List<RawMedicalRecord> findRecommendation(@PathVariable final String recordID){
-        String content = recordService.findById(recordID).getContent();
-        String filename = recordService.findById(recordID).getTitle();
-        List<String>filenameList = service.findRecommendation(filename, content);
-        return recordService.findByTitleList(filenameList);
+        RawMedicalRecord record = recordService.findById(recordID);
+        String book = record.getBook();
+        List<String>filenameList = service.findRecommendation(record);
+        return recordService.findByTitleList(filenameList, book);
     }
 
     @GetMapping("/viewHistoryCount/{id}")
